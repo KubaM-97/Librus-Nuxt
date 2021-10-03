@@ -29,12 +29,16 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    'nuxt-typed-vuex',
+    '@nuxtjs/composition-api/module'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxt/typescript-build',
+    '@nuxtjs/toast',
     ['@nuxtjs/i18n', {
       locales: [
         {
@@ -64,5 +68,6 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   },
+  
   target: 'server',
 }

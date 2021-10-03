@@ -1,0 +1,65 @@
+/* Routing transition's animation */
+.router-enter-active, .router-leave-active{
+  transition: opacity .5s ease-out;
+}
+.router-enter, .router-leave-to{
+  opacity: 0;
+}
+
+/* Gif that appears during loging out and logging in */
+.show-logOutGif-enter-active, .show-logOutGif-leave-active{
+  transition: opacity .15s ease-out;
+}
+.show-logOutGif-enter, .show-logOutGif-leave-to{
+  opacity: 0;
+}
+
+/* AddStudent.vue: required New Student firstName nad LastName */
+.bounce-enter-active {
+  animation: shake .73s ease;
+  transform: translate3d(0,0,0);
+  backface-visibility: hidden;
+}
+
+@keyframes shake {
+  10%, 30%, 50%, 70%, 90% { transform: translate3d(-2px, .1px, 0) }
+  20%, 80% { transform: translate3d(2px, -.1px, 0) }
+  40%, 60% { transform: translate3d(2px, .1px, 0) }
+}
+
+/* AddStudent.vue: shows detail data of a new student: PESEL, phone, email etc... */
+@keyframes showDetailData {
+  0%{opacity: 0; transform: translateY(-40px)}
+  100%{ opacity: 1; transform: translateY(0px)}
+}
+
+
+/* Both EditStudentData.vue and EditStudentGrades.vue components */
+.EditStudentDataPanel-enter-active{
+  animation: edit 1.5s linear;
+}
+.EditStudentDataPanel-leave-active{
+  animation: edit 1.5s linear;
+  animation-direction: reverse;
+}
+.EditStudentGradesPanel-enter-active{
+  animation: edit 1.5s linear;
+}
+.EditStudentGradesPanel-leave-active{
+  animation: edit 1.5s linear;
+  animation-direction: reverse;
+}
+@keyframes edit{
+  0%{width: 0px; font-size: 0}
+  100%{width: 90%; font-size: 100%}
+}
+
+/* EditStudentData.vue: GreenCheckMarks */
+.showGreenMark-leave-active{
+  animation: showCheckMark 1s linear;
+}
+
+@keyframes showCheckMark{
+  0%{width: 100%;}
+  100%{width: 0%;}
+}

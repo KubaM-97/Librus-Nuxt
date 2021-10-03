@@ -1,0 +1,23 @@
+/* Background pattern from Toptal Subtle Patterns */
+* {
+    padding: 0;
+    margin: 0;
+    letter-spacing: 1px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    text-shadow: 5px 0px 20px #00c3ff, -5px 0px 20px #00c3ff, 0px 5px 20px #00c3ff, 0px -5px 20px #00c3ff;
+    color: #fff;
+}
+
+:root {
+    font-size: 30px;
+}
+
+html body {
+    background: url(../images/fancy-cushion.png);
+}
+
+#app {
+    max-width: 2500px;
+    margin: auto;
+}

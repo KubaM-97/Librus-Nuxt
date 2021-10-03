@@ -11,13 +11,21 @@
   "dependencies": {
     "@nuxt/http": "^0.6.4",
     "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/composition-api": "^0.29.2",
     "@nuxtjs/i18n": "^7.0.3",
+    "@nuxtjs/toast": "^3.3.1",
     "axios": "^0.21.4",
     "core-js": "^3.15.1",
     "express": "^4.17.1",
     "koa-router": "^10.1.1",
     "mongodb": "^4.1.2",
-    "nuxt": "^2.15.7"
+    "nuxt": "^2.15.7",
+    "nuxt-typed-vuex": "^0.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@nuxt/types": "latest",
+    "@nuxt/typescript-build": "latest",
+    "nuxt-typed-vuex": "latest",
+    "vue-property-decorator": "9.0.0"
+  }
 }

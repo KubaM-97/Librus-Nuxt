@@ -1,0 +1,116 @@
+table {
+    width: 100%;
+}
+table td, div.students table thead th{
+  border: 1px solid white;
+  text-align: center;
+  padding: 7px;
+  min-height: 200px;
+}
+div.students table thead th{
+  font-size: 16px;
+  padding: 17px 7px;
+}
+div.students table tbody tr:hover {
+  background-color: darkgoldenrod;
+  cursor: pointer;
+}
+
+table.summary td{
+  width: 25%;
+  height: 50px;
+}
+
+
+
+.gradeWeightColorLegend{
+  padding: 6px 15px;
+  margin: 3px;
+  display: inline-block;
+  border: 2px solid white;
+  margin-right: 10px;
+  position: relative;
+}
+.gradeWeightColor{
+    font-size: 15px;
+    font-weight: 700;
+    padding: 5px 8px;
+    margin: 3px;
+    display: inline-block;
+    border: 2px solid white;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.gradeWeightGreen {
+    text-shadow: 5px 0px 20px #3be029, -5px 0px 20px #3be029, 0px 5px 20px #3be029, 0px -5px 20px #3be029;
+    background-color: #3be029;
+    color: black;
+}
+
+.gradeWeightYellow {
+    text-shadow: 5px 0px 20px #ffc800, -5px 0px 20px #ffc800, 0px 5px 20px #ffc800, 0px -5px 20px #ffc800;
+    background-color: #ffc800;
+    color: black;
+}
+
+.gradeWeightRed {
+    text-shadow: 5px 0px 20px #ff001e, -5px 0px 20px #ff001e, 0px 5px 20px #ff001e, 0px -5px 20px #ff001e;
+    background-color: #ff001e;
+}
+
+
+
+span.grades{
+  display: inline-block;
+  margin: auto;
+}
+
+span.fire {
+    padding: 10px 35px;
+    border: 1px solid whitesmoke;
+    text-shadow: none;
+    background-image: url(../images/Animated_fire_by_nevit.gif);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: fire 5s linear infinite;
+    -webkit-backface-visibility: hidden;
+}
+
+@keyframes fire {
+    0% {
+        background-position: 90% 95%
+    }
+    50% {
+        background-position: center;
+    }
+    100% {
+        background-position: 90% 95%
+    }
+}
+
+@media (max-width: 768px){
+  table td, table thead th{
+    font-size: 9px;
+    padding: 3px 1px;
+  }
+  table thead th{
+    font-size: 12px !important;
+  }
+
+  .gradeWeightColor{
+    font-size: 12px;
+    padding: 4px 6px;
+    margin-right: 5px;
+    max-width: 24px;
+    max-height: 28px;
+  }
+  tbody .gradeWeightColor{
+    margin: 2px 3px;
+    padding: 2px 4.5px !important;
+    font-size: 11px;
+    border: .5px solid white;
+  }
+  span.fire{
+    padding: 5px 3px !important;
+  }
+}
