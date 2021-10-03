@@ -10,7 +10,10 @@ app.use(express.urlencoded({
 
 // app.use('/api', rootRouter)
 const users = require('./routes/users')
+const students = require('./routes/students')
 app.use(users);
+app.use(students);
+// router.all('/api/*')
 module.exports = app
 
 // Start standalone server if directly running

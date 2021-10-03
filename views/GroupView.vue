@@ -1,7 +1,13 @@
 <template>
   <div class="fullClass">
     <TableHeader />
-    <!-- <Students :students="students"/> -->
+    <p v-if="$fetchState.error">
+      Failed to fetch students
+    </p>
+    <template v-if="$fetchState.pending">
+      <p>GIF: </p>
+    </template>
+    <Students v-else :students="students"/>
   </div>
 </template>
 
@@ -9,32 +15,33 @@
 import TableHeader from "@/components/group/TableHeader.vue";
 import Students from "@/components/group/Students.vue";
 
-import { defineComponent, useStore } from '@nuxtjs/composition-api'
+import { defineComponent, computed, ref, useAsync, useContext, useFetch } from "@nuxtjs/composition-api";
 
 export default defineComponent({
-  name: 'GroupView',
+  name: "GroupView",
   components: {
     TableHeader,
     Students,
   },
-  setup() {
-    const store = useStore();
-    // await store.dispatch("fetchStudents");
+  setup(_, { root }) {
+    const group = computed(() => root.$accessor.user.group);
+    const students = ref([])
+
+    const { $http } = useContext()
+    //  const students = useAsync(() => $http.$post("/api/students", {
+    //     group: group.value,
+    //   })
+    // );
+    useFetch(async () => {
+      students.value = await $http.$post(`api/students/`, 
+        { group: group.value }
+      )
+    })
+
+    return { students }
   },
-  computed: {
-      students() {
-          return this.$store.state.students;
-      }
-  },
-  mounted() {
-    this.fetchStudents();
-  },
-  methods: {
-    async fetchStudents() {
-       await this.store.dispatch("fetchStudents");
-    },
-  }
-});
+  fetchOnServer: false,
+})
 </script>
 
 <style>

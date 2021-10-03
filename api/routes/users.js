@@ -5,6 +5,7 @@ const router = Router()
 import { mongo } from '../mongodb'
 
 router.post('/users', async function (req, res, next) {
+  console.log('1111111111111111111111111111');
   const signInData = {
     login: req.body.login,
     password: req.body.password,

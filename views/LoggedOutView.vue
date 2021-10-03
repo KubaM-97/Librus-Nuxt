@@ -69,7 +69,7 @@ this.$toast.show("Logging in...");
         // if (response) {
           router.push({
             path: "/group",
-            query: { group: usergroup.value },
+            query: { '': usergroup.value },
           });
         // }
       } catch (error) {
@@ -101,7 +101,7 @@ this.$toast.show("Logging in...");
         this.$toast.error('xxxxxxxxxxx')
         this.$toast.info('xxxxxxxxxxx')
         this.$toast.success('xxxxxxxxxxx')
-         this.$toast.clear
+        this.$toast.clear()
     }
     return {
       signIn
