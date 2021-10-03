@@ -11,7 +11,8 @@
       
             <!-- query: { student: { `${student.lastName}` } }, -->
       <tbody>
-        <nuxt-link
+        {{ students }}
+        <!-- <nuxt-link
           v-for="(student, index) in students"
           :key="student.id"
           custom
@@ -67,22 +68,28 @@
             <td>{{ avg(student.marks, student.weights) }}</td>
             <td v-html="threatness(avg(student.marks, student.weights))"></td>
           </tr>
-        </nuxt-link>
+        </nuxt-link> -->
       </tbody>
     </table>
   </div>
 </template>
 
 <script>
+import { defineComponent, computed, ref, useContext, useFetch } from "@nuxtjs/composition-api";
+
 // import gradesService from "@/assets/mixins/gradesMixins.js";
-export default {
+export default defineComponent({
   name: "Students",
   props: {
-      students: {
-          type: Object,
-          required: false,
-          default: () => {},
-      }
+    students: {
+      type: Array,
+      required: false,
+      default: () => [],
+    }
+  },
+  setup(props) {
+    console.log(props);
+    return 
   },
   mounted() {
     this.addToolTips();
@@ -98,7 +105,7 @@ export default {
     }
   },
   // mixins: [gradesService],
-};
+});
 </script>
 
 <style>

@@ -29,4 +29,6 @@ export default {
    password: 'Password',
    pls_type_tip: 'Please type',
    sign_in: 'Sign in',
+
+   failed_to_fetch_students_list: 'Failed to fetch students',
 }

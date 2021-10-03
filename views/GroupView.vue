@@ -2,11 +2,11 @@
   <div class="fullClass">
     <TableHeader />
     <p v-if="$fetchState.error">
-      Failed to fetch students
+       {{ $t('failed_to_fetch_students_list') }}
     </p>
-    <template v-if="$fetchState.pending">
-      <p>GIF: </p>
-    </template>
+    <div class="image" v-else-if="$fetchState.pending">
+        <img src="~images/loader.gif" alt="loading...">
+    </div>
     <Students v-else :students="students"/>
   </div>
 </template>
@@ -15,7 +15,7 @@
 import TableHeader from "@/components/group/TableHeader.vue";
 import Students from "@/components/group/Students.vue";
 
-import { defineComponent, computed, ref, useAsync, useContext, useFetch } from "@nuxtjs/composition-api";
+import { defineComponent, computed, ref, useContext, useFetch } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   name: "GroupView",
@@ -25,13 +25,10 @@ export default defineComponent({
   },
   setup(_, { root }) {
     const group = computed(() => root.$accessor.user.group);
-    const students = ref([])
+    const students = ref([]);
 
-    const { $http } = useContext()
-    //  const students = useAsync(() => $http.$post("/api/students", {
-    //     group: group.value,
-    //   })
-    // );
+    const { $http } = useContext();
+
     useFetch(async () => {
       students.value = await $http.$post(`api/students/`, 
         { group: group.value }

@@ -58,4 +58,6 @@ export default {
   server_error: 'Błąd po stronie serwera',
   login_and_passw_must_match: 'Login i hasło muszą się zgadzać!',
   server_error: 'Wyliż mi rowa',
+
+  failed_to_fetch_students_list: 'Nie udało się pobrać listy uczniów'
 }
