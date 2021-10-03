@@ -30,14 +30,14 @@ export default defineComponent({
     const { $http } = useContext();
 
     useFetch(async () => {
+
       students.value = await $http.$post(`api/students/`, 
-        { group: group.value }
+        { group: group.value || '3B' }
       )
     })
 
     return { students }
   },
-  fetchOnServer: false,
 })
 </script>
 

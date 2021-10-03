@@ -2,23 +2,21 @@
   <div class="students">
     <table ref="tableStudents">
       <thead>
-        <th>{{ $t('number_shortcut') }}.</th>
+        <th>{{ $t('number_abbr') }}.</th>
         <th>{{ $t('student') }}:</th>
-        <th>{{ $t('marks') }}:</th>
-        <th>{{ $t('marks_avg') }}:</th>
-        <th>{{ $t('threatments') }}:</th>
+        <th>{{ $t('grades') }}:</th>
+        <th>{{ $t('grade_avg') }}:</th>
+        <th>{{ $t('at_risks') }}:</th>
       </thead>
       
             <!-- query: { student: { `${student.lastName}` } }, -->
       <tbody>
-        {{ students }}
-        <!-- <nuxt-link
+        <nuxt-link
           v-for="(student, index) in students"
           :key="student.id"
-          custom
-          v-slot="{ navigate }"
           :to="{
             path: '/group/student',
+            query: { student: `${student.lastName} ${student.firstName}` }, 
             params: {
               id: student.id,
 
@@ -68,14 +66,14 @@
             <td>{{ avg(student.marks, student.weights) }}</td>
             <td v-html="threatness(avg(student.marks, student.weights))"></td>
           </tr>
-        </nuxt-link> -->
+        </nuxt-link>
       </tbody>
     </table>
   </div>
 </template>
 
 <script>
-import { defineComponent, computed, ref, useContext, useFetch } from "@nuxtjs/composition-api";
+import { defineComponent, computed, ref, useContext, useFetch, onMounted } from "@nuxtjs/composition-api";
 
 // import gradesService from "@/assets/mixins/gradesMixins.js";
 export default defineComponent({
@@ -89,19 +87,19 @@ export default defineComponent({
   },
   setup(props) {
     console.log(props);
-    return 
-  },
-  mounted() {
-    this.addToolTips();
-  },
-  methods: {
-    addToolTips(){
+    function addToolTips(){
      for (let i = 0; i < props.students.value.length; i++) {
-        // gradesService().showTooltip(
-        //   this.$refs.tableStudents.querySelectorAll("tr")[i],
-        //   this.props.students.value[i]
-        // );
+        gradesService().showTooltip(
+          this.$refs.tableStudents.querySelectorAll("tr")[i],
+          this.props.students.value[i]
+        );
       }
+    }
+    onMounted(()=>{
+      addToolTips();
+    })
+    return {
+
     }
   },
   // mixins: [gradesService],
