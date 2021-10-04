@@ -1,6 +1,6 @@
 <template>
   <div class="editStudentPanel" ref="editStudentPanel">
-    <div class="editStudentPanelMain">
+    <!-- <div class="editStudentPanelMain">
       <div class="editStudentPanelNameTitle">
         <span>{{ $t('students_first_and_lastname') }}</span>
       </div>
@@ -113,85 +113,93 @@
       <transition name="EditStudentDataPanel" mode="out-in">
         <component :is="Component" v-if="showGradesEditionRouterView" />
       </transition>
-    </router-view>
+    </router-view> -->
   </div>
 </template>
 
 <script>
 // import gradesService from "../assets/mixins/gradesMixins.js";
-import { defineComponent, useStore, useRoute, useRouter, ref, computed, onMounted, onUpdatede } from '@nuxtjs/composition-api';
+import { defineComponent, useStore, useRoute, useRouter, ref, computed, onMounted, onUpdated } from '@nuxtjs/composition-api';
 
 export default defineComponent({
   name: "Student",
-  setup() {
-    const editStudentPanel = ref(null);
-    const route = useRoute();
-    const router = useRouter();
-    const store = useStore();
-    const showDataEditionRouterView = ref(false);
-    const showGradesEditionRouterView = ref(false);
-    const fullName = computed(() => store.getters.fullNameGetters(route.params));
-    function showEditStudentDataPanel() {
-      router.push({ name: "EditData", params: route.params });
-      showDataEditionRouterView.value = true;
-    }
-    function showEditStudentGradesPanel() {
-      router.push({ name: "EditGrades", params: route.params });
-      showGradesEditionRouterView.value = true;
-    }
-    onMounted(() => {
-      // gradesService().showTooltip(editStudentPanel.value, route.params);
-    });
-    onUpdated(() => {
-      // gradesService().showTooltip(editStudentPanel.value, route.params);
-    });
-    const pesel = computed(() => route.params.pesel);
-    const streetName = computed(() => route.params.streetName);
-    const streetNr = computed(() => route.params.streetNr);
-    const streetFlat = computed(() => route.params.streetFlat);
-    const streetPostcode = computed(() => route.params.streetPostcode);
-    const streetCity = computed(() => route.params.streetCity);
-    const phone = computed(() => route.params.phone);
-    const email = computed(() => route.params.email);
-    const motherFirstName = computed(() => route.params.motherFirstName);
-    const motherLastName = computed(() => route.params.motherLastName);
-    const motherPhone = computed(() => route.params.motherPhone);
-    const motherEmail = computed(() => route.params.motherEmail);
-    const fatherFirstName = computed(() => route.params.fatherFirstName);
-    const fatherLastName = computed(() => route.params.fatherLastName);
-    const fatherPhone = computed(() => route.params.fatherPhone);
-    const fatherEmail = computed(() => route.params.fatherEmail);
-    const gradesMarks = computed( () =>route.params.marks.map((el) => parseInt(el)) );
-    const gradesWeights = computed( () => route.params.weights.map((el) => parseInt(el) )
-    );
-    return {
-      route,
-      editStudentPanel,
-      pesel,
-      streetName,
-      streetNr,
-      streetFlat,
-      streetPostcode,
-      streetCity,
-      phone,
-      email,
-      motherFirstName,
-      motherLastName,
-      motherPhone,
-      motherEmail,
-      fatherFirstName,
-      fatherLastName,
-      fatherPhone,
-      fatherEmail,
-      gradesMarks,
-      gradesWeights,
-      showDataEditionRouterView,
-      showGradesEditionRouterView,
-      fullName,
-      showEditStudentDataPanel,
-      showEditStudentGradesPanel,
-      // ...gradesService(),
-    };
+  props: {
+    // student: {
+    //   type: Object,
+    //   required: true
+    // }
+  },
+  setup(props) {
+    const route = useRoute()
+    console.log(route, props)
+    // const editStudentPanel = ref(null);
+    // const route = useRoute();
+    // const router = useRouter();
+    // const store = useStore();
+    // const showDataEditionRouterView = ref(false);
+    // const showGradesEditionRouterView = ref(false);
+    // const fullName = computed(() => store.getters.fullNameGetters(route.params));
+    // function showEditStudentDataPanel() {
+    //   router.push({ name: "EditData", params: route.params });
+    //   showDataEditionRouterView.value = true;
+    // }
+    // function showEditStudentGradesPanel() {
+    //   router.push({ name: "EditGrades", params: route.params });
+    //   showGradesEditionRouterView.value = true;
+    // }
+    // onMounted(() => {
+    //   // gradesService().showTooltip(editStudentPanel.value, route.params);
+    // });
+    // onUpdated(() => {
+    //   // gradesService().showTooltip(editStudentPanel.value, route.params);
+    // });
+    // const pesel = computed(() => route.params.pesel);
+    // const streetName = computed(() => route.params.streetName);
+    // const streetNr = computed(() => route.params.streetNr);
+    // const streetFlat = computed(() => route.params.streetFlat);
+    // const streetPostcode = computed(() => route.params.streetPostcode);
+    // const streetCity = computed(() => route.params.streetCity);
+    // const phone = computed(() => route.params.phone);
+    // const email = computed(() => route.params.email);
+    // const motherFirstName = computed(() => route.params.motherFirstName);
+    // const motherLastName = computed(() => route.params.motherLastName);
+    // const motherPhone = computed(() => route.params.motherPhone);
+    // const motherEmail = computed(() => route.params.motherEmail);
+    // const fatherFirstName = computed(() => route.params.fatherFirstName);
+    // const fatherLastName = computed(() => route.params.fatherLastName);
+    // const fatherPhone = computed(() => route.params.fatherPhone);
+    // const fatherEmail = computed(() => route.params.fatherEmail);
+    // const gradesMarks = computed( () =>route.params.marks.map((el) => parseInt(el)) );
+    // const gradesWeights = computed( () => route.params.weights.map((el) => parseInt(el) )
+    // );
+    // return {
+    //   route,
+    //   editStudentPanel,
+    //   pesel,
+    //   streetName,
+    //   streetNr,
+    //   streetFlat,
+    //   streetPostcode,
+    //   streetCity,
+    //   phone,
+    //   email,
+    //   motherFirstName,
+    //   motherLastName,
+    //   motherPhone,
+    //   motherEmail,
+    //   fatherFirstName,
+    //   fatherLastName,
+    //   fatherPhone,
+    //   fatherEmail,
+    //   gradesMarks,
+    //   gradesWeights,
+    //   showDataEditionRouterView,
+    //   showGradesEditionRouterView,
+    //   fullName,
+    //   showEditStudentDataPanel,
+    //   showEditStudentGradesPanel,
+    //   // ...gradesService(),
+    // };
   },
 });
 </script>

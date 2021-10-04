@@ -2,11 +2,11 @@ export type SignInData = {
     login: string,
     password: string
 }
-type SingleGrade = {
-    marks: number[],
-    weights: number[],
-    descriptions: string[],
-    dates: string[]
+export type SingleGrade = {
+    score: number,
+    weight: number,
+    description: string,
+    date: never
 }
 export type User = {
     id?: number,
@@ -17,7 +17,7 @@ export type User = {
 export interface State {
     isLogged: boolean,
     user: User,
-    newGrade: SingleGrade,
+    // newGrade: SingleGrade,
 }
 export interface Getters {
     fullNameGetters(student: string): string
@@ -27,6 +27,5 @@ export interface Mutations {
     setUser(state: State, payload: User): void
 }
 export interface Actions {
-    checkLogData(context: any, payload: Object): void,
-    fetchStudents(context: any): void,
+    checkLogData(context: any, payload: Object): void
 }

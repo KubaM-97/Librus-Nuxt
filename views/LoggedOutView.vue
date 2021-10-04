@@ -20,7 +20,7 @@
         <label for="password">
           {{ $t("password")
           }}<span class="signInPanelTooltip"
-            >({{ this.$t("pls_type_tip") }}: Password1)</span
+            >({{ $t("pls_type_tip") }}: Password1)</span
           >
         </label>
 

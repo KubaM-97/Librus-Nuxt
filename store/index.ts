@@ -4,7 +4,7 @@ import { SignInData, User, State, Getters, Mutations, Actions } from '@/store/mo
 import { Context } from '@nuxt/types'
 import axios from 'axios';
 import { Commit } from 'vuex'; 
-type RootState = ReturnType<typeof state>
+// type RootState = ReturnType<typeof state>
 export const state = () => ({
   isLogged: true,
   user: {
@@ -13,12 +13,12 @@ export const state = () => ({
     group: ''
   },
   newGrade:{
-      marks: [],
-      weights: [],
-      descriptions: [],
-      dates: []
+      score: [],
+      weight: [],
+      description: [],
+      date: []
   },
-}) as State
+})
 
 
 export const getters = {
@@ -35,9 +35,6 @@ export const mutations = mutationTree(state, {
   setUser(state: State, payload: User): void {
     state.user = payload;
   },
-  setStudentsGroup(state: State, payload: User): void {
-    state.user = payload;
-  }
 })
 
 export const actions = actionTree(
@@ -47,15 +44,11 @@ export const actions = actionTree(
       await axios.post('/api/users/', {
         login: payload.login, 
         password: payload.password
-      }).then(response => commit("setUser", response.data))
+      }).then(response => {
+        commit("setUser", response.data);
+        commit("toggleLog");
+      })
     },
-
-    async fetchStudents({commit, state}: any): Promise<void> {
-      console.log('dispatch');
-      await axios.post("/api/students/", {
-        group: state.user.group
-      }).then((response)=> commit("setStudentsGroup", response.data.students))
-    }
   }
 )
 

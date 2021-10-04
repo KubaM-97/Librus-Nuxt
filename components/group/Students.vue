@@ -8,74 +8,44 @@
         <th>{{ $t('grade_avg') }}:</th>
         <th>{{ $t('at_risks') }}:</th>
       </thead>
-      
-            <!-- query: { student: { `${student.lastName}` } }, -->
       <tbody>
-        <nuxt-link
-          v-for="(student, index) in students"
-          :key="student.id"
+        <!-- students przekierowanie na group -->
+        <NuxtLink  
+        v-for="(student, index) in students"
+          :key="student._id"
+          tag="tr"
           :to="{
-            path: '/group/student',
-            query: { student: `${student.lastName} ${student.firstName}` }, 
-            params: {
-              id: student.id,
-
-              lastName: student.lastName,
-              firstName: student.firstName,
-
-              marks: student.marks,
-              weights: student.weights,
-              descriptions: student.descriptions,
-              dates: student.dates,
-
-              pesel: student.pesel,
-
-              streetName: student.street.name,
-              streetNr: student.street.nr,
-              streetFlat: student.street.flat,
-              streetPostcode: student.street.postcode,
-              streetCity: student.street.city,
-
-              phone: student.phone,
-              email: student.email,
-
-              motherFirstName: student.mother.firstName,
-              motherLastName: student.mother.lastName,
-              motherPhone: student.mother.phone,
-              motherEmail: student.mother.email,
-
-              fatherFirstName: student.father.firstName,
-              fatherLastName: student.father.lastName,
-              fatherPhone: student.father.phone,
-              fatherEmail: student.father.email,
-            },
-          }"
-        >
-          <tr @click="navigate" @keypress.enter="navigate" role="link">
-            <td>{{ index + 1 }}.</td>
+            path: `/group/student/${student.lastName} ${student.firstName}`,
+            params: { xxx: 'ddddddddddd' },
+          }">
+          <td>{{ index + 1 }}.</td>
             <td>
               {{ student.lastName.toUpperCase() }} {{ student.firstName }}
             </td>
             <td>
-              <span
-                class="grades"
-                v-html="gradeWeightColor(student.marks, student.weights)"
-              >
+              <div class="gradeWeightColor" :class="gradeColor(grade.weight)" 
+              v-for="(grade, index) in student.grades" :key="`grade-${index}`"
+              @mouseenter="showGradeDetails($event, grade)" @mouseleave="hideGradeDetails($event)">
+                {{ grade.score }}
+              </div>
+            </td>
+            <td> {{ calculateAvgGrade(student.grades) }} </td>
+            <td>
+              <span v-if="calculateAvgGrade(student.grades) < 2" class="fire">
+                  {{ $t('at_risk').toUpperCase() }}
               </span>
             </td>
-            <td>{{ avg(student.marks, student.weights) }}</td>
-            <td v-html="threatness(avg(student.marks, student.weights))"></td>
-          </tr>
-        </nuxt-link>
+        </NuxtLink>
+        
       </tbody>
     </table>
   </div>
 </template>
 
 <script>
-import { defineComponent, computed, ref, useContext, useFetch, onMounted } from "@nuxtjs/composition-api";
+import { defineComponent } from "@nuxtjs/composition-api";
 
-// import gradesService from "@/assets/mixins/gradesMixins.js";
+import gradesService from "~/assets/mixins/gradesMixins.ts";
 export default defineComponent({
   name: "Students",
   props: {
@@ -85,24 +55,24 @@ export default defineComponent({
       default: () => [],
     }
   },
-  setup(props) {
-    console.log(props);
-    function addToolTips(){
-     for (let i = 0; i < props.students.value.length; i++) {
-        gradesService().showTooltip(
-          this.$refs.tableStudents.querySelectorAll("tr")[i],
-          this.props.students.value[i]
-        );
+  setup(){
+    function gradeColor(weight) {
+      switch (weight) {
+        case 1:
+          return 'gradeWeightGreen'
+        case 2:
+          return 'gradeWeightYellow'
+        case 3:
+          return 'gradeWeightRed'
+        default:
+          return ''
       }
     }
-    onMounted(()=>{
-      addToolTips();
-    })
     return {
-
+      gradeColor
     }
   },
-  // mixins: [gradesService],
+  mixins: [gradesService],
 });
 </script>
 
