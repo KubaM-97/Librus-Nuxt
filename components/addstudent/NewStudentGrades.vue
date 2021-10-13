@@ -1,0 +1,79 @@
+<template>
+    <div class="addStudentPanelGrades">
+            <div class="addStudentPanelGradesTitle">
+              <span class="addStudentGradeSubpanelTitle">Dotychczasowe oceny:</span>
+            </div>
+              <Grade :index="n-1"  @remove="handleRemove"
+              class="addStudentPanelGradesContent"
+              v-for="n in gradesLength"
+              :key="n" />
+
+            <div class="showAnotherGrade">
+              <button name="moreGradesAddStudent" @click="gradesLength++">
+                +
+              </button>
+            </div>
+          </div>
+</template>
+
+<script>
+import { defineComponent, ref } from '@nuxtjs/composition-api'
+
+import Grade from '@/components/Grade.vue'
+export default defineComponent({
+    name: 'NewStudentGrades',
+    components: {
+        Grade,
+    },
+    props:{
+      grades: {
+        type: Object,
+        required: false
+      }
+    },
+    setup(props){
+      const gradesLength = ref(1)
+      const a = ref('')
+      function handleRemove(index){
+        props.grades.splice(index, 1)
+      }
+      return {
+        gradesLength,
+        handleRemove,
+      }
+    }
+})
+</script>
+
+<style>
+.addStudentPanelGrades {
+  position: relative;
+}
+.addStudentPanelGradesTitle {
+  padding-top: 10px;
+  margin-bottom: 50px;
+  font-size: 11px;
+}
+.addStudentPanelGradesContent {
+  width: 90%;
+}
+.showAnotherGrade {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+}
+@media (max-width: 768px) {
+  .addStudentPanelGradesTitle {
+    padding-top: 70px;
+  }
+  .showAnotherGrade {
+    top: 35px;
+    right: 10px;
+  }
+  .showAnotherGrade button {
+    font-size: 19px;
+    padding: 1px 9px;
+    font-weight: 300;
+  }
+  }
+</style>

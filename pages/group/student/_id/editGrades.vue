@@ -4,7 +4,7 @@
    <div class="container">
      <div class="row">
        <div class="col-12 col-md-11">
-         <div v-for="k in ourStudent.marks.length" :key="k">
+         <div v-for="k in student.grades" :key="k">
            <div class="addStudentPanelGradesContentSingle">
              <div class="container gainedGrades">
                <div class="row">
@@ -13,7 +13,7 @@
                      <div class="addStudentPanelGradesContentSingleGrade">
                        <label for="marks">{{ $t('grade_score') }}:</label>
                        <div class="select">
-                         <select id="marks" v-model.number="grades.marks[k-1]" @change="changeGrade(k-1, 'marks')">
+                         <select id="marks" v-model.number="grades.score[k-1]" @change="changeGrade(k-1, 'marks')">
                              <option value="1">1</option>
                              <option value="2">2</option>
                              <option value="3">3</option>
@@ -59,7 +59,7 @@
 
       <div class="col-12 col-md-11" v-for="(n, index) in gradesLength" :key="n">
 
-          <grade-component :index="index+ourStudent.marks.length" :gradesLength="gradesLength" @letMeSave="letMeSave"></grade-component>
+          <Grade :index="index+ourStudent.marks.length" :gradesLength="gradesLength" @letMeSave="letMeSave" />
 
       </div>
 
@@ -69,133 +69,145 @@
      </div>
      <div class="row">
        <div class="studentPanelSummary">
-         <table class="summary">
 
-           <tr>
-               <td>
-                 <span>{{$route.params.lastName.toUpperCase()}} {{$route.params.firstName}}</span>
-               </td>
-
-               <td ref="allnewGrades">
-                   <span class="grades" v-html="gradeWeightColor(grades.marks, grades.weights)">
-
-                   </span>
-               </td>
-               <td>
-                   <span>
-                     {{avg(grades.marks, grades.weights)}}
-                   </span>
-               </td>
-
-               <td>
-                 <span v-html="threatness(avg(grades.marks, grades.weights))">
-
-                 </span>
-               </td>
-           </tr>
-         </table>
+          <table class="summary">
+            <thead>
+              <th>{{ $t("students_first_and_lastname") }}</th>
+              <th>{{ $t("grades") }}:</th>
+              <th>{{ $t("avg") }}:</th>
+              <th>{{ $t("at_risk") }}:</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
+                <td  class="gradeWeightColor"
+                    :class="gradeColor(grade.weight)"
+                    v-for="(grade, index) in student.grades"
+                    :key="`grade-${index}`"
+                    @mouseenter="showGradeDetails($event, grade)"
+                    @mouseleave="hideGradeDetails($event)">
+                    {{ grade.score }}
+                </td>
+                <td>{{ calculateAvgGrade(student.grades) }}</td>
+                <td>
+                  <span v-if="calculateAvgGrade(student.grades) < 2" class="fire">
+                    {{ $t("at_risk").toUpperCase() }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+         
        </div>
-     </div>
+     <!-- </div>
      
      <button name="possibleSaveGrades" v-if="possibleSave" @click="saveChanges(grades)" class="btn btn-success btn-lg save">{{ $t('save_changes') }}</button>
      <button name="impossibleSaveGrades" v-else class="btn btn-success btn-lg save" disabled>{{ $t('save_changes') }}</button>
-   </div>
-   <button name="closeTheGradesPanel" @click="closeThePanel()"><img class="closeThePanel" src="../assets/images/eXit.png"/></button>
+   </div> -->
+   <!-- <button name="closeTheGradesPanel" @click="closeThePanel()"><img class="closeThePanel" src="../assets/images/eXit.png"/></button> -->
  </div>
 </template>
 
 <script>
 // import dataService from "../assets/mixins/dataMixins.js"
 // import gradesService from "../assets/mixins/gradesMixins.js"
-import Grade from "./Grade.vue"
-import{ ref, reactive, computed, onMounted, onUpdated, onUnmounted } from "vue";
-import{ useStore } from "vuex";
-import{ useRoute, useRouter } from "vue-router";
+import Grade from "@/components/Grade.vue"
+import{ useRoute, useRouter, useStore, ref, reactive, computed, onMounted, onUpdated, onUnmounted, useContext, useFetch  } from "@nuxtjs/composition-api";
 export default {
  name:"EditGrades",
  components: {
-   "grade-component": Grade
+   Grade
  },
  setup(_, { emit }){
   const store = useStore()
   
-  const route = useRoute()
-  const router = useRouter()
-  const editStudentGrades = ref(null)
+    const id = route.value.params.id;
+    const student = ref("");
+    const { $http } = useContext();
+
+    useFetch(async () => {
+      student.value = await $http.$get(`api/students/${id}`);
+    });
+  return {
+    student
+  }
+  // const route = useRoute()
+  // const router = useRouter()
+  // const editStudentGrades = ref(null)
  
-  const ourStudent = reactive({
-    marks: [...route.params.marks].map(el => parseInt(el)),
-    weights: [...route.params.weights].map(el => parseInt(el)),
-    descriptions: [...route.params.descriptions],
-    dates: [...route.params.dates],
-  });
-  const characters = ref(30);
-  const gradesLength = ref(0);
-  const possibleSave = ref(true);
-  const grades = computed(() => store.state.newGrades ).value;
+  // const ourStudent = reactive({
+  //   marks: [...route.params.marks].map(el => parseInt(el)),
+  //   weights: [...route.params.weights].map(el => parseInt(el)),
+  //   descriptions: [...route.params.descriptions],
+  //   dates: [...route.params.dates],
+  // });
+  // const characters = ref(30);
+  // const gradesLength = ref(0);
+  // const possibleSave = ref(true);
+  // const grades = computed(() => store.state.newGrades ).value;
   
-  route.params.marks = route.params.marks.map(el => parseInt(el));
-  route.params.weights = route.params.weights.map(el => parseInt(el));
-  for(const gradeProperty in grades){
-    grades[gradeProperty] = [...route.params[gradeProperty]]
-  }
-  function changeGrade(index){
-    //  grades.dates[index] = gradesService().whatsTheDatePlease();
-     possibleSave.value = true;
-   }
-  function letMeSave(){
-    possibleSave.value = true
-  }
-  function removeGrade(index){
-    // here there are vuex and this component stud
-    const sourcesArray = [grades, ourStudent];
-    for(let i=0; i<sourcesArray.length; i++){
-      for(const category in sourcesArray[i]){
-        sourcesArray[i][category].splice(index,1)
-      }
-    }
-    possibleSave.value = true
-  }
-   
-  function closeThePanel(){
-    router.push({name: "Student", params: route.params})
-    emit("update:showGradesEditionRouterView", false);
-  }
- 
-  onMounted(()=>{
-    // gradesService().showTooltip(editStudentGrades.value, grades);
-  })
-  onUpdated(()=>{
-  //  gradesService().showTooltip(editStudentGrades.value, grades);
-  //  for(let i=0; i<grades.marks.length; i++){
-  //    if( ((grades.marks[i]!=="") && (grades.weights[i]==="")) || ((grades.marks[i]==="") && (grades.weights[i]!==""))){
-  //      possibleSave.value = false;
-  //    }
+  // route.params.marks = route.params.marks.map(el => parseInt(el));
+  // route.params.weights = route.params.weights.map(el => parseInt(el));
+  // for(const gradeProperty in grades){
+  //   grades[gradeProperty] = [...route.params[gradeProperty]]
+  // }
+  // function changeGrade(index){
+  //   //  grades.dates[index] = gradesService().whatsTheDatePlease();
+  //    possibleSave.value = true;
   //  }
-  })
+  // function letMeSave(){
+  //   possibleSave.value = true
+  // }
+  // function removeGrade(index){
+  //   // here there are vuex and this component stud
+  //   const sourcesArray = [grades, ourStudent];
+  //   for(let i=0; i<sourcesArray.length; i++){
+  //     for(const category in sourcesArray[i]){
+  //       sourcesArray[i][category].splice(index,1)
+  //     }
+  //   }
+  //   possibleSave.value = true
+  // }
+   
+  // function closeThePanel(){
+  //   router.push({name: "Student", params: route.params})
+  //   emit("update:showGradesEditionRouterView", false);
+  // }
+ 
+  // onMounted(()=>{
+  //   // gradesService().showTooltip(editStudentGrades.value, grades);
+  // })
+  // onUpdated(()=>{
+  // //  gradesService().showTooltip(editStudentGrades.value, grades);
+  // //  for(let i=0; i<grades.marks.length; i++){
+  // //    if( ((grades.marks[i]!=="") && (grades.weights[i]==="")) || ((grades.marks[i]==="") && (grades.weights[i]!==""))){
+  // //      possibleSave.value = false;
+  // //    }
+  // //  }
+  // })
   
-  onUnmounted(()=>{
-    store.state.newGrades.marks = [];
-    store.state.newGrades.weights = [];
-    store.state.newGrades.descriptions = [];
-    store.state.newGrades.dates = [];
-  })
-  return{
-    params: route.params,
-    store,
-    grades,
-    editStudentGrades,
-    ourStudent,
-    characters,
-    gradesLength,
-    changeGrade,
-    possibleSave,
-    letMeSave,
-    removeGrade,
-    closeThePanel,
-    // ...dataService(),
-    // ...gradesService()
-  }
+  // onUnmounted(()=>{
+  //   store.state.newGrades.marks = [];
+  //   store.state.newGrades.weights = [];
+  //   store.state.newGrades.descriptions = [];
+  //   store.state.newGrades.dates = [];
+  // })
+  // return{
+  //   params: route.params,
+  //   store,
+  //   grades,
+  //   editStudentGrades,
+  //   ourStudent,
+  //   characters,
+  //   gradesLength,
+  //   changeGrade,
+  //   possibleSave,
+  //   letMeSave,
+  //   removeGrade,
+  //   closeThePanel,
+  //   // ...dataService(),
+  //   // ...gradesService()
+  // }
  }
 }
 </script>

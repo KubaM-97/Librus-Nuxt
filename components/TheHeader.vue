@@ -22,24 +22,27 @@
     </header>
 
     <nav>
-      <router-link :to="{ name: 'FullClass' }">
+      <NuxtLink to="/">
         <button active-class="active" class="btn btn-primary btn-lg">
           {{ $t('class') }}
         </button>
-      </router-link>
+      </NuxtLink>
 
-      <router-link :to="{ name: 'AddStudent' }">
+      <NuxtLink to="/addStudent">
         <button active-class="active" class="btn btn-primary btn-lg">
           {{ $t('add_student') }}
         </button>
-      </router-link>
+      </NuxtLink>
 
-      <button
-        class="btn btn-primary btn-lg with-logout-icon"
+      <NuxtLink 
+        to="/loggedOut"
       >
+      <button class="btn btn-primary btn-lg with-logout-icon" >
+
         <img src="@/assets/images/logout.png" alt="logout icon" height="20" />
         {{ $t('sign_out') }}
       </button>
+      </NuxtLink>
     </nav>
   </header>
 </template>

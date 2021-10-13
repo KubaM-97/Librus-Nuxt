@@ -1,5 +1,8 @@
 <template>
-  <Nuxt />
+  <div>
+    <TheHeader />
+    <Nuxt />
+  </div>
 </template>
 <script>
 

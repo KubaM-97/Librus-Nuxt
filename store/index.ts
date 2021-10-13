@@ -1,4 +1,4 @@
-import { getAccessorType, mutationTree, actionTree } from 'typed-vuex'
+import { getAccessorType, getterTree, mutationTree, actionTree } from 'typed-vuex'
 
 import { SignInData, User, State, Getters, Mutations, Actions } from '@/store/models/store.models';
 import { Context } from '@nuxt/types'
@@ -12,31 +12,35 @@ export const state = () => ({
     firstName: '',
     group: ''
   },
-  newGrade:{
-      score: [],
-      weight: [],
-      description: [],
-      date: []
-  },
+  student: {
+    firstname: '',
+    lastname: '',
+    grades: [],
+  }
 })
 
+type RootState = ReturnType<typeof state>
 
-export const getters = {
-  fullNameGetters: (student: any) => `${student.lastName.toUpperCase()} ${student.firstName}`
-}
+export const getters = getterTree(state, {
+  // email: (state: RootState) => state.email,
+
+  // fullNameGetters: (student: any) => `${student.lastName.toUpperCase()} ${student.firstName}`
+})
 
 export const mutations = mutationTree(state, {
-  setEmail(){
-    console.log('dddddddd');
-  },
   toggleLog(state: State): void {
     state.isLogged = !state.isLogged;
   },
   setUser(state: State, payload: User): void {
     state.user = payload;
   },
+  updateStudent(state: State, payload: any) :void {
+    state.student[payload.property] = payload.value;
+  },
+  removeGrade(state: State, payload: any) :void {
+    state.student.grades.splice(payload, 1)
+  },
 })
-
 export const actions = actionTree(
   { state },
   {

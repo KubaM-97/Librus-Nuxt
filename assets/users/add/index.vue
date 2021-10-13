@@ -39,7 +39,7 @@ export default {
     async add () {
       this.error = null
       this.message = null;
-      console.log(this.error, this.message);
+      // console.log(this.error, this.message);
       try {
         let { data } = await axios.post('/api/user/', {
           name: this.name,

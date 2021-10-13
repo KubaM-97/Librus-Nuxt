@@ -22,11 +22,14 @@ export default {
   
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '@/assets/css/main.css',
+    '@/assets/css/main.scss',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/bootstrap.js',
+    // '~/plugins/toast.js',
+    '~/plugins/vuelidate.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -42,6 +45,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    'bootstrap-vue/nuxt',
     '@nuxt/typescript-build',
     '@nuxtjs/toast',
     ['@nuxtjs/i18n', {
@@ -61,6 +65,34 @@ export default {
     }],
     '@nuxt/http'
   ],
+  toast: {
+    position: 'top-center',
+    register: [ // Register custom toasts
+      {
+        name: 'my-error',
+        message: 'Oops...Something went wrong',
+        options: {
+          type: 'error'
+        }
+      }
+    ]
+},
+   // specify module rules for css and scss
+   module: {
+    rules: [
+      {
+        test: /\.s[ac]ss$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+    ],
+  },
+  
+  // use these settings to use custom css
+  bootstrapVue: {
+    bootstrapCSS: false,
+    icons: true,
+  },
+
   /*
   ** Server Middleware
   */

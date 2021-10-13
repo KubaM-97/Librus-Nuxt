@@ -17,7 +17,7 @@ export type User = {
 export interface State {
     isLogged: boolean,
     user: User,
-    // newGrade: SingleGrade,
+    student: any,
 }
 export interface Getters {
     fullNameGetters(student: string): string

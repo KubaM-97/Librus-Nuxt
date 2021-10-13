@@ -9,14 +9,17 @@
         <th>{{ $t('at_risks') }}:</th>
       </thead>
       <tbody>
+        <!-- 
+         custom v-slot="{ navigate }"
+         @click="navigate" @keypress.enter="navigate" role="link" -->
         <!-- students przekierowanie na group -->
         <NuxtLink  
         v-for="(student, index) in students"
           :key="student._id"
           tag="tr"
           :to="{
-            path: `/group/student/${student.lastName} ${student.firstName}`,
-            params: { xxx: 'ddddddddddd' },
+            name: 'group-student-id___pl',
+            params: { id: student._id },
           }">
           <td>{{ index + 1 }}.</td>
             <td>
@@ -45,7 +48,7 @@
 <script>
 import { defineComponent } from "@nuxtjs/composition-api";
 
-import gradesService from "~/assets/mixins/gradesMixins.ts";
+import gradesService from "@/assets/mixins/gradesMixins.ts";
 export default defineComponent({
   name: "Students",
   props: {
@@ -53,23 +56,6 @@ export default defineComponent({
       type: Array,
       required: false,
       default: () => [],
-    }
-  },
-  setup(){
-    function gradeColor(weight) {
-      switch (weight) {
-        case 1:
-          return 'gradeWeightGreen'
-        case 2:
-          return 'gradeWeightYellow'
-        case 3:
-          return 'gradeWeightRed'
-        default:
-          return ''
-      }
-    }
-    return {
-      gradeColor
     }
   },
   mixins: [gradesService],

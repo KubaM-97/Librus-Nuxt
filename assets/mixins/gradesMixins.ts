@@ -2,9 +2,23 @@ import { defineComponent } from "@nuxtjs/composition-api";
 import { SingleGrade } from '@/store/models/store.models'
 
 export default defineComponent({
-  setup(_props, { root }){
+  setup(_props, {root}){
 
-  // draws grade detail info
+    //colors
+    function gradeColor(weight: number): string {
+      switch (weight) {
+        case 1:
+          return 'gradeWeightGreen'
+        case 2:
+          return 'gradeWeightYellow'
+        case 3:
+          return 'gradeWeightRed'
+        default:
+          return ''
+      }
+    }
+
+    // draws grade detail info
     function showGradeDetails(e: { target: HTMLDivElement; }, grade: SingleGrade){
 
       const canvas = document.createElement("CANVAS");
@@ -128,7 +142,8 @@ export default defineComponent({
     showGradeDetails,
     hideGradeDetails,
     calculateAvgGrade,
-    getCurrentDate
+    getCurrentDate,
+    gradeColor
   }
 }
 })

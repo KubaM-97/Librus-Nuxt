@@ -7,8 +7,11 @@
       @submit.prevent="signIn"
     >
       <div class="form-group">
-        <label for="login"> {{ $t("login") }}
-            <span class="signInPanelTooltip"> ({{ $t("pls_type_tip") }}: Login1) </span>
+        <label for="login">
+          {{ $t("login") }}
+          <span class="signInPanelTooltip">
+            ({{ $t("pls_type_tip") }}: Login1)
+          </span>
         </label>
 
         <input name="#" type="text" id="login" autocomplete="off" />
@@ -46,32 +49,27 @@ export default defineComponent({
   setup(_props, { root }) {
     const router = useRouter();
     async function signIn() {
-const usergroup = computed(()=>root.$accessor.user.group)
-      //  root.$accessor('fetchUser', { login, password });
+// console.log(this, root);
+      const usergroup = computed(() => root.$accessor.user.group);
       const signInPanel = this.$refs.signInPanel;
-this.$toast.show("Logging in...");
- this.$toast.show('xxxxxxxxxxx')
-        this.$toast.error('xxxxxxxxxxx')
-        this.$toast.info('xxxxxxxxxxx')
-        this.$toast.success('xxxxxxxxxxx')
-        //  this.$toast.clear()
+      this.$toasted.global.my_error('hello billo')
+
       //gets inserted login
       const login = signInPanel.querySelector("input[type=text]#login").value;
 
       //gets inserted password
-      const password = signInPanel.querySelector('input[type=password]#password').value;
+      const password = signInPanel.querySelector("input[type=password]#password").value;
 
       try {
-         this.$toast.show("Logging in...");
-        const response = await root.$accessor.checkLogData({login, password});
-        console.log(response, !!response, usergroup.value);
-
-        // if (response) {
-          router.push({
-            path: "/group",
-            query: { '': usergroup.value },
-          });
-        // }
+        // this.$toasted.global.my_error();
+        // this.$toast.my_error("Logging in...");
+        const response = await root.$accessor.checkLogData({ login, password });
+        if (response) {
+        router.push({
+          path: "/group",
+          query: { "": usergroup.value },
+        });
+        }
       } catch (error) {
         console.error("Error", error);
         console.error("Error", error.response);
@@ -95,16 +93,16 @@ this.$toast.show("Logging in...");
           }
         }
       } finally {
-       this.$toast.clear()
-       }
-        this.$toast.show('xxxxxxxxxxx')
-        this.$toast.error('xxxxxxxxxxx')
-        this.$toast.info('xxxxxxxxxxx')
-        this.$toast.success('xxxxxxxxxxx')
-        this.$toast.clear()
+        this.$toast.clear();
+      }
+      // this.$toast.show("xxxxxxxxxxx");
+      this.$toast.error("xxxxxxxxxxx");
+      this.$toast.info("xxxxxxxxxxx");
+      this.$toast.success("xxxxxxxxxxx");
+      this.$toast.clear();
     }
     return {
-      signIn
+      signIn,
     };
   },
 });

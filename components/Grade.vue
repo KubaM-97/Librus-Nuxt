@@ -1,111 +1,109 @@
 <template>
-
-  <div class="addStudentPanelGradesContentSingle">
-
-       <div class="container">
-
-          <div class="row">
-
-            <div class="col-2 col-md-3">
-
-                <div class="addStudentPanelGradesContentSingleGrade">
-
-                  <!-- <label for="marks">{{ $t('mark') }}:</label> -->
-
-                  <div class="select">
-
-                    <select v-model.number="grade.mark" @change="addNewItem('mark')" id="mark">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                    </select>
-
-                  </div>
-
-              </div>
-
+  <div class="addStudentPanelGradesContentSingle" :ref="`grade_${index}`">
+    <div class="container">
+      <div class="row">
+        <div class="col-2 col-md-3">
+          <div class="addStudentPanelGradesContentSingleGrade">
+            <div class="select">
+              <label for="score">{{ $t("score") }}:</label>
+              <select v-model.number="grade.score">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </select>
             </div>
-
-            <div class="col-2 col-md-3">
-
-                <div class="addStudentPanelGradesContentSingleWeight">
-
-                  <label for="weight">{{ $t('weight') }}:</label>
-
-                  <div class="select">
-                      <select v-model.number="grade.weight" @change="addNewItem('weight')" id="weight">
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                      </select>
-                  </div>
-
-              </div>
-
-            </div>
-
-            <div class="col-7 col-md-5">
-
-                <div class="addStudentPanelGradesContentSingleDescription">
-
-                 <span class="descriptionCount">{{ $t('characters_left', { characters }) }}.</span>
-
-                 <label class="description">{{ $t('grade_description') }}:
-
-                     <input autocomplete="off" name="#" type="text" v-model="grade.description" @change="addNewItem('description')" class="description" maxlength="30">
-
-                 </label>
-
-             </div>
-
-            </div>
-
-            <div class="col-1">
-                <span @click="remove(index)" class="remove"><em>{{ $t('remove') }}</em></span>
-            </div>
-
           </div>
+        </div>
 
-       </div>
+        <div class="col-2 col-md-3">
+          <div class="addStudentPanelGradesContentSingleWeight">
+            <label for="weight">{{ $t("weight") }}:</label>
+
+            <div class="select">
+              <select v-model.number="grade.weight">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-7 col-md-5">
+          <div class="addStudentPanelGradesContentSingleDescription">
+            <span class="descriptionCount"
+              >{{ $t("characters_left_many", { characters }) }}.</span
+            >
+
+            <label class="description"
+              >{{ $t("grade_description") }}:
+
+              <input
+                autocomplete="off"
+                type="text"
+                v-model="grade.description"
+                class="description"
+                maxlength="30"
+              />
+            </label>
+          </div>
+        </div>
+
+        <div class="col-1">
+          <span @click="remove(index)" class="remove"
+            ><em>{{ $t("remove") }}</em></span
+          >
+        </div>
+      </div>
+    </div>
   </div>
-
 </template>
 
 <script>
-
-// import gradesService from "../assets/mixins/gradesMixins.js"
-
-import { defineComponent, ref, reactive, watch, onBeforeUpdate, useStore } from "@nuxtjs/composition-api";
+import {
+  defineComponent,
+  ref,
+  reactive,
+  watch,
+  onBeforeUpdate,
+  useStore,
+  computed,
+} from "@nuxtjs/composition-api";
+import gradesService from "@/assets/mixins/gradesMixins.ts";
 
 export default defineComponent({
   name: "Grade",
   props: {
-    index: Number
+    index: Number,
   },
-  emits: ["letMeSave"],
-  setup(props, {emit}){
+  emits: ["letMeSave", "update"],
+  mixins: [gradesService],
+  setup(props, { root }) {
+    const index = props.index;
 
-    const index = props.index
-
-    const store = useStore()
-    const gradesVuex = store.state.newGrades;
-    
+    const store = useStore();
     const characters = ref(30);
-
+    const grades = computed(() => root.$accessor.student.grades);
     const grade = reactive({
-      mark: "",
+      score: "",
       weight: "",
       description: "",
-      date: ""
-    })
-    
-    watch(() => [...grade.description], () => {
-        const inputGradeDescription = document.querySelectorAll("input.description")[index].value;
-        const descriptionCount = document.querySelectorAll("span.descriptionCount")[index];
-        const counter = (characters.value - (inputGradeDescription.length));
+      date: "",
+    });
+    watch(
+      () => [...grade.description],
+      () => {
+        const inputGradeDescription =
+          this.$refs[`grade_${index}`].querySelectorAll("input.description")[
+            index
+          ].value;
+        const descriptionCount = this.$refs[`grade_${index}`].querySelectorAll(
+          "span.descriptionCount"
+        )[index];
+        const counter = characters.value - inputGradeDescription.length;
         switch (counter) {
           case 2:
           case 3:
@@ -113,86 +111,68 @@ export default defineComponent({
           case 22:
           case 23:
           case 24:
-            descriptionCount.innerHTML = `Pozostały: ${counter} znaki.`;
+            descriptionCount.innerHTML = root.$t("characters_left_few", {
+              characters: counter,
+            });
             break;
           case 1:
-            descriptionCount.innerHTML = `Pozostał: ${counter} znak.`;
+            descriptionCount.innerHTML = root.$t("characters_left_one", {
+              characters: counter,
+            });
             break;
           default:
-            descriptionCount.innerHTML = `Pozostało: ${counter} znaków.`;
+            descriptionCount.innerHTML = root.$t("characters_left_many", {
+              characters: counter,
+            });
         }
-    })
+      }
+    );
 
     onBeforeUpdate(() => {
-      // grade.date = gradesService().whatsTheDatePlease();
-      addNewItem("date");
-    })
+      grade.date = gradesService.setup().getCurrentDate();
+      updateStudentGrade();
+    });
 
     //places a new mark, weight, description or date in appropriate place according to the provided index inside newGrades in Vuex
-    function addNewItem(gradeProperty){
-        
-        //e.g    for second component Grade.vue:   store.state.newGrades.grades[1] = 5                           store.state.newGrades.grades=[3,5]
-        //e.g    for second component Grade.vue:   store.state.newGrades.weights[1] = 5                          store.state.newGrades.weights=[3,5]
-        //e.g    for second component Grade.vue:   store.state.newGrades.descriptions[1] = "Praca domowa"        store.state.newGrades.descriptions=["Kartkówka", "Praca domowa"]
-        //e.g    for second component Grade.vue:   store.state.newGrades.dates[1] = "23.08.2020 14:00:00"        store.state.newGrades.dates=["21.08.2020 11:30:00", "23.08.2020 14:00:00"]
-
-        //       store.state.newGrades.marks[1] = grade[mark]
-        //       store.state.newGrades.weights[1] = grade[weight]
-        //       store.state.newGrades.descriptions[1] = grade[description]
-        //       store.state.newGrades.dates[1] = grade[date]
-
-        gradesVuex[gradeProperty+"s"][index]=grade[gradeProperty];
-
-        for(const gradeProperty in gradesVuex){
-
-          if(gradesVuex[gradeProperty][index] === undefined)    gradesVuex[gradeProperty][index]="";
-
-        }
-
-        emit('letMeSave')
-
+    function updateStudentGrade() {
+      const clonedGrade = [...grades.value];
+      clonedGrade[index] = { ...grade };
+      root.$accessor.updateStudent({ property: "grades", value: clonedGrade });
     }
 
     //clears newGrades object in Vuex
-    function remove(index){
-
-      for (const gradeProperty in gradesVuex) {
-          gradesVuex[gradeProperty][index] = "";
-      }
-    
-      document.querySelectorAll(".addStudentPanelGradesContentSingle")[index].style.display = "none";
-
+    function remove(index) {
+      root.$accessor.removeGrade(index);
+      const refEl = this.$refs[`grade_${index}`];
+      // console.log(refEl);
+      refEl.parentNode.removeChild(refEl);
     }
 
     return {
       store,
       characters,
+      updateStudentGrade,
       grade,
-      addNewItem,
-      remove
-    }
-  }
-
+      remove,
+      grades,
+    };
+  },
 });
-
 </script>
 
 <style scoped>
-
 .addStudentPanelGradesContentSingle {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
-
-.addStudentPanelGradesContentSingle .row>div{
+.addStudentPanelGradesContentSingle .row > div {
   display: grid;
   align-content: flex-end;
 }
 
-
-@media (max-width: 768px){
-    .addStudentPanelGradesContentSingle{
-        width: 100%;
-    }
+@media (max-width: 768px) {
+  .addStudentPanelGradesContentSingle {
+    width: 100%;
+  }
 }
 </style>

@@ -5,7 +5,9 @@ export default {
   grade_weight: 'Waga oceny',
   grade_description: 'Opis oceny',
   remove: 'Usuń',
-  characters_left: `Pozostało {{characters}} znaków`,
+  characters_left_many: `Pozostało {characters} znaków`,
+  characters_left_one: `Pozostał: {characters} znak`,
+  characters_left_few: `Pozostały {characters} znaki`,
   edit_grade: 'Edycja ocen',
   edit_remove_grade: 'Edytuj / Dodaj ocenę',
 
