@@ -8,6 +8,6 @@ export default {
     name: 'Group',
     components:{
         GroupView
-    }
+    },
 }
 </script>

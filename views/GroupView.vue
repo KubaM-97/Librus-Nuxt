@@ -15,7 +15,7 @@
 import TableHeader from "@/components/group/TableHeader.vue";
 import Students from "@/components/group/Students.vue";
 
-import { defineComponent, computed, ref, useContext, useFetch } from "@nuxtjs/composition-api";
+import { defineComponent, useRoute, ref, useContext, useFetch } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   name: "GroupView",
@@ -23,8 +23,9 @@ export default defineComponent({
     TableHeader,
     Students,
   },
-  setup(_, { root }) {
-    const group = computed(() => root.$accessor.user.group);
+  setup() {
+    const route = useRoute()
+    const groupId = route.value.params.groupId;
     const students = ref([]);
 
     const { $http } = useContext();
@@ -32,7 +33,7 @@ export default defineComponent({
     useFetch(async () => {
 
       students.value = await $http.$post(`api/students/`, 
-        { group: group.value || '3B' }
+        { group: groupId }
       )
     })
 

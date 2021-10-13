@@ -10,7 +10,7 @@
 <script>
 import DialogActions from "@/components/addstudent/DialogActions";
 import ClosePrompt from "@/components/addstudent/ClosePrompt";
-import StudentTable from "@/components/addstudent/StudentTable";
+import StudentTable from "@/components/global/StudentTable";
 import PersonalStudentData from "@/components/addstudent/PersonalStudentData";
 import {
   defineComponent,

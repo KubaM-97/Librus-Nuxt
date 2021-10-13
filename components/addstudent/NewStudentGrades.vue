@@ -19,7 +19,7 @@
 <script>
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 
-import Grade from '@/components/Grade.vue'
+import Grade from '@/components/global/Grade.vue'
 export default defineComponent({
     name: 'NewStudentGrades',
     components: {
@@ -33,7 +33,6 @@ export default defineComponent({
     },
     setup(props){
       const gradesLength = ref(1)
-      const a = ref('')
       function handleRemove(index){
         props.grades.splice(index, 1)
       }

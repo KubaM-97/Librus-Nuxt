@@ -9,16 +9,12 @@
         <th>{{ $t('at_risks') }}:</th>
       </thead>
       <tbody>
-        <!-- 
-         custom v-slot="{ navigate }"
-         @click="navigate" @keypress.enter="navigate" role="link" -->
-        <!-- students przekierowanie na group -->
         <NuxtLink  
-        v-for="(student, index) in students"
+          v-for="(student, index) in students"
           :key="student._id"
           tag="tr"
           :to="{
-            name: 'group-student-id___pl',
+            path: `/group/${$route.params.groupId}/student/${student._id }`,
             params: { id: student._id },
           }">
           <td>{{ index + 1 }}.</td>

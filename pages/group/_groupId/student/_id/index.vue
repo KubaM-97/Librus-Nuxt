@@ -78,7 +78,7 @@
       <div>
         <NuxtLink
            :to="{
-            path: `/group/student/${id}/editGrades`,
+            path: `/group/student/${studentId}/editData`,
             params: { student },
           }"
         >
@@ -86,7 +86,7 @@
         </NuxtLink>
         <NuxtLink
            :to="{
-            path: `/group/student/${id}/editGrades`,
+            path: `/group/student/${studentId}/editGrades`,
             params: { student },
           }"
         >
@@ -115,16 +115,16 @@ export default defineComponent({
 
   setup() {
     const route = useRoute();
-    const id = route.value.params.id;
+    const studentId = route.value.params.id;
     const student = ref("");
     const { $http } = useContext();
 
     useFetch(async () => {
-      student.value = await $http.$get(`api/students/${id}`);
+      student.value = await $http.$get(`api/students/${studentId}`);
     });
 
     return {
-      id,
+      studentId,
       student,
     };
   },

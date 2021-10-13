@@ -34,6 +34,9 @@ export const mutations = mutationTree(state, {
   setUser(state: State, payload: User): void {
     state.user = payload;
   },
+  setStudent(state: State, payload: User): void {
+    state.student = payload;
+  },
   updateStudent(state: State, payload: any) :void {
     state.student[payload.property] = payload.value;
   },

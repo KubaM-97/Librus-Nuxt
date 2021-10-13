@@ -77,22 +77,34 @@ import gradesService from "@/assets/mixins/gradesMixins.ts";
 export default defineComponent({
   name: "Grade",
   props: {
-    index: Number,
+    index: {
+      type: Number,
+      required: true
+    },
+    characters: {
+      type: Number,
+      required: false,
+      default: 30
+    },
+    grade: {
+      type: Object,
+      required: false,
+      default: {
+        score: "",
+        weight: "",
+        description: "",
+        date: "",
+      }
+    }
   },
-  emits: ["letMeSave", "update"],
   mixins: [gradesService],
   setup(props, { root }) {
     const index = props.index;
 
     const store = useStore();
-    const characters = ref(30);
+    const characters = props.characters;
     const grades = computed(() => root.$accessor.student.grades);
-    const grade = reactive({
-      score: "",
-      weight: "",
-      description: "",
-      date: "",
-    });
+    const grade = props.grade
     watch(
       () => [...grade.description],
       () => {
@@ -103,7 +115,7 @@ export default defineComponent({
         const descriptionCount = this.$refs[`grade_${index}`].querySelectorAll(
           "span.descriptionCount"
         )[index];
-        const counter = characters.value - inputGradeDescription.length;
+        const counter = characters - inputGradeDescription.length;
         switch (counter) {
           case 2:
           case 3:
@@ -150,9 +162,7 @@ export default defineComponent({
 
     return {
       store,
-      characters,
       updateStudentGrade,
-      grade,
       remove,
       grades,
     };

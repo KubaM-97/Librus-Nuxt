@@ -4,12 +4,13 @@
       <table class="summary">
         <tbody>
         <tr>
-          <td>{{ student.lastname.toUpperCase() }} {{ student.firstname }}</td>
+          <td v-if="orderNo"></td>
+          <td>{{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
           <td>
             <div
               class="gradeWeightColor"
               :class="gradeColor(grade.weight)"
-              v-for="(grade, index) in grades"
+              v-for="(grade, index) in student.grades"
               :key="`new_student_grade-${index}`"
               @mouseenter="showGradeDetails($event, grade)"
               @mouseleave="hideGradeDetails($event)"
@@ -17,9 +18,9 @@
               {{ grade.score }}
             </div>
           </td>
-          <td>{{ calculateAvgGrade(grades) || '' }}</td>
+          <td>{{ calculateAvgGrade(student.grades) || '' }}</td>
           <td>
-            <span v-if="calculateAvgGrade(grades) < 2" class="fire">
+            <span v-if="calculateAvgGrade(student.grades) < 2" class="fire">
               {{ $t("at_risk").toUpperCase() }}
             </span>
           </td>
@@ -38,41 +39,18 @@ import gradesService from "@/assets/mixins/gradesMixins.ts";
 export default defineComponent({
   name: "StudentTable",
   props: {
-    fullname: {
-        type: String,
+    student: {
+        type: Object,
         required: false,
-        default: ''
+        default: () => {}
     },
-    // grades: {
-    //     type: [],
-    //     required: false,
-    //     default: () => []
-    // },
+    orderNo: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
   },
   mixins: [gradesService],
-  setup(props, {root}) {
-    const store = useStore()
-    const student = computed(() => root.$accessor.student)
-    const grades = computed(() => root.$accessor.student.grades)
-
-     function gradeColor(weight) {
-      switch (weight) {
-        case 1:
-          return 'gradeWeightGreen'
-        case 2:
-          return 'gradeWeightYellow'
-        case 3:
-          return 'gradeWeightRed'
-        default:
-          return ''
-      }
-    }
-    return {
-      gradeColor,
-      grades,
-      student,
-    };
-  },
 })
 </script>
 <style>
