@@ -46,8 +46,8 @@ export default defineComponent({
       ctx.fillStyle = "black";
       ctx.font = "700 12px Arial";
 
-      ctx.fillText(`${root.$i18n.messages.pl.grade_score}: ${grade.score}`, 40, 40);
-      ctx.fillText(`${root.$i18n.messages.pl.grade_weight}: ${grade.weight} `, 40, 60);
+      ctx.fillText(`${root.$t('grade_score')}: ${grade.score}`, 40, 40);
+      ctx.fillText(`${root.$t('grade_weight')}: ${grade.weight} `, 40, 60);
 
       if ( !grade.description || grade.description === `${root.$t('no_description')}`) {
         ctx.fillText(`${root.$t('no_description')}:`, 40, 80);

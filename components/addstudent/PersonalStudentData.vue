@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-4">
-          <PersonalStudentDataForm />
+          <!-- <PersonalStudentDataForm /> -->
         </div>
         <div class="col-lg-8">
           <NewStudentGrades />

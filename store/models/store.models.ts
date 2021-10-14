@@ -1,3 +1,5 @@
+import { HostAddress } from "mongodb"
+
 export type SignInData = {
     login: string,
     password: string
@@ -18,6 +20,7 @@ export interface State {
     isLogged: boolean,
     user: User,
     student: any,
+    // student: Student,
 }
 export interface Getters {
     fullNameGetters(student: string): string
@@ -29,3 +32,30 @@ export interface Mutations {
 export interface Actions {
     checkLogData(context: any, payload: Object): void
 }
+
+type Parent = {
+    firstName: string,
+    lastName: string,
+    phone: number,
+    email: string,
+}
+type Address = {
+    name: string,
+    nr: number,
+    flat: number,
+    postcode: string,
+    city: string,
+}
+
+// export interface Student {
+//     _id?: Object,
+//     firstName: string,
+//     lastName: string,
+//     pesel: number,
+//     phone: number,
+//     email: string,
+//     grades: SingleGrade[],
+//     street: Address,
+//     mother: Parent,
+//     father: Parent,
+// }

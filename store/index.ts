@@ -1,6 +1,6 @@
 import { getAccessorType, getterTree, mutationTree, actionTree } from 'typed-vuex'
 
-import { SignInData, User, State, Getters, Mutations, Actions } from '@/store/models/store.models';
+import { SignInData, User, State, Getters, Mutations, Actions, Student } from '@/store/models/store.models';
 import { Context } from '@nuxt/types'
 import axios from 'axios';
 import { Commit } from 'vuex'; 
@@ -13,9 +13,31 @@ export const state = () => ({
     group: ''
   },
   student: {
-    firstname: '',
-    lastname: '',
+    firstName: '',
+    lastName: '',
+    pesel: null,
+    phone: null,
+    email: '',
     grades: [],
+    street: {
+      name: '',
+      nr: null,
+      flat: null,
+      postcode: '',
+      city: '',
+    },
+    mother: {
+      firstName: '',
+      lastName: '',
+      phone: null,
+      email: '',
+    },
+    father: {
+      firstName: '',
+      lastName: '',
+      phone: null,
+      email: '',
+    }
   }
 })
 
@@ -34,12 +56,12 @@ export const mutations = mutationTree(state, {
   setUser(state: State, payload: User): void {
     state.user = payload;
   },
-  setStudent(state: State, payload: User): void {
+  setStudent(state: State, payload: Student): void {
     state.student = payload;
   },
-  updateStudent(state: State, payload: any) :void {
-    state.student[payload.property] = payload.value;
-  },
+  // updateStudent(state: State, payload: { property}) :void {
+  //   state.student[payload.property] = payload.value;
+  // },
   removeGrade(state: State, payload: any) :void {
     state.student.grades.splice(payload, 1)
   },
@@ -47,13 +69,12 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state },
   {
-    async checkLogData({commit}: {commit: Commit}, payload: SignInData): Promise<void> {
+    // async checkLogData({commit}: {commit: Commit,}, payload: SignInData): Promise<void> {
+    async checkLogData( context, payload: SignInData): Promise<void> {
+      console.log(context);
       await axios.post('/api/users/', {
         login: payload.login, 
         password: payload.password
-      }).then(response => {
-        commit("setUser", response.data);
-        commit("toggleLog");
       })
     },
   }

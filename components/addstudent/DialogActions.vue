@@ -6,7 +6,7 @@
         class="btn btn-danger btn-lg"
         @click="$emit('cancel')"
     >
-        Anuluj
+        {{ $t('cancel') }}
     </button>
 
     <button
@@ -14,7 +14,7 @@
         class="btn btn-primary btn-lg"
         @click="$emit('submit')"
     >
-        Dodaj ucznia
+        {{ $t('add_student') }}
     </button>
     </div>
 </div>

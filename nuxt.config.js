@@ -66,16 +66,8 @@ export default {
     '@nuxt/http'
   ],
   toast: {
-    position: 'top-center',
-    register: [ // Register custom toasts
-      {
-        name: 'my-error',
-        message: 'Oops...Something went wrong',
-        options: {
-          type: 'error'
-        }
-      }
-    ]
+    position: 'bottom-left',
+    duration: 5000,
 },
    // specify module rules for css and scss
    module: {

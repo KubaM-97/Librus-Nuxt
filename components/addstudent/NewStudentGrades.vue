@@ -1,12 +1,13 @@
 <template>
     <div class="addStudentPanelGrades">
             <div class="addStudentPanelGradesTitle">
-              <span class="addStudentGradeSubpanelTitle">Dotychczasowe oceny:</span>
+              <span class="addStudentGradeSubpanelTitle">{{ $t('accumulated_grades') }}:</span>
             </div>
               <Grade :index="n-1"  @remove="handleRemove"
               class="addStudentPanelGradesContent"
               v-for="n in gradesLength"
-              :key="n" />
+              :key="n"
+              />
 
             <div class="showAnotherGrade">
               <button name="moreGradesAddStudent" @click="gradesLength++">

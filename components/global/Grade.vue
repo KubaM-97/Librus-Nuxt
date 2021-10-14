@@ -5,7 +5,7 @@
         <div class="col-2 col-md-3">
           <div class="addStudentPanelGradesContentSingleGrade">
             <div class="select">
-              <label for="score">{{ $t("score") }}:</label>
+              <label for="score">{{ $t("grade_score") }}:</label>
               <select v-model.number="grade.score">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -20,7 +20,7 @@
 
         <div class="col-2 col-md-3">
           <div class="addStudentPanelGradesContentSingleWeight">
-            <label for="weight">{{ $t("weight") }}:</label>
+            <label for="weight">{{ $t("grade_weight") }}:</label>
 
             <div class="select">
               <select v-model.number="grade.weight">
@@ -79,23 +79,25 @@ export default defineComponent({
   props: {
     index: {
       type: Number,
-      required: true
+      required: true,
     },
     characters: {
       type: Number,
       required: false,
-      default: 30
+      default: 30,
     },
     grade: {
       type: Object,
       required: false,
-      default: {
-        score: "",
-        weight: "",
-        description: "",
-        date: "",
-      }
-    }
+      default: () => {
+        return {
+          score: "",
+          weight: "",
+          description: "",
+          date: "",
+        };
+      },
+    },
   },
   mixins: [gradesService],
   setup(props, { root }) {
@@ -104,7 +106,7 @@ export default defineComponent({
     const store = useStore();
     const characters = props.characters;
     const grades = computed(() => root.$accessor.student.grades);
-    const grade = props.grade
+    const grade = props.grade;
     watch(
       () => [...grade.description],
       () => {

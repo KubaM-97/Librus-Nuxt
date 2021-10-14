@@ -14,7 +14,7 @@
           </span>
         </label>
 
-        <input name="#" type="text" id="login" autocomplete="off" />
+        <input name="#" type="text" v-model.trim="login" autocomplete="off" id="login" />
 
         <span class="errorLoginPassword"></span>
       </div>
@@ -27,7 +27,7 @@
           >
         </label>
 
-        <input name="#" type="password" id="password" />
+        <input name="#" type="password" v-model.trim="password" id="password" />
 
         <span class="errorLoginPassword"></span>
       </div>
@@ -42,66 +42,61 @@
 </template>
 
 <script>
-import { defineComponent, computed, useRouter } from "@nuxtjs/composition-api";
-
+import { defineComponent, ref, useRouter } from "@nuxtjs/composition-api";
+import axios from "axios";
 export default defineComponent({
   name: "LoggedOutView",
   setup(_props, { root }) {
     const router = useRouter();
+    const login = ref('');
+    const password = ref('');
     async function signIn() {
-// console.log(this, root);
-      const usergroup = computed(() => root.$accessor.user.group);
       const signInPanel = this.$refs.signInPanel;
-      this.$toasted.global.my_error('hello billo')
 
-      //gets inserted login
-      const login = signInPanel.querySelector("input[type=text]#login").value;
 
-      //gets inserted password
-      const password = signInPanel.querySelector("input[type=password]#password").value;
+      //VALIDATIONS
+      if(!(login.value && password.value)) {
+        // const errors = signInPanel.querySelectorAll(
+        //   "span.errorLoginPassword"
+        // );
 
+        // errors.map((error) => {
+        //   error.innerHTML = this.$t("login_and_password_must_match");
+        // });
+        return
+      }
       try {
-        // this.$toasted.global.my_error();
-        // this.$toast.my_error("Logging in...");
-        const response = await root.$accessor.checkLogData({ login, password });
-        if (response) {
-        router.push({
-          path: "/group",
-          query: { "": usergroup.value },
+        this.$toast.show(this.$t("logging_in_progress"));
+
+        // const response = await root.$accessor.checkLogData({ login, password });
+        const response = await axios.post("/api/users/", {
+          login: login.value,
+          password: password.value,
         });
-        }
+        this.$toast.clear();
+        this.$toast.success(this.$t("successed_logged"));
+        router.push({
+          path: `/group/${response.data.group}`,
+          params: { groupId: response.data.group },
+        });
       } catch (error) {
-        console.error("Error", error);
-        console.error("Error", error.response);
-        console.error("Error", error.response.data);
 
         switch (error) {
           case 404: {
-            this.$toast.error(this.$t("not_found_with_this_login"));
+            this.$toast.error(this.$t("not_found_user_with_this_login"));
           }
           case 500: {
             this.$toast.error(this.$t("server_error"));
           }
           default: {
-            const errors = signInPanel.querySelectorAll(
-              "span.errorLoginPassword"
-            );
-
-            errors.map((error) => {
-              error.innerHTML = this.$t("login_and_passw_must_match");
-            });
+            this.$toast.error(this.$t("alternative_log_error"));
           }
         }
-      } finally {
-        this.$toast.clear();
       }
-      // this.$toast.show("xxxxxxxxxxx");
-      this.$toast.error("xxxxxxxxxxx");
-      this.$toast.info("xxxxxxxxxxx");
-      this.$toast.success("xxxxxxxxxxx");
-      this.$toast.clear();
     }
     return {
+      login,
+      password,
       signIn,
     };
   },

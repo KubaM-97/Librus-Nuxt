@@ -1,12 +1,12 @@
 <template>
    <!-- <teleport to="body"> -->
       <div class="confirm" v-show="showPrompt">
-        <p>Na pewno? Dane zostaną utracone...</p>
+        <p>{{ $t('close_warning') }}</p>
         <button name="showConfirmQuit" @click="quit">
-          Wychodzę
+          {{ $t('close_quit') }}!
         </button>
         <button name="showConfirmStay" @click="stay">
-          Racja, zostaję!
+          {{ $t('close_stay') }}!
         </button>
       </div>
     <!-- </teleport> -->

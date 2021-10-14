@@ -55,11 +55,9 @@
 </template>
 
 <script>
-import dataService from "@/assets/mixins/dataMixins.ts";
 import { useRoute, ref, useContext, useFetch } from "@nuxtjs/composition-api";
 export default {
   name: "EditData",
-  mixins: [dataService],
   setup() {
     const route = useRoute();
     const id = route.value.params.id;

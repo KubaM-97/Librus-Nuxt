@@ -1,5 +1,6 @@
 <template>
   <div class="addStudentPanel">
+    {{student}}
     <PersonalStudentData @getNewStudentName="getNewStudentNameHandler" :student="student" />
     <StudentTable :student="student" />
     <!-- <DialogActions @cancel="handleCancel" @submit="handleSubmit" />
@@ -15,15 +16,9 @@ import PersonalStudentData from "@/components/addstudent/PersonalStudentData";
 import {
   defineComponent,
   ref,
-  reactive,
   useRouter,
-  useStore,
-  computed,
   onBeforeUnmount,
-  useContext
 } from "@nuxtjs/composition-api";
-import { beforeRouteLeave } from "vue-router";
-import axios from "axios";
 export default defineComponent({
   components: {
     DialogActions,
@@ -33,37 +28,8 @@ export default defineComponent({
   },
   setup(_, {root}) {
     const router = useRouter();
-     const store2 = useStore();
-     const student = computed(()=>store2.state.student)
-    // const student = ref({
-    //    id: "",
-    //   lastName: "",
-    //   firstName: "",
-    //   grades: [
-    //   ],
-    //   pesel: "",
-    //   street: {
-    //     name: "",
-    //     nr: "",
-    //     flat: "",
-    //     postcode: "",
-    //     city: "",
-    //   },
-    //   phone: "",
-    //   email: "",
-    //   mother: {
-    //     firstName: "",
-    //     lastName: "",
-    //     phone: "",
-    //     email: "",
-    //   },
-    //   father: {
-    //     firstName: "",
-    //     lastName: "",
-    //     phone: "",
-    //     email: "",
-    //   },
-    // });
+    const student = root.$accessor.student
+    console.log(student);
 
     const gradesLength = ref(1);
     const showPrompt = ref(false);
@@ -84,22 +50,22 @@ export default defineComponent({
       //     }
       //   });
     })
-      function handleSubmit() {
-        showPrompt.value = true;
-            return
-        this.$toast.show("Trwa dodawanie nowego ucznia");
-        student.value.grades.map((grade) => grade.score && grade.weight);
-        try {
-          // axios.post("/api/students/new", {
-          //   student,
-          // });
-          this.$toast.success("dodano nowego ucznia");
-          router.push({ path: "/group" });
-        } catch (err) {
-          console.error(err);
-          this.$toast.error("failed_to_add nowego ucznia");
-        }
-      };
+    
+    function handleSubmit() {
+      showPrompt.value = true;
+      this.$toast.show("Trwa dodawanie nowego ucznia");
+      student.value.grades.map((grade) => grade.score && grade.weight);
+      try {
+        axios.post("/api/students/new", {
+          student,
+        });
+        this.$toast.success("dodano nowego ucznia");
+        router.push({ path: "/group" });
+      } catch (err) {
+        console.error(err);
+        this.$toast.error("failed_to_add nowego ucznia");
+      }
+    };
 
     function getNewStudentNameHandler(fullname) {
       const formattedFullname = fullname.split(" ").reverse().join();
