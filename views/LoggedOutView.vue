@@ -14,9 +14,17 @@
           </span>
         </label>
 
-        <input name="#" type="text" v-model.trim="login" autocomplete="off" id="login" />
+        <input
+          name="#"
+          type="text"
+          v-model.trim="login"
+          autocomplete="off"
+          id="login"
+        />
 
-        <span class="errorLoginPassword"></span>
+        <span class="errorLoginPassword" v-if="showError">{{
+          $t("login_and_password_must_match")
+        }}</span>
       </div>
 
       <div class="form-group">
@@ -28,8 +36,9 @@
         </label>
 
         <input name="#" type="password" v-model.trim="password" id="password" />
-
-        <span class="errorLoginPassword"></span>
+        <span class="errorLoginPassword" v-if="showError">{{
+          $t("login_and_password_must_match")
+        }}</span>
       </div>
 
       <div class="form-group">
@@ -43,36 +52,24 @@
 
 <script>
 import { defineComponent, ref, useRouter } from "@nuxtjs/composition-api";
+
 import axios from "axios";
 export default defineComponent({
   name: "LoggedOutView",
-  setup(_props, { root }) {
+  setup() {
     const router = useRouter();
-    const login = ref('');
-    const password = ref('');
+    const login = ref("");
+    const password = ref("");
+    const signInPanel = ref(null);
+    const showError = ref(false);
     async function signIn() {
-      const signInPanel = this.$refs.signInPanel;
-
-
-      //VALIDATIONS
-      if(!(login.value && password.value)) {
-        // const errors = signInPanel.querySelectorAll(
-        //   "span.errorLoginPassword"
-        // );
-
-        // errors.map((error) => {
-        //   error.innerHTML = this.$t("login_and_password_must_match");
-        // });
-        return
-      }
       try {
         this.$toast.show(this.$t("logging_in_progress"));
-
-        // const response = await root.$accessor.checkLogData({ login, password });
         const response = await axios.post("/api/users/", {
           login: login.value,
           password: password.value,
         });
+        // if (1!==2) showError.value = true
         this.$toast.clear();
         this.$toast.success(this.$t("successed_logged"));
         router.push({
@@ -80,7 +77,6 @@ export default defineComponent({
           params: { groupId: response.data.group },
         });
       } catch (error) {
-
         switch (error) {
           case 404: {
             this.$toast.error(this.$t("not_found_user_with_this_login"));
@@ -97,7 +93,9 @@ export default defineComponent({
     return {
       login,
       password,
+      signInPanel,
       signIn,
+      showError,
     };
   },
 });

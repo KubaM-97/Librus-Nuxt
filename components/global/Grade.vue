@@ -107,6 +107,11 @@ export default defineComponent({
     const characters = props.characters;
     const grades = computed(() => root.$accessor.student.grades);
     const grade = props.grade;
+      let clonedGrades = [...grades.value];
+      clonedGrades[index] = { ...grade };
+      
+      // console.log(clonedGrades, grade);
+      root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
     watch(
       () => [...grade.description],
       () => {
@@ -149,9 +154,10 @@ export default defineComponent({
 
     //places a new mark, weight, description or date in appropriate place according to the provided index inside newGrades in Vuex
     function updateStudentGrade() {
-      const clonedGrade = [...grades.value];
-      clonedGrade[index] = { ...grade };
-      root.$accessor.updateStudent({ property: "grades", value: clonedGrade });
+    clonedGrades = [...grades.value];
+      clonedGrades[index] = { ...grade };
+      // console.log(clonedGrades);
+      root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
     }
 
     //clears newGrades object in Vuex

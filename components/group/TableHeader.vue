@@ -1,19 +1,19 @@
 <template>
-    <div class="tableColorsLegend">
-      <div class="tableColorsLegendTitle">{{ $t('legend') }}:</div>
+    <div class="studentsListLegend">
+      <div class="studentsListLegend__title">{{ $t('legend') }}:</div>
 
-      <div class="tableColorsLegendContent">
-        <div class="tableColorsLegendSingleContent">
+      <div class="studentsListLegend__content">
+        <div class="studentsListLegend__content__grade">
           <div class="gradeWeightColorLegend gradeWeightGreen"></div>
           - {{ $t('grade_with_weight') }} 1
         </div>
 
-        <div class="tableColorsLegendSingleContent">
+        <div class="studentsListLegend__content__grade">
           <div class="gradeWeightColorLegend gradeWeightYellow"></div>
           - {{ $t('grade_with_weight') }} 2
         </div>
 
-        <div class="tableColorsLegendSingleContent">
+        <div class="studentsListLegend__content__grade">
           <div class="gradeWeightColorLegend gradeWeightRed"></div>
           - {{ $t('grade_with_weight') }} 3
         </div>
@@ -27,32 +27,48 @@ export default {
 }
 </script>
 
-<style>
-.tableColorsLegend .tableColorsLegendTitle {
-  font-size: 13.5px;
-  margin: 20px 0;
+
+<style lang="scss">
+
+
+.studentsListLegend{
+  &__title {
+    font-size: 13.5px;
+    margin: 20px 0; 
+  }
+  &__content {
+    &__grade {
+      display: inline-block;
+      margin-left: 10px;
+      margin-right: 40px;
+      font-size: 12px;
+    }
+  }
 }
 
-.tableColorsLegend .tableColorsLegendContent .tableColorsLegendSingleContent {
-  display: inline-block;
-  margin-left: 10px;
-  margin-right: 40px;
-  font-size: 12px;
-}
 
-.tableColorsLegend .tableColorsLegendContent .tableColorsLegendSingleContent * {
-  vertical-align: middle;
-}
+// .tableColorsLegend .tableColorsLegendContent .tableColorsLegendSingleContent * {
+//   vertical-align: middle;
+// }
 
 @media (max-width: 768px) {
-  .tableColorsLegend .tableColorsLegendTitle {
-    font-size: 10px;
+  .studentsListLegend{
+  &__title {
+    font-size: 10px; 
   }
-  .tableColorsLegend .tableColorsLegendContent .tableColorsLegendSingleContent {
+  &__content {
     font-size: 9px;
     margin: auto;
     display: block;
+    &__grade {
+      display: inline-block;
+      margin-left: 10px;
+      margin-right: 40px;
+      font-size: 12px;
+    }
   }
+}
+
   .tableColorsLegend
     .tableColorsLegendContent
     .tableColorsLegendSingleContent

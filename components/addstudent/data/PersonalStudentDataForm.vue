@@ -1,34 +1,49 @@
 <template>
   <form action="#" enctype="application/x-www-form-urlencoded" method="post">
-
     <div class="addStudentPanelName">
-      {{$v.form.fullname}}
       <label for="name">
-        *Imię i Nazwisko:
+        *{{ $t('firstName_and_lastName') }}:
         <span class="nameTooltip">
-          Podwójne nazwiska przy pomocy myślnika
+          {{ $t('double_lastNames_hint') }}
         </span>
       </label>
       <input
         type="text"
         id="name"
         name="name"
-        v-model.trim="$v.form.fullname.$model"
+        v-model.trim="$v.fullName.$model"
         maxlength="30"
         autocomplete="off"
       />
       <transition name="bounce">
-          <div class="error" ref="errorFullname" v-if="$v.form.fullname.$invalid && $v.form.fullname.$dirty">Uzupełnij imię i nazwisko</div>
+        <div
+          class="error"
+          ref="errorFullname"
+          v-if="!$v.fullName.required && $v.fullName.$dirty"
+        >
+          {{ $t('fillname') }}
+        </div>
+        <div
+          class="error"
+          ref="errorFullname"
+          v-else-if="!$v.fullName.fullname"
+        >
+          {{ $t('no_characters') }}
+        </div>
       </transition>
     </div>
 
     <div class="addStudentPanelNameInfo">
-      Informacje dodatkowe
-      <span class="showInfo" @click="showAdditionalDataForm = !showAdditionalDataForm">Rozwiń</span>
+      {{ $t('additional_info') }}
+      <span
+        class="showInfo"
+        @click="showAdditionalDataForm = !showAdditionalDataForm"
+        >{{ !showAdditionalDataForm ? $t('expand') : $t('collapse')}}</span
+      >
 
       <transition @enter="enter" @leave="leave" :css="false">
-          <AdditionalDataForm :showAdditionalDataForm="showAdditionalDataForm"/>
-        </transition>
+        <AdditionalDataForm :showAdditionalDataForm="showAdditionalDataForm"/>
+      </transition>
     </div>
   </form>
 </template>
@@ -36,7 +51,7 @@
 <script>
 import { defineComponent, ref, watch } from "@nuxtjs/composition-api";
 import { helpers, required } from "vuelidate/lib/validators";
-import AdditionalDataForm from "@/components/addstudent/AdditionalDataForm.vue";
+import AdditionalDataForm from "@/components/addstudent/data/AdditionalDataForm.vue";
 const fullname = helpers.regex(
   "fullname",
   /^[A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]*( [A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]*)+(-[A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]+)?$/
@@ -47,29 +62,28 @@ export default defineComponent({
     AdditionalDataForm,
   },
   validations: {
-    form: {
-      fullname: {
-        required,
-        // fullname
-      }
-    }},
-  setup(_, {root}) {
-    const fullname = ref('')
+    fullName: {
+      required,
+      fullname
+    },
+  },
+  setup(_, { root }) {
+    const fullName = ref("");
     const showAdditionalDataForm = ref(false);
-    const firstname = ref('');
-    const lastname = ref('');
+    const firstName = ref("");
+    const lastName = ref("");
 
-    function capitalize(val){
-      return val.charAt(0).toUpperCase() + val.slice(1).toLowerCase()
+    function capitalize(val) {
+      return val.charAt(0).toUpperCase() + val.slice(1).toLowerCase();
     }
 
-    function getFirstAndLastName(fullname) {
-      const fullnameArray = fullname.toLowerCase().split(" ");
+    function getFirstAndLastName(fullName) {
+      const fullNameArray = fullName.toLowerCase().split(" ");
 
-      firstname.value = capitalize(fullnameArray[0])
-      lastname.value = fullnameArray.length > 1 ? capitalize(fullnameArray[1]) : '' ;
+      firstName.value = capitalize(fullNameArray[0]);
+      lastName.value = fullNameArray.length > 1 ? capitalize(fullNameArray[1]) : "";
     }
-//starts animation of Student's detail data
+    //starts animation of Student's detail data
     function enter(el, done) {
       el.addEventListener("animationend", function () {
         el.style = "";
@@ -88,22 +102,23 @@ export default defineComponent({
       el.style.animationDirection = "reverse";
     }
 
-    function setFullName(value) {
-      fullname.value = value
-      console.log(this.$v.form.fullname);
-      this.$v.form.fullname.$model = value
-      this.$v.form.fullname.$touch()
-      console.log(this.$v.form.fullname.$invalid);
-      getFirstAndLastName(fullname.value)
-      root.$accessor.updateStudent({ property: "firstname", value: firstname.value });
-      root.$accessor.updateStudent({ property: "lastname", value: lastname.value });
-    }
+    watch(()=>fullName.value, (val)=>{
+      getFirstAndLastName(val);
+      root.$accessor.updateStudent({
+        property: "firstName",
+        value: firstName.value,
+      });
+      root.$accessor.updateStudent({
+        property: "lastName",
+        value: lastName.value,
+      });
+    })
+
     return {
-      fullname,
-      setFullName,
+      fullName,
+      showAdditionalDataForm,
       enter,
       leave,
-      showAdditionalDataForm,
     };
   },
 });

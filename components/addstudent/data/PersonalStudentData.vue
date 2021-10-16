@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-4">
-          <!-- <PersonalStudentDataForm /> -->
+          <PersonalStudentDataForm />
         </div>
         <div class="col-lg-8">
           <NewStudentGrades />
@@ -16,8 +16,8 @@
 
 <script>
 import { defineComponent, ref } from "@nuxtjs/composition-api";
-import NewStudentGrades from "@/components/addstudent/NewStudentGrades";
-import PersonalStudentDataForm from "@/components/addstudent/PersonalStudentDataForm";
+import NewStudentGrades from "@/components/addstudent/grades/NewStudentGrades";
+import PersonalStudentDataForm from "@/components/addstudent/data/PersonalStudentDataForm";
 
 export default defineComponent({
   name: "PersonalStudentData",

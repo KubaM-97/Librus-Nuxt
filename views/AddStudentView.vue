@@ -9,15 +9,16 @@
 </template>
 
 <script>
-import DialogActions from "@/components/addstudent/DialogActions";
-import ClosePrompt from "@/components/addstudent/ClosePrompt";
+import DialogActions from "@/components/global/DialogActions";
+import ClosePrompt from "@/components/global/ClosePrompt";
 import StudentTable from "@/components/global/StudentTable";
-import PersonalStudentData from "@/components/addstudent/PersonalStudentData";
+import PersonalStudentData from "@/components/addstudent/data/PersonalStudentData";
 import {
   defineComponent,
   ref,
   useRouter,
   onBeforeUnmount,
+  computed
 } from "@nuxtjs/composition-api";
 export default defineComponent({
   components: {
@@ -28,8 +29,7 @@ export default defineComponent({
   },
   setup(_, {root}) {
     const router = useRouter();
-    const student = root.$accessor.student
-    console.log(student);
+      const student = computed(() => root.$accessor.student);
 
     const gradesLength = ref(1);
     const showPrompt = ref(false);

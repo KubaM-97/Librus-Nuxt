@@ -30,6 +30,7 @@ export default {
     '~/plugins/bootstrap.js',
     // '~/plugins/toast.js',
     '~/plugins/vuelidate.js',
+    '~/plugins/vue-fragment.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -67,7 +68,7 @@ export default {
   ],
   toast: {
     position: 'bottom-left',
-    duration: 5000,
+    duration: 3500,
 },
    // specify module rules for css and scss
    module: {

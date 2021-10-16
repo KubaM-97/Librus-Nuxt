@@ -1,39 +1,31 @@
 <template>
-  <div class="row">
-    <div class="addStudentPanelSummary">
-      <table class="summary">
-        <tbody>
-        <tr>
-          <td v-if="orderNo"></td>
-          <td>{{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
-          <td>
-            <div
-              class="gradeWeightColor"
-              :class="gradeColor(grade.weight)"
-              v-for="(grade, index) in student.grades"
-              :key="`new_student_grade-${index}`"
-              @mouseenter="showGradeDetails($event, grade)"
-              @mouseleave="hideGradeDetails($event)"
-            >
-              {{ grade.score }}
-            </div>
-          </td>
-          <td>{{ calculateAvgGrade(student.grades) || '' }}</td>
-          <td>
-            <span v-if="calculateAvgGrade(student.grades) < 2" class="fire">
-              {{ $t("at_risk").toUpperCase() }}
-            </span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <fragment>
+    <td v-if="orderNo">{{ orderNo }}.</td>
+    <td>{{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
+    <td>
+      <div
+        class="gradeWeightColor"
+        :class="gradeColor(grade.weight)"
+        v-for="(grade, index) in student.grades"
+        :key="`new_student_grade-${index}`"
+        @mouseenter="showGradeDetails($event, grade)"
+        @mouseleave="hideGradeDetails($event)"
+      >
+        {{ grade.score }}
+      </div>
+    </td>
+    <td>{{ calculateAvgGrade(student.grades) || '' }}</td>
+    <td>
+      <span v-if="calculateAvgGrade(student.grades) < 2" class="fire">
+        {{ $t("at_risk").toUpperCase() }}
+      </span>
+    </td>
+  </fragment>
 </template>
 
 
 <script>
-import { computed, defineComponent, onUpdated, watchEffect, useStore , ref} from "@nuxtjs/composition-api";
+import { defineComponent } from "@nuxtjs/composition-api";
 import gradesService from "@/assets/mixins/gradesMixins.ts";
 
 export default defineComponent({
@@ -45,12 +37,17 @@ export default defineComponent({
         default: () => {}
     },
     orderNo: {
-      type: Boolean,
+      type: Number,
       required: false,
-      default: false
-    }
+      default: 0
+    },
+    // navigate
   },
+  emits: ['v'],
   mixins: [gradesService],
+  setup(p){
+    console.log(p)
+  }
 })
 </script>
 <style>

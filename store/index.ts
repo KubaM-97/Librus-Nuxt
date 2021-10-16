@@ -1,6 +1,6 @@
 import { getAccessorType, getterTree, mutationTree, actionTree } from 'typed-vuex'
 
-import { SignInData, User, State, Getters, Mutations, Actions, Student } from '@/store/models/store.models';
+import { SignInData, User, State, Getters, Mutations, Actions } from '@/store/models/store.models';
 import { Context } from '@nuxt/types'
 import axios from 'axios';
 import { Commit } from 'vuex'; 
@@ -15,27 +15,27 @@ export const state = () => ({
   student: {
     firstName: '',
     lastName: '',
-    pesel: null,
-    phone: null,
+    pesel: '',
+    phone: '',
     email: '',
     grades: [],
     street: {
       name: '',
-      nr: null,
-      flat: null,
+      nr: '',
+      flat: '',
       postcode: '',
       city: '',
     },
     mother: {
-      firstName: '',
-      lastName: '',
-      phone: null,
+      firstname: '',
+      lastname: '',
+      phone: '',
       email: '',
     },
     father: {
-      firstName: '',
-      lastName: '',
-      phone: null,
+      firstname: '',
+      lastname: '',
+      phone: '',
       email: '',
     }
   }
@@ -56,12 +56,12 @@ export const mutations = mutationTree(state, {
   setUser(state: State, payload: User): void {
     state.user = payload;
   },
-  setStudent(state: State, payload: Student): void {
-    state.student = payload;
-  },
-  // updateStudent(state: State, payload: { property}) :void {
-  //   state.student[payload.property] = payload.value;
+  // setStudent(state: State, payload: Student): void {
+  //   state.student = payload;
   // },
+  updateStudent(state: State, payload) :void {
+    state.student[payload.property] = payload.value;
+  },
   removeGrade(state: State, payload: any) :void {
     state.student.grades.splice(payload, 1)
   },
@@ -69,12 +69,13 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state },
   {
-    // async checkLogData({commit}: {commit: Commit,}, payload: SignInData): Promise<void> {
-    async checkLogData( context, payload: SignInData): Promise<void> {
-      console.log(context);
+    async checkLogData({commit}: {commit: Commit}, payload: SignInData): Promise<void> {
       await axios.post('/api/users/', {
         login: payload.login, 
         password: payload.password
+      }).then(response => { return response
+        // commit("setUser", response.data);
+        // commit("toggleLog");
       })
     },
   }

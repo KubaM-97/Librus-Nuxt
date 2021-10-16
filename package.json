@@ -23,8 +23,11 @@
     "express": "^4.17.1",
     "koa-router": "^10.1.1",
     "mongodb": "^4.1.2",
+    "mongoose": "^6.0.10",
     "nuxt": "^2.15.7",
     "nuxt-typed-vuex": "^0.2.0",
+    "vee-validate": "^4.5.2",
+    "vue-fragment": "^1.5.2",
     "vue-router": "^3.5.2",
     "vue-toasted": "^1.1.28",
     "vuelidate": "^0.7.6"

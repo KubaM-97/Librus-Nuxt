@@ -7,12 +7,37 @@
         method="post"
         @submit.prevent="saveChanges"
       >
-        <div class="form-group">
+        <div class="container">
+          <div class="row offset-1" v-for="data in formData" :key="data.id">
+            <div class="col-5">
+              <input type="text" :value="data.value" :id="data.id" />
+            </div>
+            <div class="col-5">
+              {{ data.id }}
+            </div>
+            <div class="col-1">ch</div>
+          </div>
+        </div>
+        <!-- <div class="form-group">
           <div class="row">
             <div class="col-10">
               <div class="container">
                 <div class="row">
                   <div class="col-md-6 offset-md-2">
+                    <div class="form-group" v-for="data in formData" :key="data.id">
+      <label :for="data.id">{{ data.label }}:</label>
+      <input
+        type="text"
+        :id="data.id"
+        :name="data.id"
+        autocomplete="off"
+        v-model.trim.lazy="form[data.id]"
+        :placeholder="data.label"
+        @change="touch(data.id)"
+      />
+      <div v-if="$v[data.id].$invalid && $v[data.id].$dirty">{{ data.errorMessage }}</div>
+
+    </div>
                     <label for="firstname">{{ $t("firstname") }}</label>
                     <input
                       name="#"
@@ -28,16 +53,16 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="col-2" v-if="showGreenCheckMark.firstName">
+             <div class="col-2" v-if="showGreenCheckMark.firstName">
                 <img class="greenCheckMark" src="@/assets/images/greenCheckMark.png" alt="green check mark"> 
                 <transition name="showGreenMark">
                   <div class="blackLayer" v-if="hideCheckMarkWithLayer.firstName" key="1">
 
                   </div>
                 </transition>
-              </div> -->
+              </div>
           </div>
-        </div>
+        </div> -->
       </form>
       <button
         name="possibleSaveData"

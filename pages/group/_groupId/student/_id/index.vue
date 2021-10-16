@@ -1,33 +1,7 @@
 <template>
   <div class="editStudentPanel" ref="editStudentPanel">
     <div class="students">
-      <table>
-        <thead>
-          <th>{{ $t("students_first_and_lastname") }}</th>
-          <th>{{ $t("grades") }}:</th>
-          <th>{{ $t("avg") }}:</th>
-          <th>{{ $t("at_risk") }}:</th>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
-            <td  class="gradeWeightColor"
-                :class="gradeColor(grade.weight)"
-                v-for="(grade, index) in student.grades"
-                :key="`grade-${index}`"
-                @mouseenter="showGradeDetails($event, grade)"
-                @mouseleave="hideGradeDetails($event)">
-                {{ grade.score }}
-            </td>
-            <td>{{ calculateAvgGrade(student.grades) }}</td>
-            <td>
-              <span v-if="calculateAvgGrade(student.grades) < 2" class="fire">
-                {{ $t("at_risk").toUpperCase() }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <StudentTable :student="student" />
 
       <div>
         <div class="form-group">
@@ -37,13 +11,13 @@
 
         <div class="form-group">
           <span class="title">{{ $t("address") }}:</span>
-          <span class="data"
+          <!-- <span class="data"
             >ul.{{ student.street.name }} {{ student.street.nr }} m.{{
               student.street.flat
             }}
             <br />
             {{ student.street.postcode }} {{ student.street.city }}</span
-          >
+          > -->
         </div>
 
         <div class="form-group">
@@ -56,7 +30,7 @@
           <span class="data">{{ student.email }}</span>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <span class="title">{{ $t("mother") }}:</span>
           <span class="data"
             >{{ student.mother.firstname }} {{ student.mother.lastname }} <br />
@@ -72,12 +46,12 @@
             {{ student.father.phone }} <br />
             {{ student.father.email }}</span
           >
-        </div>
+        </div> -->
       </div>
 
       <div>
         <NuxtLink
-           :to="{
+          :to="{
             path: `/group/student/${studentId}/editData`,
             params: { student },
           }"
@@ -85,7 +59,7 @@
           {{ $t("edit_data") }}
         </NuxtLink>
         <NuxtLink
-           :to="{
+          :to="{
             path: `/group/student/${studentId}/editGrades`,
             params: { student },
           }"
@@ -100,6 +74,7 @@
 </template>
 
 <script>
+import StudentTable from "@/components/global/StudentTable";
 import gradesService from "@/assets/mixins/gradesMixins.ts";
 import {
   defineComponent,
@@ -111,16 +86,31 @@ import {
 
 export default defineComponent({
   name: "Student",
+  components: {
+    StudentTable,
+  },
   mixins: [gradesService],
 
   setup() {
     const route = useRoute();
     const studentId = route.value.params.id;
     const student = ref("");
+      console.log(route.value);
+    function xxx() {
+      history.pushState(
+        {},
+        null,
+        // route.value.path + "#"
+        // `group/3B/student/${student.value.lastName}%20${student.value.firstName}`
+        route.value.path + '#' + encodeURIComponent(student.value.lastName+student.value.firstName)
+
+      );
+    }
     const { $http } = useContext();
 
     useFetch(async () => {
       student.value = await $http.$get(`api/students/${studentId}`);
+      // xxx()
     });
 
     return {
@@ -149,8 +139,7 @@ button {
   text-shadow: 1px 1px 1px violet;
   margin: 0 15px;
 }
-@media(max-width: 768px){
-  
+@media (max-width: 768px) {
   button {
     font-size: 9px;
     padding: 5px;
