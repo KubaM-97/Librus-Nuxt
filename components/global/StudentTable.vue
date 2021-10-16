@@ -41,13 +41,8 @@ export default defineComponent({
       required: false,
       default: 0
     },
-    // navigate
   },
-  emits: ['v'],
   mixins: [gradesService],
-  setup(p){
-    console.log(p)
-  }
 })
 </script>
 <style>

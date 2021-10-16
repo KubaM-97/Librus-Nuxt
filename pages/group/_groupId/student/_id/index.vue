@@ -1,7 +1,7 @@
 <template>
   <div class="editStudentPanel" ref="editStudentPanel">
     <div class="students">
-      <StudentTable :student="student" />
+      <!-- <StudentTable :student="student" /> -->
 
       <div>
         <div class="form-group">
@@ -50,7 +50,7 @@
       </div>
 
       <div>
-        <NuxtLink
+        <!-- <NuxtLink
           :to="{
             path: `/group/student/${studentId}/editData`,
             params: { student },
@@ -65,7 +65,10 @@
           }"
         >
           {{ $t("edit_grades") }}
-        </NuxtLink>
+        </NuxtLink> -->
+        <button @click="property = 'Data'">{{ $t("edit_data") }}</button>
+        <button @click="property = 'Grades'">{{ $t("edit_grades") }}</button>
+        <NuxtChild v-if="property" @close="property = null" :property="property"/> 
       </div>
     </div>
 
@@ -95,27 +98,28 @@ export default defineComponent({
     const route = useRoute();
     const studentId = route.value.params.id;
     const student = ref("");
-      console.log(route.value);
-    function xxx() {
-      history.pushState(
-        {},
-        null,
-        // route.value.path + "#"
-        // `group/3B/student/${student.value.lastName}%20${student.value.firstName}`
-        route.value.path + '#' + encodeURIComponent(student.value.lastName+student.value.firstName)
-
-      );
-    }
+    const property = ref(null);
+    // function xxx() {
+    //   history.pushState(
+    //     {},
+    //     null,
+    //     encodeURIComponent(`${student.value.lastName.toLowerCase()} ${student.value.firstName.toLowerCase()}`)
+    //   );
+    // }
     const { $http } = useContext();
 
     useFetch(async () => {
+      console.log(studentId);
+
       student.value = await $http.$get(`api/students/${studentId}`);
+      console.log(student.value);
       // xxx()
     });
 
     return {
       studentId,
       student,
+      property,
     };
   },
 });

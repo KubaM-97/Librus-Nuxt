@@ -22,7 +22,7 @@
     </header>
 
     <nav>
-      <NuxtLink :to="`/group/${$route.params.groupId}`">
+      <NuxtLink :to="`/group/${$route.params.groupId || '3B'}`">
         <button active-class="active" class="btn btn-primary btn-lg">
           {{ $t('class') }}
         </button>

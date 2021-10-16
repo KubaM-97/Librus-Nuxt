@@ -3,12 +3,11 @@
     <table ref="tableStudents">
       <thead>
         <tr>
-
-        <th>{{ $t('number_abbr') }}.</th>
-        <th>{{ $t('student') }}:</th>
-        <th>{{ $t('grades') }}:</th>
-        <th>{{ $t('grade_avg') }}:</th>
-        <th>{{ $t('at_risks') }}:</th>
+          <th>{{ $t('number_abbr') }}.</th>
+          <th>{{ $t('student') }}:</th>
+          <th>{{ $t('grades') }}:</th>
+          <th>{{ $t('grade_avg') }}:</th>
+          <th>{{ $t('at_risks') }}:</th>
         </tr>
       </thead>
       <tbody>
@@ -17,9 +16,10 @@
           :key="student._id"
           tag="tr"
           :to="{
-            path: `/group/${$route.params.groupId}/student/${student._id }`,
+            path: `student/${student._id }`,
             params: { id: student._id },
-          }">
+          }"
+          append>
           <StudentTable :student="student" :orderNo="index+1" />
         </NuxtLink>
         

@@ -11,8 +11,8 @@
         :placeholder="data.label"
         @change="touch(data.id)"
       />
-      <div v-if="$v[data.id].$invalid && $v[data.id].$dirty">{{ data.errorMessage }}</div>
-
+      <!-- <div v-if="$v[data.id].$invalid && $v[data.id].$dirty">{{ data.errorMessage }}</div> -->
+    {{$v[data.id]}}
     </div>
   </div>
 </template>
@@ -29,7 +29,7 @@ const parentLastname = helpers.regex(
   "parentLastname",
   /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)?$/
 );
-const pesel = helpers.regex("pesel", /^[0-9]{11}$/);
+const pesel = helpers.regex("pesel", /^[0-9]{2}$/);
 const phone = helpers.regex("phone", /^([0-9]{7}|[0-9]{9})$/);
 const email = helpers.regex(
   "email",
@@ -49,16 +49,16 @@ const city = helpers.regex(
 export default defineComponent({
   validations: {
     // form: {
-      pesel: { pesel },
-      phone: { phone },
-      email: { email },
-      address: {
-        street: { street },
-        streetNr: { streetNr },
-        flatNr: { flatNr },
-        postCode: { postCode },
-        city: { city },
-      },
+      pesel: { required },
+      // phone: { phone },
+      // email: { email },
+      // address: {
+      //   street: { street },
+      //   streetNr: { streetNr },
+      //   flatNr: { flatNr },
+      //   postCode: { postCode },
+      //   city: { city },
+      // },
       //   parent: {
       //     parentFirstname: { parentFirstname },
       //     parentLastname: { parentLastname },

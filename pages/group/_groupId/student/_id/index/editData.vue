@@ -1,23 +1,100 @@
 <template>
   <div class="ourStudentPanel" ref="editDataPanel">
     <div class="container">
+      <!-- {{student}} -->
       <form
         action="#"
         enctype="application/x-www-form-urlencoded"
         method="post"
         @submit.prevent="saveChanges"
       >
-        <div class="container">
-          <div class="row offset-1" v-for="data in formData" :key="data.id">
-            <div class="col-5">
-              <input type="text" :value="data.value" :id="data.id" />
-            </div>
-            <div class="col-5">
-              {{ data.id }}
-            </div>
-            <div class="col-1">ch</div>
-          </div>
+      <!-- {{formData}} -->
+        <div v-for="data in formData" :key="data.property"> 
+          <!-- {{data.value}} -->
+          <label :for="data.property">{{data.property}} {{data.value.length}} {{Array.isArray(data.value)}}</label>
+          <input type="text" :id="data.property" v-model="student[data.property]" v-if="!Array.isArray(data.value)">
+          <input type="text" :id="data.property" v-model="student[data.property][subData.property]" v-else v-for="subData in data.value" :key="subData.property">
+          {{ student[data.property] }}
         </div>
+
+        <!-- <div class="form-group">
+          <div class="row">
+            <div class="col-10">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-6 offset-md-2">
+                    <label for="firstName">Imię</label>
+                    <input name="#" type="text" autocomplete="off" id="firstName" v-model="student.firstName">
+                    <span class="wrongAdditionalInfo" id="wrongFirstName"></span>
+                  </div>
+                  <div class="col-md-4">
+                    {{student.firstName}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+
+          <!-- <div class="form-group">
+            <div class="row">
+              <div class="col-10">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-6 offset-md-2">
+                      <label>Adres:</label>
+
+                      <input name="#" type="text" autocomplete="off" v-model="student.street.name" id="Street" placeholder="ulica">
+                      <span class="wrongAdditionalInfo" id="wrongStreet"></span>
+
+                      <input name="#" type="text" autocomplete="off" v-model="student.street.nr" id="HouseNr" placeholder="nr_domu">
+                      <span class="wrongAdditionalInfo" id="wrongHouseNr"></span>
+
+                      <input name="#" type="text" autocomplete="off" v-model="student.street.flat" id="FlatNr" placeholder="nr_mieszkania">
+                      <span class="wrongAdditionalInfo" id="wrongFlatNr"></span>
+
+                      <input name="#" type="text" autocomplete="off" v-model="student.street.postcode" id="PostCode" placeholder="kod pocztowy" >
+                      <span class="wrongAdditionalInfo" id="wrongPostCode"></span>
+
+                      <input name="#" type="text" autocomplete="off" v-model="student.street.city" id="City" placeholder="miasto">
+                      <span class="wrongAdditionalInfo" id="wrongCity">xxxxxxxxx</span>
+                    </div>
+                    <div class="col-md-4">
+                      ul.{{student.street.name}} {{student.street.nr}} m.{{student.street.flat}} <br />  {{student.street.postcode}} {{student.street.city}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          
+
+
+          <!-- 
+            <div class="col-4">
+              <input type="text" :value="student.firstName" />
+            </div>
+             <div class="col-8">
+              {{ student.firstName}}
+            </div>
+          </div>
+            <div class="col-4">
+              <input type="text" :value="student.pesel" />
+            </div>
+             <div class="col-8">
+              {{ student.pesel}}
+            </div>
+          </div>
+            <div class="col-4">
+              <input type="text" :value="student.pesel" />
+            </div>
+             <div class="col-8">
+              {{ student.pesel}}
+            </div>
+          </div>
+        </div> 
+        -->
         <!-- <div class="form-group">
           <div class="row">
             <div class="col-10">
@@ -68,6 +145,7 @@
         name="possibleSaveData"
         class="btn btn-success btn-lg save"
         :disabled="!isPossibleSave"
+        @click="saved = !saved"
       >
         {{ $t("save_changes") }}
       </button>
@@ -89,18 +167,36 @@ export default {
 
     const isPossibleSave = ref(true);
     const student = ref("");
+    const saved = ref(false)
+    const formData = ref([])
     const { $http } = useContext();
+function setFormData(){
+  formData.value = [
+      { property: 'firstName', value: student.value.firstName, errorMessage: 'dupdupdup' },
+      { property: 'street', value: [
+        {property: 'name', value: student.value.street.name, errorMessage: 'nazwa ulicy'},
+        {property: 'nr', value: student.value.street.nr, errorMessage: 'numer ulicy'},
+      ], errorMessage: 'jajajajajjajajaJAJA' },
 
+    ]
+}
     useFetch(async () => {
       student.value = await $http.$get(`api/students/${id}`);
+      setFormData()
     });
     function validatorData() {}
 
     function saveChanges() {
+      saved.value = true
       try {
-        axios.post("api/students");
+        axios.put(`api/students/${id}`, {
+          student
+        });
+        this.$toast.success(this.$t('successfully_updated_student_data'))
       } catch (err) {
         console.error(err);
+        this.$toast.success(this.$t('successfully_updated_student_data'))
+
       }
     }
     return {
@@ -108,6 +204,8 @@ export default {
       validatorData,
       saveChanges,
       isPossibleSave,
+      formData,
+      saved,
     };
   },
 };
