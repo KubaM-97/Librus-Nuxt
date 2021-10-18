@@ -16,10 +16,10 @@ export default {
     AddStudentView,
     ClosePrompt,
   },
-  beforeRouteLeave(to, from, next) {
+  // beforeRouteLeave(to, from, next) {
     // next()
-    const ClosePrompt = this.$refs.ClosePrompt;
-    ClosePrompt.showPrompt ? next() : ClosePrompt.preventLeaving(to)
-  },
+    // const ClosePrompt = this.$refs.ClosePrompt;
+    // ClosePrompt.showPrompt ? next() : ClosePrompt.preventLeaving(to)
+  // },
 };
 </script>

@@ -14,7 +14,7 @@
             <input
               v-if="!Array.isArray(data.value)"
               type="text"
-              :placeholder="$t(data.property)"
+              :placeholder="$t(data.errorMessage)"
               :name="data.property"
               :id="data.property"
               v-model.trim="student[data.property]"
@@ -31,6 +31,7 @@
               v-model.trim="student[data.property][subData.property]"
               class="col-7 text-center"
             />
+            <!-- {{ !Array.isArray(data.value) ? student[data.property] : nestedProperty(data.property) }} -->
             
              <!-- <div v-if="!Array.isArray(data.value) && $v.$invalid && $v.$dirty">{{data.errorMessage}}</div> -->
             <!--<div v-else-if="Array.isArray(data.value)">{{student[data.property][subData].errorMessage}}</div> -->

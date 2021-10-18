@@ -4,7 +4,7 @@
     <td>{{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
     <td>
       <div
-        :class="gradeColor(grade.weight)"
+        :class="[{'gradeWeightColor': grade.score || grade.weight}, gradeColor(grade.weight)]"
         v-for="(grade, index) in student.grades"
         :key="`new_student_grade-${index}`"
         @mouseenter="showGradeDetails($event, grade)"

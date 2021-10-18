@@ -2,17 +2,17 @@ import { defineComponent } from "@nuxtjs/composition-api";
 import { SingleGrade } from '@/store/models/store.models'
 
 export default defineComponent({
-  setup(){
+  setup(_props, { root }){
 
     //colors
     function gradeColor(weight: number): string {
       switch (weight) {
         case 1:
-          return 'gradeWeightColor gradeWeightGreen'
+          return 'gradeWeightGreen'
         case 2:
-          return 'gradeWeightColor gradeWeightYellow'
+          return 'gradeWeightYellow'
         case 3:
-          return 'gradeWeightColor gradeWeightRed'
+          return 'gradeWeightRed'
         default:
           return ''
       }
@@ -46,20 +46,20 @@ export default defineComponent({
       ctx.fillStyle = "black";
       ctx.font = "700 12px Arial";
 
-      // ctx.fillText(`${root.$t('grade_score')}: ${grade.score}`, 40, 40);
-      // ctx.fillText(`${root.$t('grade_weight')}: ${grade.weight} `, 40, 60);
+      ctx.fillText(`${root.$t('grade_score')}: ${grade.score}`, 40, 40);
+      ctx.fillText(`${root.$t('grade_weight')}: ${grade.weight} `, 40, 60);
 
-      // if ( !grade.description || grade.description === `${root.$t('no_description')}`) {
-      //   ctx.fillText(`${root.$t('no_description')}:`, 40, 80);
-      //   ctx.font = "italic 700 12px Arial";
-      //   ctx.fillText(`${grade.description}`, 77, 80);
-      //   ctx.font = "700 12px Arial";
-      // }
-      // else {
-      //   ctx.fillText(`${root.$t('description')}: ${grade.description} `, 40, 80);
-      // }
+      if ( !grade.description || grade.description === `${root.$t('no_description')}`) {
+        ctx.fillText(`${root.$t('no_description')}:`, 40, 80);
+        ctx.font = "italic 700 12px Arial";
+        ctx.fillText(`${grade.description}`, 77, 80);
+        ctx.font = "700 12px Arial";
+      }
+      else {
+        ctx.fillText(`${root.$t('description')}: ${grade.description} `, 40, 80);
+      }
 
-      // ctx.fillText(`${root.$t('description')}: ${grade.date}`, 40, 100);
+      ctx.fillText(`${root.$t('description')}: ${grade.date}`, 40, 100);
 
 
     }

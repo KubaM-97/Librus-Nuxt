@@ -1,5 +1,5 @@
 <template>
-  <div class="fullClass">
+  <div class="wrapper">
     <TableHeader />
     <p v-if="$fetchState.error">
        {{ $t('failed_to_fetch_students_list') }}
@@ -27,14 +27,17 @@ export default defineComponent({
     const route = useRoute()
     const groupId = route.value.params.groupId;
     const students = ref([]);
+    // const studentsa = ref([]);
 
     const { $http } = useContext();
 
     useFetch(async () => {
-
-      students.value = await $http.$post(`api/students/`, 
-        { group: groupId }
-      )
+      students.value = await $http.$get('http://localhost:1222/posts')
+      // studentsa.value = await $http.$put('http://localhost:1222/posts/255', {imie: 'dupsko', naz: 'jenot'})
+      // studentsa.value = await $http.$get('http://localhost:1222/posts/255')
+      // students.value = await $http.$post(`api/students/`, 
+      //   { group: groupId }
+      // )
     })
 
     return { students }
@@ -42,17 +45,3 @@ export default defineComponent({
 })
 </script>
 
-<style>
-.fullClass {
-  width: 90%;
-  max-width: 1400px;
-  margin: 100px auto;
-  -webkit-box-shadow: 3px 3px 30px 5px #00c3ff;
-  -moz-box-shadow: 3px 3px 30px 5px #00c3ff;
-  box-shadow: 3px 3px 30px 5px #00c3ff;
-  background-color: rgba(0, 0, 0, 0.55);
-  text-align: center;
-  font-size: 15px;
-  padding: 40px 0;
-}
-</style>

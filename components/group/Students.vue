@@ -1,6 +1,5 @@
 <template>
-  <div class="students">
-    <table ref="tableStudents">
+    <table class="students">
       <thead>
         <tr>
           <th>{{ $t('number_abbr') }}.</th>
@@ -25,7 +24,6 @@
         
       </tbody>
     </table>
-  </div>
 </template>
 
 <script>
@@ -49,7 +47,7 @@ export default defineComponent({
 </script>
 
 <style>
-div.students {
+.students {
   width: 90%;
   margin: 50px auto;
 }

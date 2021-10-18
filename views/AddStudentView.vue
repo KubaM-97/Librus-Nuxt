@@ -1,10 +1,12 @@
 <template>
-  <div class="addStudentPanel">
+  <div class="wrapper">
     <!-- {{student}} -->
     <PersonalStudentData @getNewStudentName="getNewStudentNameHandler" :student="student" />
     <table>
       <tbody> 
-        <StudentTable :student="student" />
+        <tr>
+          <StudentTable :student="student" />
+        </tr>
       </tbody>
     </table>
     <DialogActions @cancel="handleCancel" @submit="handleSubmit" />
@@ -29,15 +31,14 @@ export default defineComponent({
   },
   setup(_, {root}) {
     const router = useRouter();
-      const student = computed(() => root.$accessor.student);
-
+    const student = computed(() => root.$accessor.student);
     const gradesLength = ref(1);
+
     function handleCancel() {
       student.value = {};
       gradesLength.value = 1;
     }
 
-    
     function handleSubmit() {
       this.$toast.show("Trwa dodawanie nowego ucznia");
       student.value.grades.map((grade) => grade.score && grade.weight);
@@ -67,18 +68,3 @@ export default defineComponent({
   },
 });
 </script>
-
-
-<style>
-.addStudentPanel {
-  width: 90%;
-  max-width: 1400px;
-  margin: 100px auto;
-  -webkit-box-shadow: 3px 3px 30px 5px #00c3ff;
-  -moz-box-shadow: 3px 3px 30px 5px #00c3ff;
-  box-shadow: 3px 3px 30px 5px #00c3ff;
-  background-color: rgba(0, 0, 0, 0.55);
-  text-align: center;
-  font-size: 11px;
-}
-</style>

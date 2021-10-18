@@ -1,8 +1,10 @@
 <template>
-  <div class="editStudentPanel" ref="editStudentPanel">
+  <div class="editStudentPanel">
     <div class="students">
-      <!-- <StudentTable :student="student" /> -->
+      <div class="summary">
 
+      <StudentTable :student="student" />
+      </div>
       <div>
         <div class="form-group">
           <span class="title">PESEL:</span>
@@ -11,13 +13,14 @@
 
         <div class="form-group">
           <span class="title">{{ $t("address") }}:</span>
-          <!-- <span class="data"
+          <span class="data"
+          
             >ul.{{ student.street.name }} {{ student.street.nr }} m.{{
               student.street.flat
             }}
             <br />
             {{ student.street.postcode }} {{ student.street.city }}</span
-          > -->
+          >
         </div>
 
         <div class="form-group">
@@ -30,7 +33,7 @@
           <span class="data">{{ student.email }}</span>
         </div>
 
-        <!-- <div class="form-group">
+        <div class="form-group">
           <span class="title">{{ $t("mother") }}:</span>
           <span class="data"
             >{{ student.mother.firstname }} {{ student.mother.lastname }} <br />
@@ -46,26 +49,10 @@
             {{ student.father.phone }} <br />
             {{ student.father.email }}</span
           >
-        </div> -->
+        </div>
       </div>
-
+      <!-- <Nuxt /> -->
       <div>
-        <!-- <NuxtLink
-          :to="{
-            path: `/group/student/${studentId}/editData`,
-            params: { student },
-          }"
-        >
-          {{ $t("edit_data") }}
-        </NuxtLink>
-        <NuxtLink
-          :to="{
-            path: `/group/student/${studentId}/editGrades`,
-            params: { student },
-          }"
-        >
-          {{ $t("edit_grades") }}
-        </NuxtLink> -->
         <button @click="property = 'Data'">{{ $t("edit_data") }}</button>
         <button @click="property = 'Grades'">{{ $t("edit_grades") }}</button>
         <NuxtChild v-if="property" @close="property = null" :property="property"/> 
@@ -93,7 +80,6 @@ export default defineComponent({
     StudentTable,
   },
   mixins: [gradesService],
-
   setup() {
     const route = useRoute();
     const studentId = route.value.params.id;

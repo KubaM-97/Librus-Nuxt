@@ -1,15 +1,15 @@
 <template>
-  <div class="signInPanel" ref="signInPanel">
+  <div class="logInPanel px-9 pt-4 pb-3 position-absolute text-center">
     <form
       action="#"
       enctype="application/x-www-form-urlencoded"
       method="post"
       @submit.prevent="signIn"
     >
-      <div class="form-group">
-        <label for="login">
+      <div class="form-group mb-4">
+        <label for="login" class="mb-2">
           {{ $t("login") }}
-          <span class="signInPanelTooltip">
+          <span class="signInPanelTooltip ml-2">
             ({{ $t("pls_type_tip") }}: Login1)
           </span>
         </label>
@@ -19,30 +19,23 @@
           type="text"
           v-model.trim="login"
           autocomplete="off"
-          id="login"
+          id="login" class="text-left pl-2"
         />
-
-        <span class="errorLoginPassword" v-if="showError">{{
-          $t("login_and_password_must_match")
-        }}</span>
       </div>
 
-      <div class="form-group">
-        <label for="password">
+      <div class="form-group mb-4">
+        <label for="password" class="mb-2">
           {{ $t("password")
-          }}<span class="signInPanelTooltip"
+          }}<span class="signInPanelTooltip ml-2"
             >({{ $t("pls_type_tip") }}: Password1)</span
           >
         </label>
 
-        <input name="#" type="password" v-model.trim="password" id="password" />
-        <span class="errorLoginPassword" v-if="showError">{{
-          $t("login_and_password_must_match")
-        }}</span>
+        <input name="#" type="password" v-model.trim="password" id="password" class="text-left pl-2" />
       </div>
 
-      <div class="form-group">
-        <button>
+      <div class="form-group mb-4">
+        <button class="p-1 col-10 col-md-8">
           {{ $t("sign_in") }}
         </button>
       </div>
@@ -60,9 +53,10 @@ export default defineComponent({
     const router = useRouter();
     const login = ref("");
     const password = ref("");
-    const signInPanel = ref(null);
-    const showError = ref(false);
+    // const showError = ref(false);
     async function signIn() {
+      // showError.value = true;
+      return
       try {
         this.$toast.show(this.$t("logging_in_progress"));
         const response = await axios.post("/api/users/", {
@@ -93,86 +87,64 @@ export default defineComponent({
     return {
       login,
       password,
-      signInPanel,
       signIn,
-      showError,
+      // showError,
     };
   },
 });
 </script>
 
-<style scoped>
-.signInPanel {
-  position: absolute;
+<style lang="scss" scoped>
+.logInPanel {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-image: url(../assets/images/Logo.png);
+  background-image: url(@/assets/images/Logo.png);
   background-position: center;
   background-size: cover;
-  padding: 35px 18px;
-  text-align: center;
   width: 340px;
   border-left: 2px solid #00c3ff;
   border-right: 2px solid #00c3ff;
+
+  .form-group {
+    filter: blur(0.44px);
+    filter: sepia();
+    opacity: 0.7;
+    transition: all .12s linear;
+    label {
+      font-size: 13px;
+      span.signInPanelTooltip {
+        font-size: 11px;
+      }
+      & + input {
+        height: 32px;
+        width: 80%;
+        max-width: 360px;
+      }
+    }
+    button {
+      font-size: 15px;
+      background-color: deeppink;
+      border: 2px solid black;
+      border-radius: 7px;
+    }
+  &:hover {
+    opacity: 1;
+  }
+  }
 }
 
-.signInPanel .form-group {
-  font-size: 15px;
-  margin-bottom: 45px;
-  filter: blur(0.44px);
-  filter: sepia();
-  opacity: 0.7;
-}
 
-.signInPanel .form-group:hover {
-  opacity: 1;
-}
-
-.signInPanel .form-group label {
-  margin-bottom: 16px;
-  font-size: 13px;
-}
-
-.signInPanel .form-group label span.signInPanelTooltip {
-  font-size: 11px;
-  margin-left: 20px;
-}
-
-.signInPanel .form-group label + input {
-  height: 32px;
-  width: 95%;
-  max-width: 360px;
-  text-align: left;
-  padding-left: 15px;
-}
-
-.signInPanel .form-group button {
-  background-color: deeppink;
-  padding: 10px;
-  border: 2px solid black;
-  border-radius: 7px;
-  width: 80%;
-  margin-top: 20px;
-}
-
-.signInPanel span.errorLoginPassword,
-.form-group span.required {
-  margin-top: 10px;
-  display: block;
-  font-size: 12px;
-}
 
 @media (max-width: 768px) {
-  .signInPanel .form-group {
-    font-size: 16px;
-  }
-  .signInPanel .form-group label span.signInPanelTooltip {
-    font-size: 14px;
-  }
-  .signInPanel .form-group label + input {
-    height: 28px;
-    width: 75%;
+  .logInPanel {
+    .form-group {
+      label {
+        span.signInPanelTooltip {
+          font-size: 14px;
+        }
+      }
+    }
   }
 }
 </style>
