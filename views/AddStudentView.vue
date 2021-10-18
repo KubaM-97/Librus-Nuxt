@@ -1,29 +1,29 @@
 <template>
   <div class="addStudentPanel">
-    {{student}}
+    <!-- {{student}} -->
     <PersonalStudentData @getNewStudentName="getNewStudentNameHandler" :student="student" />
-    <StudentTable :student="student" />
-    <!-- <DialogActions @cancel="handleCancel" @submit="handleSubmit" />
-    <ClosePrompt :showPrompt.sync="showPrompt" /> -->
+    <table>
+      <tbody> 
+        <StudentTable :student="student" />
+      </tbody>
+    </table>
+    <DialogActions @cancel="handleCancel" @submit="handleSubmit" />
   </div>
 </template>
 
 <script>
 import DialogActions from "@/components/global/DialogActions";
-import ClosePrompt from "@/components/global/ClosePrompt";
 import StudentTable from "@/components/global/StudentTable";
 import PersonalStudentData from "@/components/addstudent/data/PersonalStudentData";
 import {
   defineComponent,
   ref,
   useRouter,
-  onBeforeUnmount,
   computed
 } from "@nuxtjs/composition-api";
 export default defineComponent({
   components: {
     DialogActions,
-    ClosePrompt,
     StudentTable,
     PersonalStudentData,
   },
@@ -32,35 +32,21 @@ export default defineComponent({
       const student = computed(() => root.$accessor.student);
 
     const gradesLength = ref(1);
-    const showPrompt = ref(false);
     function handleCancel() {
       student.value = {};
       gradesLength.value = 1;
     }
 
-    onBeforeUnmount(()=>{
-      // student.value.grades.map( grade => {
-      //     if (
-      //       this.$v.form.$invalid ||
-      //       !(grade.score && grade.weight) ||
-      //       (!grade.score && !grade.weight && grade.description)
-      //     ) {
-      //       showPrompt.value = true;
-      //       return
-      //     }
-      //   });
-    })
     
     function handleSubmit() {
-      showPrompt.value = true;
       this.$toast.show("Trwa dodawanie nowego ucznia");
       student.value.grades.map((grade) => grade.score && grade.weight);
       try {
-        axios.post("/api/students/new", {
-          student,
-        });
+        // axios.post("/api/students/new", {
+        //   student: student.value,
+        // });
         this.$toast.success("dodano nowego ucznia");
-        router.push({ path: "/group" });
+        router.push({ path: "/group/3B" });
       } catch (err) {
         console.error(err);
         this.$toast.error("failed_to_add nowego ucznia");
@@ -76,7 +62,6 @@ export default defineComponent({
       handleCancel,
       handleSubmit,
       getNewStudentNameHandler,
-      showPrompt,
       student,
     };
   },

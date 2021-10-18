@@ -8,11 +8,11 @@ export default defineComponent({
     function gradeColor(weight: number): string {
       switch (weight) {
         case 1:
-          return 'gradeWeightGreen'
+          return 'gradeWeightColor gradeWeightGreen'
         case 2:
-          return 'gradeWeightYellow'
+          return 'gradeWeightColor gradeWeightYellow'
         case 3:
-          return 'gradeWeightRed'
+          return 'gradeWeightColor gradeWeightRed'
         default:
           return ''
       }

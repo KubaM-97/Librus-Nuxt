@@ -1,6 +1,6 @@
 <template>
   <div class="ourStudentPanel" ref="editDataPanel">
-    <div class="container">
+      {{$v.$invalid}}
       <!-- {{student}} -->
       <form
         action="#"
@@ -8,148 +8,46 @@
         method="post"
         @submit.prevent="saveChanges"
       >
-      <!-- {{formData}} -->
-        <div v-for="data in formData" :key="data.property"> 
-          <!-- {{data.value}} -->
-          <label :for="data.property">{{data.property}} {{data.value.length}} {{Array.isArray(data.value)}}</label>
-          <input type="text" :id="data.property" v-model="student[data.property]" v-if="!Array.isArray(data.value)">
-          <input type="text" :id="data.property" v-model="student[data.property][subData.property]" v-else v-for="subData in data.value" :key="subData.property">
-          {{ student[data.property] }}
+        <div class="container">
+          <div class="row" v-for="data in formData" :key="data.property">
+            <div class="col-6">
+
+            <label :for="data.property">{{ $t(data.property) }}</label>
+            <input
+              v-if="!Array.isArray(data.value)"
+              type="text"
+              :name="data.property"
+              :id="data.property"
+              v-model.trim="$v.student[data.property].$model"
+            />
+            <input
+              v-else
+              v-for="subData in data.value"
+              :key="subData.property"
+              type="text"
+              :name="[data.property][subData.property]"
+              :id="[data.property][subData.property]"
+              v-model.trim="$v.student[data.property][subData.property].$model"
+            />
+            </div>
+            <div class="col-6">
+            {{ !Array.isArray(data.value) ? student[data.property] : nestedProperty(data.property) }}
+            
+            <div v-if="!Array.isArray(data.value) && $v.$invalid && $v.$dirty">{{data.errorMessage}}</div>
+            <!-- <div v-else-if="Array.isArray(data.value)">{{student[data.property][subData].errorMessage]}}</div> -->
+            </div>
+          </div>
         </div>
-
-        <!-- <div class="form-group">
-          <div class="row">
-            <div class="col-10">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-6 offset-md-2">
-                    <label for="firstName">Imię</label>
-                    <input name="#" type="text" autocomplete="off" id="firstName" v-model="student.firstName">
-                    <span class="wrongAdditionalInfo" id="wrongFirstName"></span>
-                  </div>
-                  <div class="col-md-4">
-                    {{student.firstName}}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-
-          <!-- <div class="form-group">
-            <div class="row">
-              <div class="col-10">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-6 offset-md-2">
-                      <label>Adres:</label>
-
-                      <input name="#" type="text" autocomplete="off" v-model="student.street.name" id="Street" placeholder="ulica">
-                      <span class="wrongAdditionalInfo" id="wrongStreet"></span>
-
-                      <input name="#" type="text" autocomplete="off" v-model="student.street.nr" id="HouseNr" placeholder="nr_domu">
-                      <span class="wrongAdditionalInfo" id="wrongHouseNr"></span>
-
-                      <input name="#" type="text" autocomplete="off" v-model="student.street.flat" id="FlatNr" placeholder="nr_mieszkania">
-                      <span class="wrongAdditionalInfo" id="wrongFlatNr"></span>
-
-                      <input name="#" type="text" autocomplete="off" v-model="student.street.postcode" id="PostCode" placeholder="kod pocztowy" >
-                      <span class="wrongAdditionalInfo" id="wrongPostCode"></span>
-
-                      <input name="#" type="text" autocomplete="off" v-model="student.street.city" id="City" placeholder="miasto">
-                      <span class="wrongAdditionalInfo" id="wrongCity">xxxxxxxxx</span>
-                    </div>
-                    <div class="col-md-4">
-                      ul.{{student.street.name}} {{student.street.nr}} m.{{student.street.flat}} <br />  {{student.street.postcode}} {{student.street.city}}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
-          
-
-
-          <!-- 
-            <div class="col-4">
-              <input type="text" :value="student.firstName" />
-            </div>
-             <div class="col-8">
-              {{ student.firstName}}
-            </div>
-          </div>
-            <div class="col-4">
-              <input type="text" :value="student.pesel" />
-            </div>
-             <div class="col-8">
-              {{ student.pesel}}
-            </div>
-          </div>
-            <div class="col-4">
-              <input type="text" :value="student.pesel" />
-            </div>
-             <div class="col-8">
-              {{ student.pesel}}
-            </div>
-          </div>
-        </div> 
-        -->
-        <!-- <div class="form-group">
-          <div class="row">
-            <div class="col-10">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-6 offset-md-2">
-                    <div class="form-group" v-for="data in formData" :key="data.id">
-      <label :for="data.id">{{ data.label }}:</label>
-      <input
-        type="text"
-        :id="data.id"
-        :name="data.id"
-        autocomplete="off"
-        v-model.trim.lazy="form[data.id]"
-        :placeholder="data.label"
-        @change="touch(data.id)"
-      />
-      <div v-if="$v[data.id].$invalid && $v[data.id].$dirty">{{ data.errorMessage }}</div>
-
-    </div>
-                    <label for="firstname">{{ $t("firstname") }}</label>
-                    <input
-                      name="#"
-                      type="text"
-                      autocomplete="off"
-                      id="firstname"
-                      v-model="student.firstName"
-                    />
-                  </div>
-                  <div class="col-md-4">
-                    {{ student.firstName }}
-                  </div>
-                </div>
-              </div>
-            </div>
-             <div class="col-2" v-if="showGreenCheckMark.firstName">
-                <img class="greenCheckMark" src="@/assets/images/greenCheckMark.png" alt="green check mark"> 
-                <transition name="showGreenMark">
-                  <div class="blackLayer" v-if="hideCheckMarkWithLayer.firstName" key="1">
-
-                  </div>
-                </transition>
-              </div>
-          </div>
-        </div> -->
       </form>
       <button
         name="possibleSaveData"
         class="btn btn-success btn-lg save"
+        :class="{ 'btn-primary': $v.student.$invalid && $v.student.$anyDirty }"
         :disabled="!isPossibleSave"
         @click="saved = !saved"
       >
         {{ $t("save_changes") }}
       </button>
-    </div>
 
     <button name="closeTheDataPanel" @click="$router.go(-1)">
       <img class="closeThePanel" src="@/assets/images/eXit.png" />
@@ -158,45 +56,227 @@
 </template>
 
 <script>
-import { useRoute, ref, useContext, useFetch } from "@nuxtjs/composition-api";
+import { useRoute, ref, useContext, useFetch, onUpdated } from "@nuxtjs/composition-api";
+import { helpers } from "vuelidate/lib/validators";
+const firstName = helpers.regex(
+  "firstName",
+  /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*( [A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)?$/
+);
+const lastName = helpers.regex(
+  "lastName",
+  /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)?$/
+);
+const pesel = helpers.regex("pesel", /^[0-9]{2}$/);
+const phone = helpers.regex("phone", /^([0-9]{7}|[0-9]{9})$/);
+const email = helpers.regex(
+  "email",
+  /^[a-zA-Z0-9-_\.]+@[a-zA-Z0-9-]+\.[a-z]+$/
+);
+const streetName = helpers.regex("streetName", /^[0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]*$/);
+const streetNr = helpers.regex(
+  "streetNr",
+  /^[0-9]+[a-zA-Z]?(\/?[0-9]*[a-zA-Z]?)?$/
+);
+const flat = helpers.regex("flat", /^[0-9]+[a-zA-Z]?$/);
+const postCode = helpers.regex("postCode", /^[0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]*$/);
+const city = helpers.regex(
+  "city",
+  /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*( (- )?[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)*$/
+);
 export default {
   name: "EditData",
-  setup() {
+  validations:{
+    student: {
+      firstName: { firstName },
+      lastName: { lastName },
+      pesel: { pesel },
+      phone: { phone },
+      email: { email },
+      street: {
+        name: { streetName },
+        nr: { streetNr },
+        flat: { flat },
+        postcode: { postCode },
+        city: { city },
+      },
+      mother: {
+        firstName: { firstName }, 
+        lastName: { lastName }, 
+        phone: { phone }, 
+        email: { email }, 
+      },
+      father: {
+        firstName: { firstName }, 
+        lastName: { lastName }, 
+        phone: { phone }, 
+        email: { email }, 
+      },
+    },
+  },
+  setup(p, {root}) {
     const route = useRoute();
     const id = route.value.params.id;
 
     const isPossibleSave = ref(true);
     const student = ref("");
-    const saved = ref(false)
-    const formData = ref([])
+    const saved = ref(false);
+    const formData = ref([]);
     const { $http } = useContext();
-function setFormData(){
-  formData.value = [
-      { property: 'firstName', value: student.value.firstName, errorMessage: 'dupdupdup' },
-      { property: 'street', value: [
-        {property: 'name', value: student.value.street.name, errorMessage: 'nazwa ulicy'},
-        {property: 'nr', value: student.value.street.nr, errorMessage: 'numer ulicy'},
-      ], errorMessage: 'jajajajajjajajaJAJA' },
+    // const address = computed(()=>this.$t('full_address', student.address))
+    function nestedProperty (property){
+      switch(property){
+        case 'street': {
+          return `ul. ${student.value.street.name} ${student.value.street.nr} m.${student.value.street.flat} 
+          
+          ${student.value.street.postcode} ${student.value.street.city}`
+        }
+        case 'mother': {
+          return `${student.value.mother.firstName} ${student.value.mother.lastName} ${student.value.mother.phone} ${student.value.mother.email}`
+        }
+        case 'father': {
+          return `${student.value.father.firstName} ${student.value.father.lastName} ${student.value.father.phone} ${student.value.father.email}`
+        }
+        default: {
+          return ''
+        }
+      }
+    }
+    function setFormData() {
+      formData.value = [
+        {
+          property: "firstName",
+          value: student.value.firstName,
+          errorMessage: root.$t('first_name_error'),
+        },
+        {
+          property: "lastName",
+          value: student.value.lastName,
+          errorMessage: root.$t('last_name_error'),
+        },
+        {
+          property: "pesel",
+          value: student.value.pesel,
+          errorMessage: root.$t('pesel_error'),
+        },
+        {
+          property: "phone",
+          value: student.value.phone,
+          errorMessage: root.$t('phone_error'),
+        },
+        {
+          property: "email",
+          value: student.value.email,
+          errorMessage: root.$t('email_error'),
+        },
+        {
+          property: "street",
+          value: [
+            {
+              property: "name",
+              value: student.value.street.name,
+              errorMessage: root.$t('street_name_error'),
+            },
+            {
+              property: "nr",
+              value: student.value.street.nr,
+              errorMessage: root.$t('street_nr_error'),
+            },
+            {
+              property: "flat",
+              value: student.value.street.flat,
+              errorMessage: root.$t('street_flat_error'),
+            },
+            {
+              property: "postcode",
+              value: student.value.street.postcode,
+              errorMessage: root.$t('street_postcode_error'),
+            },
+            {
+              property: "city",
+              value: student.value.street.city,
+              errorMessage: root.$t('street_city_error'),
+            },
+          ],
+        },
+        {
+          property: "mother",
+          value: [
+            {
+              property: "firstName",
+              value: student.value.mother.firstName,
+              errorMessage: root.$t('firstName_error'),
+            },
+            {
+              property: "lastName",
+              value: student.value.mother.lastName,
+              errorMessage: root.$t('lastName_error'),
+            },
+            {
+              property: "phone",
+              value: student.value.mother.phone,
+              errorMessage: root.$t('phone_error'),
+            },
+            {
+              property: "email",
+              value: student.value.mother.email,
+              errorMessage: root.$t('email_error'),
+            },
+          ],
+        },
+        {
+          property: "father",
+          value: [
+            {
+              property: "firstName",
+              value: student.value.father.firstName,
+              errorMessage: root.$t('firstName_error'),
+            },
+            {
+              property: "lastName",
+              value: student.value.father.lastName,
+              errorMessage: root.$t('lastName_error'),
+            },
+            {
+              property: "phone",
+              value: student.value.father.phone,
+              errorMessage: root.$t('phone_error'),
+            },
+            {
+              property: "email",
+              value: student.value.father.email,
+              errorMessage: root.$t('email_error'),
+            },
+          ],
+        },
+      ];
+    }
+    function touch(){
+      setTimeout(()=>{
 
-    ]
-}
+        console.log(root, this)
+      },2000)  
+      // this.$v[data].$touch()
+    }
+    touch()
+    onUpdated(()=>{
+      console.log(root, this)
+    })
     useFetch(async () => {
       student.value = await $http.$get(`api/students/${id}`);
-      setFormData()
+      setFormData();
     });
     function validatorData() {}
 
     function saveChanges() {
-      saved.value = true
+      saved.value = true;
       try {
         axios.put(`api/students/${id}`, {
-          student
+          student,
         });
-        this.$toast.success(this.$t('successfully_updated_student_data'))
+        this.$toast.success(this.$t("successfully_updated_student_data"));
       } catch (err) {
         console.error(err);
-        this.$toast.success(this.$t('successfully_updated_student_data'))
-
+        this.$toast.success(this.$t("successfully_updated_student_data"));
       }
     }
     return {
@@ -206,6 +286,7 @@ function setFormData(){
       isPossibleSave,
       formData,
       saved,
+      nestedProperty,
     };
   },
 };

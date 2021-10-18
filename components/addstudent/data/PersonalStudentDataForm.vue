@@ -181,7 +181,6 @@ export default defineComponent({
   display: block;
   float: right;
   width: 50%;
-  margin-right: 50px;
   background-color: black;
   border: 0.2px solid white;
   border-top: none;

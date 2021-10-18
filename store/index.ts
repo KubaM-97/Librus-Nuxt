@@ -27,14 +27,14 @@ export const state = () => ({
       city: '',
     },
     mother: {
-      firstname: '',
-      lastname: '',
+      firstName: '',
+      lastName: '',
       phone: '',
       email: '',
     },
     father: {
-      firstname: '',
-      lastname: '',
+      firstName: '',
+      lastName: '',
       phone: '',
       email: '',
     }
@@ -56,9 +56,9 @@ export const mutations = mutationTree(state, {
   setUser(state: State, payload: User): void {
     state.user = payload;
   },
-  // setStudent(state: State, payload: Student): void {
-  //   state.student = payload;
-  // },
+  setStudent(state: State, payload): void {
+    state.student = payload;
+  },
   updateStudent(state: State, payload) :void {
     state.student[payload.property] = payload.value;
   },

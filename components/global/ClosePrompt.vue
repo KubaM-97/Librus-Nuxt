@@ -13,28 +13,28 @@
 </template>
 
 <script>
-import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter, ref } from '@nuxtjs/composition-api'
 export default defineComponent({
     name: 'ClosePrompt',
-    props: {
-      showPrompt: {
-        type: Boolean,
-        required: false,
-        default: false
-      }
-    },
-    setup(props, { emit }){
+    setup(){
       const router = useRouter()
+      const path = ref('')
+      const showPrompt = ref(false)
       function quit(){
-        console.log(router);
-        router.go(1)
+        router.push({ path: path.value.path });
       }
-      function stay(){
-        emit('update:showPrompt', false);
+      function stay() {
+        showPrompt.value = false;
+      }
+      function preventLeaving(to){
+        showPrompt.value = true;
+        path.value = to
       }
       return {
+        showPrompt,
         quit,
-        stay
+        stay,
+        preventLeaving,
       }
     }
 })
