@@ -229,12 +229,12 @@ export default {
             {
               property: "firstName",
               value: student.value.father.firstName,
-              errorMessage: root.$t('firstName_error'),
+              errorMessage: root.$t('first_name_error'),
             },
             {
               property: "lastName",
               value: student.value.father.lastName,
-              errorMessage: root.$t('lastName_error'),
+              errorMessage: root.$t('last_name_error'),
             },
             {
               property: "phone",

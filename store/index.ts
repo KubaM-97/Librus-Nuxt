@@ -62,6 +62,36 @@ export const mutations = mutationTree(state, {
   updateStudent(state: State, payload) :void {
     state.student[payload.property] = payload.value;
   },
+  resetStudent(state: State, payload) :void {
+    state.student = {
+        firstName: '',
+        lastName: '',
+        pesel: '',
+        phone: '',
+        email: '',
+        grades: [],
+        street: {
+          name: '',
+          nr: '',
+          flat: '',
+          postcode: '',
+          city: '',
+        },
+        mother: {
+          firstName: '',
+          lastName: '',
+          phone: '',
+          email: '',
+        },
+        father: {
+          firstName: '',
+          lastName: '',
+          phone: '',
+          email: '',
+        }
+      
+    }
+  },
   removeGrade(state: State, payload: any) :void {
     state.student.grades.splice(payload, 1)
   },

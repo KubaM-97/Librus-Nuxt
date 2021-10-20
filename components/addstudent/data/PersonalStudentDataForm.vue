@@ -1,9 +1,9 @@
 <template>
   <form action="#" enctype="application/x-www-form-urlencoded" method="post">
-    <div class="addStudentPanelName">
-      <label for="name">
+    <div class="form-group mb-4">
+      <label for="name" class="mb-2">
         *{{ $t('firstName_and_lastName') }}:
-        <span class="nameTooltip">
+        <span class="fullNameTooltip d-block">
           {{ $t('double_lastNames_hint') }}
         </span>
       </label>
@@ -14,18 +14,17 @@
         v-model.trim="$v.fullName.$model"
         maxlength="30"
         autocomplete="off"
+        class="text-center"
       />
       <transition name="bounce">
         <div
-          class="error"
-          ref="errorFullname"
+          class="errorFullName d-block text-light"
           v-if="!$v.fullName.required && $v.fullName.$dirty"
         >
           {{ $t('fillname') }}
         </div>
         <div
-          class="error"
-          ref="errorFullname"
+          class="errorFullName d-block text-light"
           v-else-if="!$v.fullName.fullname"
         >
           {{ $t('no_characters') }}
@@ -33,12 +32,12 @@
       </transition>
     </div>
 
-    <div class="addStudentPanelNameInfo">
+    <div class="addStudentPanelNameInfo mb-4">
       {{ $t('additional_info') }}
-      <span
-        class="showInfo"
+      <button type="button"
+        class="showInfo cursor-pointer ml-2"
         @click="showAdditionalDataForm = !showAdditionalDataForm"
-        >{{ !showAdditionalDataForm ? $t('expand') : $t('collapse')}}</span
+        >{{ !showAdditionalDataForm ? $t('expand') : $t('collapse')}}</button
       >
 
       <transition @enter="enter" @leave="leave" :css="false">
@@ -124,94 +123,37 @@ export default defineComponent({
 });
 </script>
 
-<style>
-.addStudentPanelName input {
-  outline: none;
-  display: block;
-  margin: 10px auto;
-  text-align: center;
-  background-color: black;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-  text-shadow: none;
-  width: 65%;
-  font-size: 12px;
+<style lang="scss">
+
+.form-group {
+  .fullNameTooltip {
+    font-size: 9px;
+  }
+  .errorFullName {
+    font-size: 11px;
+    text-shadow: 5px 0px 5px #f0351d, -5px 0px 5px #f0351d, 0px 5px 5px #f0351d, 0px -5px 5px #f0351d;
+  }
+  input {
+    outline: none;
+    margin: 10px auto;
+    background-color: black;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    text-shadow: none;
+    font-size: 12px;
+    &:focus {
+      border: 2px solid #a5cda5;
+      -webkit-box-shadow: 0px 0px 10px 2px rgba(204, 204, 204, 0.9);
+      -moz-box-shadow: 0px 0px 10px 2px rgba(204, 204, 204, 0.9);
+      box-shadow: 0px 0px 10px 2px rgba(204, 204, 204, 0.9);
+    }
+  }
 }
-.addStudentPanelName input:focus {
-  border: 2px solid #a5cda5;
-  -webkit-box-shadow: 0px 0px 10px 2px rgba(204, 204, 204, 0.9);
-  -moz-box-shadow: 0px 0px 10px 2px rgba(204, 204, 204, 0.9);
-  box-shadow: 0px 0px 10px 2px rgba(204, 204, 204, 0.9);
-}
-.addStudentPanelName span.nameTooltip {
-  font-size: 9px;
-  display: block;
-}
-.addStudentPanelName span.required {
-  display: block;
-  font-size: 11px;
-  color: white;
-  text-shadow: 5px 0px 5px #f0351d, -5px 0px 5px #f0351d, 0px 5px 5px #f0351d,
-    0px -5px 5px #f0351d;
-}
-.addStudentPanelNameInfo {
-  margin-bottom: 50px;
-}
-.addStudentPanelNameInfo span.showInfo {
+button.showInfo {
+  background: transparent;
+  border: none;
   cursor: pointer;
   font-size: 9px;
-  margin-left: 25px;
-}
-.addStudentPanelNameInfo div.info {
-  margin-top: 50px;
-}
-.addStudentPanelNameInfo .form-group {
-  width: 100%;
-  display: inline-block;
-  vertical-align: top;
-}
-.addStudentPanelNameInfo label {
-  float: left;
-  padding-left: 25px;
-  margin-top: 15px;
-  font-size: 12px;
-}
-.addStudentPanelNameInfo input {
-  display: block;
-  float: right;
-  width: 50%;
-  background-color: black;
-  border: 0.2px solid white;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-  box-shadow: 2px 2px 0px 0px white;
-  text-align: left;
-  padding-left: 15px;
-  text-shadow: none;
-  font-size: 12px;
-}
-.addStudentPanelNameInfo span[class^="wrong"] {
-  font-size: 11.5px;
-  display: block;
-  width: 60%;
-  float: right;
-  margin-right: 30px;
-  margin-top: 11px;
-}
-@media (max-width: 768px) {
-  .addStudentPanelName {
-    margin-bottom: 0px;
-  }
-  .addStudentPanelName span.required {
-    height: 40px;
-  }
-  .addStudentPanelNameInfo input {
-    margin-right: 0px;
-  }
-  .addStudentPanelNameInfo span[class^="wrong"] {
-    margin-right: 0px;
-  }
 }
 </style>

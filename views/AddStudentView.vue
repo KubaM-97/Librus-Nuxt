@@ -9,12 +9,12 @@
         </tr>
       </tbody>
     </table>
-    <DialogActions @cancel="handleCancel" @submit="handleSubmit" />
+    <FormActions @cancel="handleCancel" @submit="handleSubmit" />
   </div>
 </template>
 
 <script>
-import DialogActions from "@/components/global/DialogActions";
+import FormActions from "@/components/global/FormActions";
 import StudentTable from "@/components/global/StudentTable";
 import PersonalStudentData from "@/components/addstudent/data/PersonalStudentData";
 import {
@@ -25,7 +25,7 @@ import {
 } from "@nuxtjs/composition-api";
 export default defineComponent({
   components: {
-    DialogActions,
+    FormActions,
     StudentTable,
     PersonalStudentData,
   },
@@ -35,7 +35,7 @@ export default defineComponent({
     const gradesLength = ref(1);
 
     function handleCancel() {
-      student.value = {};
+      root.$accessor.resetStudent()
       gradesLength.value = 1;
     }
 

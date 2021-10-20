@@ -56,12 +56,12 @@ export default {
   phone_error: 'Dokładnie 7 lub 9 cyfr',
   email_error: 'nazwa@domena.pl',
   street_name_error: 'Bez znaków specjalnych',
-  street_nr_error: 'Nr, Nr/Nr, Nr Litera <br /> np. 11 11/13 11A 11A/13B',
+  street_nr_error: 'Nr, Nr/Nr, Nr Litera np. 11 11/13 11A 11A/13B',
   street_flat_error: 'Liczba + ew.litera np.116F',
   street_postcode_error: '_ _ - _ _ _',
   street_city_error: 'Bez i znaków specjalnych',
-  first_name_error: 'Możliwe drugie imię <br />np. Jan Maria',
-  last_name_error: 'Brak cyfr i znaków specjalnych. <br /><br />Możliwe drugie nazwisko po myślniku <br />np. Ćwierć-Parzącha',
+  first_name_error: 'Możliwe drugie imię np. Jan Maria',
+  last_name_error: 'Brak cyfr i znaków specjalnych. Możliwe drugie nazwisko po myślniku np. Ćwierć-Parzącha',
 
 
   // Close prompt

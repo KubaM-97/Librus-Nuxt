@@ -1,16 +1,14 @@
 <template>
-  <div class="addStudentMainPanel">
     <div class="container">
       <div class="row">
-        <div class="col-lg-4">
+        <div class="col-12 col-lg-4 mt-4">
           <PersonalStudentDataForm />
         </div>
-        <div class="col-lg-8">
+        <div class="col-12 col-lg-8">
           <NewStudentGrades />
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 

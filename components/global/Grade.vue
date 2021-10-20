@@ -35,7 +35,7 @@
         <div class="col-7 col-md-5">
           <div class="addStudentPanelGradesContentSingleDescription">
             <span class="descriptionCount"
-              >{{ $t("characters_left_many", { characters }) }}.</span
+              >{{ leftCharactersMessage }}.</span
             >
 
             <label class="description"
@@ -72,9 +72,9 @@ import {
   useStore,
   computed,
 } from "@nuxtjs/composition-api";
-import gradesService from "@/assets/mixins/gradesMixins.ts";
+// import gradesService from "@/assets/mixins/gradesMixins.ts";
 
-export default defineComponent({
+export default {
   name: "Grade",
   props: {
     index: {
@@ -99,7 +99,11 @@ export default defineComponent({
       },
     },
   },
-  mixins: [gradesService],
+  // mixins: [gradesService],
+  mounted(){
+
+    // console.log('xx:', this);
+  },
   setup(props, { root }) {
     const index = props.index;
 
@@ -107,6 +111,7 @@ export default defineComponent({
     const characters = props.characters;
     const grades = computed(() => root.$accessor.student.grades);
     const grade = props.grade;
+    const leftCharactersMessage = ref( root.$t( "characters_left_many", { characters }) )
       let clonedGrades = [...grades.value];
       clonedGrades[index] = { ...grade };
       
@@ -115,14 +120,7 @@ export default defineComponent({
     watch(
       () => [...grade.description],
       () => {
-        const inputGradeDescription =
-          this.$refs[`grade_${index}`].querySelectorAll("input.description")[
-            index
-          ].value;
-        const descriptionCount = this.$refs[`grade_${index}`].querySelectorAll(
-          "span.descriptionCount"
-        )[index];
-        const counter = characters - inputGradeDescription.length;
+        const counter = characters - grade.description.length;
         switch (counter) {
           case 2:
           case 3:
@@ -130,17 +128,17 @@ export default defineComponent({
           case 22:
           case 23:
           case 24:
-            descriptionCount.innerHTML = root.$t("characters_left_few", {
+            leftCharactersMessage.value = root.$t("characters_left_few", {
               characters: counter,
             });
             break;
           case 1:
-            descriptionCount.innerHTML = root.$t("characters_left_one", {
+            leftCharactersMessage.value = root.$t("characters_left_one", {
               characters: counter,
             });
             break;
           default:
-            descriptionCount.innerHTML = root.$t("characters_left_many", {
+            leftCharactersMessage.value = root.$t("characters_left_many", {
               characters: counter,
             });
         }
@@ -148,7 +146,7 @@ export default defineComponent({
     );
 
     onBeforeUpdate(() => {
-      grade.date = gradesService.setup().getCurrentDate();
+      grade.date = root.getCurrentDate();
       updateStudentGrade();
     });
 
@@ -173,9 +171,10 @@ export default defineComponent({
       updateStudentGrade,
       remove,
       grades,
+      leftCharactersMessage,
     };
   },
-});
+};
 </script>
 
 <style scoped>

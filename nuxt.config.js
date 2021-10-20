@@ -29,8 +29,10 @@ export default {
   plugins: [
     '~/plugins/bootstrap.js',
     // '~/plugins/toast.js',
+    '~/plugins/mixins.js',
     '~/plugins/vuelidate.js',
     '~/plugins/vue-fragment.js',
+    '~/plugins/v-mask.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

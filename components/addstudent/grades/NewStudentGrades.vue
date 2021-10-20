@@ -1,12 +1,13 @@
 <template>
     <div class="addStudentPanelGrades">
-            <div class="addStudentPanelGradesTitle">
+            <div class="addStudentPanelGradesTitle mb-2">
               <span class="addStudentGradeSubpanelTitle">{{ $t('accumulated_grades') }}:</span>
             </div>
               <Grade :index="n-1"  @remove="handleRemove"
               class="addStudentPanelGradesContent"
               v-for="n in gradesLength"
               :key="n"
+              :ref="`gradeRef_${n-1}`"
               />
 
             <div class="showAnotherGrade">
@@ -34,12 +35,14 @@ export default defineComponent({
     },
     setup(props){
       const gradesLength = ref(1)
+      const gradesRefs = ref([])
       function handleRemove(index){
         props.grades.splice(index, 1)
       }
       return {
         gradesLength,
         handleRemove,
+        gradesRefs
       }
     }
 })

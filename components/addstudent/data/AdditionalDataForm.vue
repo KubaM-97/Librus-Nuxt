@@ -8,33 +8,31 @@
       >
         <div class="container">
 
-          <div class="row my-2" v-for="data in formData" :key="data.property">
-
-            <label class="col-12" :for="data.property">{{ $t(data.property) }}</label>
+          <div class="row mt-2 mb-3" v-for="data in formData" :key="data.property">
+            <label class="col-12" :for="data.property" :class="{'errorDataLabel': $v.student[data.property].$invalid}">{{ $t(data.property) }}</label>
             <input
               v-if="!Array.isArray(data.value)"
               type="text"
               :placeholder="$t(data.errorMessage)"
               :name="data.property"
               :id="data.property"
-              v-model.trim="student[data.property]"
-              class="col-6 text-center"
+              v-model.trim.lazy="$v.student[data.property].$model"
+              class="col-10"
+              :class="{'errorDataInput': $v.student[data.property].$invalid}"
+              autocomplete="off"
             />
             <input
               v-else
               v-for="subData in data.value"
               :key="subData.property"
               type="text"
-              :placeholder="$t([data.property][subData.property])"
+              :placeholder="$t(subData.errorMessage)"
               :name="[data.property][subData.property]"
               :id="[data.property][subData.property]"
-              v-model.trim="student[data.property][subData.property]"
-              class="col-7 text-center"
+              v-model.trim.lazy="student[data.property][subData.property]"
+              class="col-10"
+              autocomplete="off"
             />
-            <!-- {{ !Array.isArray(data.value) ? student[data.property] : nestedProperty(data.property) }} -->
-            
-             <!-- <div v-if="!Array.isArray(data.value) && $v.$invalid && $v.$dirty">{{data.errorMessage}}</div> -->
-            <!--<div v-else-if="Array.isArray(data.value)">{{student[data.property][subData].errorMessage}}</div> -->
             </div>
         </div>
       </form>
@@ -42,7 +40,7 @@
 </template>
 
 <script>
-import { helpers } from '@vuelidate/validators'
+import { helpers } from 'vuelidate/lib/validators'
 import { defineComponent, ref, computed, onUpdated, watchEffect } from "@nuxtjs/composition-api";
 const firstName = helpers.regex(
   "firstName",
@@ -173,12 +171,12 @@ export default defineComponent({
             {
               property: "firstName",
               value: student.value.mother.firstName,
-              errorMessage: root.$t('firstName_error'),
+              errorMessage: root.$t('first_name_error'),
             },
             {
               property: "lastName",
               value: student.value.mother.lastName,
-              errorMessage: root.$t('lastName_error'),
+              errorMessage: root.$t('last_name_error'),
             },
             {
               property: "phone",
@@ -198,12 +196,12 @@ export default defineComponent({
             {
               property: "firstName",
               value: student.value.father.firstName,
-              errorMessage: root.$t('firstName_error'),
+              errorMessage: root.$t('first_name_error'),
             },
             {
               property: "lastName",
               value: student.value.father.lastName,
-              errorMessage: root.$t('lastName_error'),
+              errorMessage: root.$t('last_name_error'),
             },
             {
               property: "phone",
@@ -220,8 +218,8 @@ export default defineComponent({
       ]);
 
 onUpdated(()=>{
-  const xxx = {...student.value}
-  root.$accessor.setStudent(xxx);
+  const clonedStudent = {...student.value}
+  root.$accessor.setStudent(clonedStudent);
 })
     return {
       formData,
@@ -232,5 +230,29 @@ onUpdated(()=>{
 });
 </script>
 
-<style>
+<style lang="scss">
+
+.errorDataLabel{
+  text-shadow: 5px 0px 20px  #f0351d, -5px 0px 20px  #f0351d, 0px 5px 20px  #f0351d, 0px -5px 20px  #f0351d;
+}
+.errorDataInput{
+  box-shadow: 1px 1px 5px #f0351d, -1px -1px 5px #f0351d, -1px 1px 5px #f0351d, 1px -1px 5px #f0351d;
+  border: 1px solid #f0351d;
+  
+}
+// ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+//     font-size: 80%;
+//     text-shadow: 5px 0px 20px  #f0351d, -5px 0px 20px  #f0351d, 0px 5px 20px  #f0351d, 0px -5px 20px  #f0351d;
+// }
+
+// :-ms-input-placeholder { /* Internet Explorer 10-11 */
+//     font-size: 80%;
+//     text-shadow: 5px 0px 20px  #f0351d, -5px 0px 20px  #f0351d, 0px 5px 20px  #f0351d, 0px -5px 20px  #f0351d;
+// }
+
+// ::-ms-input-placeholder { /* Microsoft Edge */
+//       font-size: 80%;
+//     text-shadow: 5px 0px 20px  #f0351d, -5px 0px 20px  #f0351d, 0px 5px 20px  #f0351d, 0px -5px 20px  #f0351d;
+// }
+
 </style>
