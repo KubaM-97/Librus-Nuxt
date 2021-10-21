@@ -3,6 +3,7 @@
         <div class="container">
 
           <div class="row mt-2 mb-3" v-for="data in formData" :key="data.property">
+            {{v.form.student[data.property]}}
             <label class="col-12" :class="{'errorDataLabel': v.form.student[data.property].$dirty && v.form.student[data.property]}">{{ $t(data.property) }}</label>
             <input
               v-if="!Array.isArray(data.value)"
@@ -11,9 +12,9 @@
               :name="data.property"
               :id="data.property"
               v-model.trim="student[data.property]"
-              @change="v.form.student[data.property].$touch()"
+              @change="showError($event.target.value, data.property)"
               class="col-10"
-              :class="{'errorDataInput': v.form.student[data.property].$dirty && v.form.student[data.property]}"
+              :class="{'errorDataInput': v.form.student[data.property].$dirty && v.form.student[data.property].$invalid}"
               autocomplete="off"
             />
             <input
@@ -39,7 +40,7 @@
 <script>
 import { defineComponent, ref, computed, onUpdated } from "@nuxtjs/composition-api";
 export default defineComponent({
-  props: ['showAdditionalDataForm', 'v'],
+  props: ['showAdditionalDataForm', 'v', 'form'],
   setup(props, {root} ){
     const studentState = computed(() => root.$accessor.student)
     const student = ref(Object.assign({}, studentState.value))
@@ -163,10 +164,19 @@ onUpdated(()=>{
   const clonedStudent = {...student.value}
   root.$accessor.setStudent(clonedStudent);
 })
+function showError(val, data){
+      // props.form.fullName = fullName.value
+      // props.v.form.fullName.$touch()
+      console.log(props);
+      props.form.student[data] = val
+      console.log('2');
+      props.v.form.student[data].$touch()
+    }
     return {
       formData,
       student,
       nestedProperty,
+      showError,
     }
   }
 });

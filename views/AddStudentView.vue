@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-   
-    <PersonalStudentData @getNewStudentName="getNewStudentNameHandler" :student="student" :v="$v" />
+   {{student}}
+    <PersonalStudentData @getNewStudentName="getNewStudentNameHandler" :student="student" :v="$v" :form="form"/>
     <table>
       <tbody> 
         <tr>
@@ -96,9 +96,10 @@ export default defineComponent({
   },
   setup(_, {root}) {
     const router = useRouter();
-    const student = computed(() => root.$accessor.student);
     const gradesLength = ref(1);
 const x = ref('')
+  const studentState = computed(() => root.$accessor.student)
+    const student = ref(Object.assign({}, studentState.value))
     function handleCancel() {
       root.$accessor.resetStudent()
       gradesLength.value = 0;
@@ -132,11 +133,16 @@ const x = ref('')
       student.value.name = formattedFullname;
     }
 
+    const form = ref({
+      fullName: '',
+      student: student.value
+    })
     return {
       handleCancel,
       handleSubmit,
       getNewStudentNameHandler,
       student,
+      form,
       x,
     };
   },
