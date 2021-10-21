@@ -16,7 +16,8 @@
      
     <StudentTable :student="student"/>
      
-    <button name="possibleSaveData" class="btn btn-success btn-lg save" :disabled="!isPossibleSave">
+    <!-- <button name="possibleSaveData" class="btn btn-success btn-lg save" :disabled="!isPossibleSave"> -->
+    <button name="possibleSaveData" class="btn btn-success btn-lg save">
       {{ $t('save_changes') }}
     </button>
    <button name="closeTheGradesPanel" @click="$router.go(-1)"><img class="closeThePanel" src="@/assets/images/eXit.png"/></button>
@@ -27,34 +28,23 @@
 import gradesService from "@/assets/mixins/gradesMixins.ts";
 import Grade from "@/components/global/Grade.vue";
 import StudentTable from "@/components/global/StudentTable.vue";
-import {
-  useRoute,
-  useStore,
-  ref,
-  useContext,
-  useFetch,
-} from "@nuxtjs/composition-api";
+import { ref } from "@nuxtjs/composition-api";
 export default {
   name: "EditGrades",
   components: {
     Grade,
     StudentTable,
+  },  
+  props: {
+    student: {
+      type: Object,
+      required: true
+    }
   },
   mixins: [gradesService],
-  setup(_, { root }) {
-    console.log(this, root);
-    const store = useStore();
-    const route = useRoute();
+  setup() {
     const gradesLength = ref(0);
-    const studentId = route.value.params.studentId;
-    const student = ref("");
-    const { $http } = useContext();
-
-    useFetch(async () => {
-      student.value = await $http.$get(`api/students/${studentId}`);
-    });
     return {
-      student,
       gradesLength,
     };
   },

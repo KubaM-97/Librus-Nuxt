@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <!-- {{student}} -->
+    {{student}}
     <PersonalStudentData @getNewStudentName="getNewStudentNameHandler" :student="student" />
     <table>
       <tbody> 
@@ -36,26 +36,34 @@ export default defineComponent({
 
     function handleCancel() {
       root.$accessor.resetStudent()
-      gradesLength.value = 1;
+      gradesLength.value = 0;
+      setTimeout(()=>{
+        gradesLength.value = 1;
+      }, 1000)
     }
 
     function handleSubmit() {
-      this.$toast.show("Trwa dodawanie nowego ucznia");
+      if(root.$v.$invalid) {
+        this.$toast.error(root.$t('failed_form'));
+        return
+      }
+      this.$toast.show(root.$t('adding_student_in_progress'));
       student.value.grades.map((grade) => grade.score && grade.weight);
+      console.log(student.value);
       try {
         // axios.post("/api/students/new", {
         //   student: student.value,
         // });
-        this.$toast.success("dodano nowego ucznia");
+        this.$toast.success(root.$t('successfully_added_new_student'));
         router.push({ path: "/group/3B" });
       } catch (err) {
         console.error(err);
-        this.$toast.error("failed_to_add nowego ucznia");
+        this.$toast.error(root.$t('failed_to_add_new_student'));
       }
     };
 
-    function getNewStudentNameHandler(fullname) {
-      const formattedFullname = fullname.split(" ").reverse().join();
+    function getNewStudentNameHandler(fullName) {
+      const formattedFullname = fullName.split(" ").reverse().join();
       student.value.name = formattedFullname;
     }
 

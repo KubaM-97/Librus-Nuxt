@@ -1,7 +1,7 @@
 <template>
-  <div class="addStudentPanelGradesContentSingle" :ref="`grade_${index}`">
+  <div class="addStudentPanelGradesContentSingle mb-3" :ref="`grade_${index}`">
     <div class="container">
-      <div class="row">
+      <div class="row singleGrade">
         <div class="col-2 col-md-3">
           <div class="addStudentPanelGradesContentSingleGrade">
             <div class="select">
@@ -34,9 +34,7 @@
 
         <div class="col-7 col-md-5">
           <div class="addStudentPanelGradesContentSingleDescription">
-            <span class="descriptionCount"
-              >{{ leftCharactersMessage }}.</span
-            >
+            <span class="descriptionCount">{{ leftCharactersMessage }}.</span>
 
             <label class="description"
               >{{ $t("grade_description") }}:
@@ -74,7 +72,7 @@ import {
 } from "@nuxtjs/composition-api";
 // import gradesService from "@/assets/mixins/gradesMixins.ts";
 
-export default {
+export default defineComponent({
   name: "Grade",
   props: {
     index: {
@@ -99,11 +97,6 @@ export default {
       },
     },
   },
-  // mixins: [gradesService],
-  mounted(){
-
-    // console.log('xx:', this);
-  },
   setup(props, { root }) {
     const index = props.index;
 
@@ -111,12 +104,13 @@ export default {
     const characters = props.characters;
     const grades = computed(() => root.$accessor.student.grades);
     const grade = props.grade;
-    const leftCharactersMessage = ref( root.$t( "characters_left_many", { characters }) )
-      let clonedGrades = [...grades.value];
-      clonedGrades[index] = { ...grade };
-      
-      // console.log(clonedGrades, grade);
-      root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
+    const leftCharactersMessage = ref(
+      root.$t("characters_left_many", { characters })
+    );
+    let clonedGrades = [...grades.value];
+    clonedGrades[index] = { ...grade };
+
+    root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
     watch(
       () => [...grade.description],
       () => {
@@ -152,7 +146,7 @@ export default {
 
     //places a new mark, weight, description or date in appropriate place according to the provided index inside newGrades in Vuex
     function updateStudentGrade() {
-    clonedGrades = [...grades.value];
+      clonedGrades = [...grades.value];
       clonedGrades[index] = { ...grade };
       // console.log(clonedGrades);
       root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
@@ -174,22 +168,22 @@ export default {
       leftCharactersMessage,
     };
   },
-};
+});
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .addStudentPanelGradesContentSingle {
-  margin-bottom: 30px;
-}
-
-.addStudentPanelGradesContentSingle .row > div {
-  display: grid;
-  align-content: flex-end;
-}
-
-@media (max-width: 768px) {
-  .addStudentPanelGradesContentSingle {
-    width: 100%;
+  .singleGrade {
+    display: flex;
+    align-items: flex-end;
+    input:focus,
+    select:focus {
+        border: 2px solid #a5cda5;
+        -webkit-box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
+        -moz-box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
+        box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
+    
+    }
   }
 }
 </style>

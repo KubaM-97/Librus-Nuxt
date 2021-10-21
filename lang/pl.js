@@ -64,6 +64,7 @@ export default {
   last_name_error: 'Brak cyfr i znaków specjalnych. Możliwe drugie nazwisko po myślniku np. Ćwierć-Parzącha',
 
 
+
   // Close prompt
   close_warning: 'Na pewno? Dane zostaną utracone...',
   close_quit: 'Wychodzę',
@@ -97,6 +98,7 @@ export default {
   failed_to_add_new_student: 'Nie udało się dodać nowego ucznia',
   failed_to_update_student_data: 'Nie udało się zaktualizować danych ucznia',
 
+  adding_student_in_progress: 'Trwa dodawanie nowego ucznia',
 
 
   fillname:'Uzupełnij imię i nazwisko',

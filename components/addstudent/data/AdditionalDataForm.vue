@@ -1,24 +1,19 @@
 <template>
   <div class="showAdditionalDataForm" v-if="showAdditionalDataForm">
-     <form
-        action="#"
-        enctype="application/x-www-form-urlencoded"
-        method="post"
-        @submit.prevent="saveChanges"
-      >
         <div class="container">
 
           <div class="row mt-2 mb-3" v-for="data in formData" :key="data.property">
-            <label class="col-12" :for="data.property" :class="{'errorDataLabel': $v.student[data.property].$invalid}">{{ $t(data.property) }}</label>
+            <label class="col-12" :for="data.property" :class="{'errorDataLabel': v.form.student[data.property].$dirty && v.form.student[data.property]}">{{ $t(data.property) }}</label>
             <input
               v-if="!Array.isArray(data.value)"
               type="text"
-              :placeholder="$t(data.errorMessage)"
+              :placeholder="data.errorMessage"
               :name="data.property"
               :id="data.property"
-              v-model.trim.lazy="$v.student[data.property].$model"
+              v-model.trim="student[data.property]"
+              @change="v.form.student[data.property].$touch()"
               class="col-10"
-              :class="{'errorDataInput': $v.student[data.property].$invalid}"
+              :class="{'errorDataInput': v.form.student[data.property].$dirty && v.form.student[data.property]}"
               autocomplete="off"
             />
             <input
@@ -26,81 +21,30 @@
               v-for="subData in data.value"
               :key="subData.property"
               type="text"
-              :placeholder="$t(subData.errorMessage)"
+              :placeholder="subData.errorMessage"
               :name="[data.property][subData.property]"
               :id="[data.property][subData.property]"
               v-model.trim.lazy="student[data.property][subData.property]"
+              @change="v.form.student[data.property][subData.property].$touch"
               class="col-10"
+              :class="{'errorDataInput': v.form.student[data.property].$invalid && v.form.student[data.property].$dirty}"
               autocomplete="off"
             />
-            </div>
+            <div class="errorDataLabel d-block text-light" v-if="v.form.student[data.property].$dirty">
+            {{ v.form.student[data.property] ? $t("no_characters") : $t("fillname")}}
         </div>
-      </form>
+          </div>
+        </div>
   </div>
 </template>
 
 <script>
-import { helpers } from 'vuelidate/lib/validators'
-import { defineComponent, ref, computed, onUpdated, watchEffect } from "@nuxtjs/composition-api";
-const firstName = helpers.regex(
-  "firstName",
-  /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*( [A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)?$/
-);
-const lastName = helpers.regex(
-  "lastName",
-  /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)?$/
-);
-const pesel = helpers.regex("pesel", /^[0-9]{2}$/);
-const phone = helpers.regex("phone", /^([0-9]{7}|[0-9]{9})$/);
-const email = helpers.regex(
-  "email",
-  /^[a-zA-Z0-9-_\.]+@[a-zA-Z0-9-]+\.[a-z]+$/
-);
-const streetName = helpers.regex("streetName", /^[0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]*$/);
-const streetNr = helpers.regex(
-  "streetNr",
-  /^[0-9]+[a-zA-Z]?(\/?[0-9]*[a-zA-Z]?)?$/
-);
-const flat = helpers.regex("flat", /^[0-9]+[a-zA-Z]?$/);
-const postCode = helpers.regex("postCode", /^[0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]*$/);
-const city = helpers.regex(
-  "city",
-  /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*( (- )?[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)*$/
-);
+import { defineComponent, ref, computed, onUpdated } from "@nuxtjs/composition-api";
 export default defineComponent({
- validations () {
-    return {
-      student: {
-      pesel: { pesel },
-      phone: { phone },
-      email: { email },
-      street: {
-        name: { streetName },
-        nr: { streetNr },
-        flat: { flat },
-        postcode: { postCode },
-        city: { city },
-      },
-      mother: {
-        firstName: { firstName }, 
-        lastName: { lastName }, 
-        phone: { phone }, 
-        email: { email }, 
-      },
-      father: {
-        firstName: { firstName }, 
-        lastName: { lastName }, 
-        phone: { phone }, 
-        email: { email }, 
-      },
-    },
-    }
-    },
-  props: ['showAdditionalDataForm'],
-  setup(_props, {root} ){
+  props: ['showAdditionalDataForm', 'v'],
+  setup(props, {root} ){
     const studentState = computed(() => root.$accessor.student)
-    const student =  ref(Object.assign({}, studentState.value))
-    
+    const student = ref(Object.assign({}, studentState.value))
     function nestedProperty (property){
       switch(property){
         case 'street': {
@@ -119,10 +63,11 @@ export default defineComponent({
         }
       }
     }
+    console.log(student);
     const formData = ref([
         {
           property: "pesel",
-          value: student.pesel,
+          value: student.value.pesel,
           errorMessage: root.$t('pesel_error'),
         },
         {
@@ -218,6 +163,7 @@ export default defineComponent({
       ]);
 
 onUpdated(()=>{
+  console.log(props.v, props.v.form.student.pesel);
   const clonedStudent = {...student.value}
   root.$accessor.setStudent(clonedStudent);
 })
@@ -240,6 +186,13 @@ onUpdated(()=>{
   border: 1px solid #f0351d;
   
 }
+input:focus {
+        border: 2px solid #a5cda5;
+        -webkit-box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
+        -moz-box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
+        box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
+    
+    }
 // ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
 //     font-size: 80%;
 //     text-shadow: 5px 0px 20px  #f0351d, -5px 0px 20px  #f0351d, 0px 5px 20px  #f0351d, 0px -5px 20px  #f0351d;

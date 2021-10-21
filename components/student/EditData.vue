@@ -1,7 +1,5 @@
 <template>
   <div class="ourStudentPanel" ref="editDataPanel">
-      {{$v.$invalid}}
-      <!-- {{student}} -->
       <form
         action="#"
         enctype="application/x-www-form-urlencoded"
@@ -113,59 +111,60 @@ export default {
       },
     },
   },
-  setup(p, {root}) {
-    const route = useRoute();
-    const id = route.value.params.id;
+  props: {
+    student: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(props, {root}) {
 
     const isPossibleSave = ref(true);
-    const student = ref("");
+    const student = props.student;
     const saved = ref(false);
     const formData = ref([]);
-    const { $http } = useContext();
-    // const address = computed(()=>this.$t('full_address', student.address))
     function nestedProperty (property){
       switch(property){
         case 'street': {
-          return `ul. ${student.value.street.name} ${student.value.street.nr} m.${student.value.street.flat} 
+          return `ul. ${student.street.name} ${student.street.nr} m.${student.street.flat} 
           
-          ${student.value.street.postcode} ${student.value.street.city}`
+          ${student.street.postcode} ${student.street.city}`
         }
         case 'mother': {
-          return `${student.value.mother.firstName} ${student.value.mother.lastName} ${student.value.mother.phone} ${student.value.mother.email}`
+          return `${student.mother.firstName} ${student.mother.lastName} ${student.mother.phone} ${student.mother.email}`
         }
         case 'father': {
-          return `${student.value.father.firstName} ${student.value.father.lastName} ${student.value.father.phone} ${student.value.father.email}`
+          return `${student.father.firstName} ${student.father.lastName} ${student.father.phone} ${student.father.email}`
         }
         default: {
           return ''
         }
       }
     }
-    function setFormData() {
       formData.value = [
         {
           property: "firstName",
-          value: student.value.firstName,
+          value: student.firstName,
           errorMessage: root.$t('first_name_error'),
         },
         {
           property: "lastName",
-          value: student.value.lastName,
+          value: student.lastName,
           errorMessage: root.$t('last_name_error'),
         },
         {
           property: "pesel",
-          value: student.value.pesel,
+          value: student.pesel,
           errorMessage: root.$t('pesel_error'),
         },
         {
           property: "phone",
-          value: student.value.phone,
+          value: student.phone,
           errorMessage: root.$t('phone_error'),
         },
         {
           property: "email",
-          value: student.value.email,
+          value: student.email,
           errorMessage: root.$t('email_error'),
         },
         {
@@ -173,27 +172,27 @@ export default {
           value: [
             {
               property: "name",
-              value: student.value.street.name,
+              value: student.street.name,
               errorMessage: root.$t('street_name_error'),
             },
             {
               property: "nr",
-              value: student.value.street.nr,
+              value: student.street.nr,
               errorMessage: root.$t('street_nr_error'),
             },
             {
               property: "flat",
-              value: student.value.street.flat,
+              value: student.street.flat,
               errorMessage: root.$t('street_flat_error'),
             },
             {
               property: "postcode",
-              value: student.value.street.postcode,
+              value: student.street.postcode,
               errorMessage: root.$t('street_postcode_error'),
             },
             {
               property: "city",
-              value: student.value.street.city,
+              value: student.street.city,
               errorMessage: root.$t('street_city_error'),
             },
           ],
@@ -203,22 +202,22 @@ export default {
           value: [
             {
               property: "firstName",
-              value: student.value.mother.firstName,
+              value: student.mother.firstName,
               errorMessage: root.$t('firstName_error'),
             },
             {
               property: "lastName",
-              value: student.value.mother.lastName,
+              value: student.mother.lastName,
               errorMessage: root.$t('lastName_error'),
             },
             {
               property: "phone",
-              value: student.value.mother.phone,
+              value: student.mother.phone,
               errorMessage: root.$t('phone_error'),
             },
             {
               property: "email",
-              value: student.value.mother.email,
+              value: student.mother.email,
               errorMessage: root.$t('email_error'),
             },
           ],
@@ -228,51 +227,34 @@ export default {
           value: [
             {
               property: "firstName",
-              value: student.value.father.firstName,
+              value: student.father.firstName,
               errorMessage: root.$t('first_name_error'),
             },
             {
               property: "lastName",
-              value: student.value.father.lastName,
+              value: student.father.lastName,
               errorMessage: root.$t('last_name_error'),
             },
             {
               property: "phone",
-              value: student.value.father.phone,
+              value: student.father.phone,
               errorMessage: root.$t('phone_error'),
             },
             {
               property: "email",
-              value: student.value.father.email,
+              value: student.father.email,
               errorMessage: root.$t('email_error'),
             },
           ],
         },
       ];
-    }
-    function touch(){
-      setTimeout(()=>{
-
-        console.log(root, this)
-      },2000)  
-      // this.$v[data].$touch()
-    }
-    touch()
-    onUpdated(()=>{
-      console.log(root, this)
-    })
-    useFetch(async () => {
-      student.value = await $http.$get(`api/students/${id}`);
-      setFormData();
-    });
-    function validatorData() {}
 
     function saveChanges() {
       saved.value = true;
       try {
-        axios.put(`api/students/${id}`, {
-          student,
-        });
+        // axios.put(`api/students/${id}`, {
+        //   student,
+        // });
         this.$toast.success(this.$t("successfully_updated_student_data"));
       } catch (err) {
         console.error(err);
@@ -280,8 +262,6 @@ export default {
       }
     }
     return {
-      student,
-      validatorData,
       saveChanges,
       isPossibleSave,
       formData,

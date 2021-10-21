@@ -32,12 +32,12 @@ export default defineComponent({
     const { $http } = useContext();
 
     useFetch(async () => {
-      students.value = await $http.$get('http://localhost:1222/posts')
+      // students.value = await $http.$get('http://localhost:1222/posts')
       // studentsa.value = await $http.$put('http://localhost:1222/posts/255', {imie: 'dupsko', naz: 'jenot'})
       // studentsa.value = await $http.$get('http://localhost:1222/posts/255')
-      // students.value = await $http.$post(`api/students/`, 
-      //   { group: groupId }
-      // )
+      students.value = await $http.$post(`api/students/`, 
+        { group: groupId }
+      )
     })
 
     return { students }

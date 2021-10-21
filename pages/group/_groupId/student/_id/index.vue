@@ -1,9 +1,13 @@
 <template>
-  <div class="editStudentPanel">
-    <div class="students">
+  <div class="wrapper text-left pl-2">
       <div class="summary">
-
-      <StudentTable :student="student" />
+        <table>
+          <tbody> 
+      <tr>
+        <StudentTable :student="student" />
+      </tr>
+      </tbody>
+      </table>
       </div>
       <div>
         <div class="form-group">
@@ -51,20 +55,19 @@
           >
         </div>
       </div>
-      <!-- <Nuxt /> -->
       <div>
-        <button @click="property = 'Data'">{{ $t("edit_data") }}</button>
-        <button @click="property = 'Grades'">{{ $t("edit_grades") }}</button>
-        <NuxtChild v-if="property" @close="property = null" :property="property"/> 
+        <NuxtLink tag="button" :to="{ query: { edit: 'data' }}">{{ $t("edit_data") }}</NuxtLink> 
+        <NuxtLink tag="button" :to="{ query: { edit: 'grades' }}">{{ $t("edit_grades") }}</NuxtLink> 
+       <component :is="chosenComponent" :student="student"/>
       </div>
     </div>
 
-    <div></div>
-  </div>
 </template>
 
 <script>
 import StudentTable from "@/components/global/StudentTable";
+import EditData from "@/components/student/EditData";
+import EditGrades from "@/components/student/EditGrades";
 import gradesService from "@/assets/mixins/gradesMixins.ts";
 import {
   defineComponent,
@@ -72,12 +75,16 @@ import {
   ref,
   useContext,
   useFetch,
+  shallowRef,
+  watch,
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   name: "Student",
   components: {
     StudentTable,
+    EditData,
+    EditGrades,
   },
   mixins: [gradesService],
   setup() {
@@ -85,6 +92,29 @@ export default defineComponent({
     const studentId = route.value.params.id;
     const student = ref("");
     const property = ref(null);
+
+    const chosenComponent = shallowRef(null);
+    if(route.value.query.data){
+      chosenComponent.value = data
+    }
+    else if(route.value.query.grades) {
+      chosenComponent.value = EditGrades
+    }
+    watch(()=>route.value.query, () => {
+      switch(route.value.query.edit) {
+        case 'data': {
+          chosenComponent.value = EditData;
+          break;
+        }
+        case 'grades': {
+          chosenComponent.value = EditGrades;
+          break;
+        }
+        default: {
+          chosenComponent.value = null
+        }
+      }
+    })
     // function xxx() {
     //   history.pushState(
     //     {},
@@ -106,18 +136,14 @@ export default defineComponent({
       studentId,
       student,
       property,
+      chosenComponent,
     };
   },
 });
 </script>
 
 
-<style>
-div.students {
-  width: 90%;
-  margin: 50px auto;
-  font-size: 13px;
-}
+<style lang="scss" scoped>
 
 button {
   background-color: blueviolet;

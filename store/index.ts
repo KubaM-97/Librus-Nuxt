@@ -93,7 +93,12 @@ export const mutations = mutationTree(state, {
     }
   },
   removeGrade(state: State, payload: any) :void {
-    state.student.grades.splice(payload, 1)
+    state.student.grades[payload] = {
+      score: '',
+      weight: '',
+      description: '',
+      date: '',
+    }
   },
 })
 export const actions = actionTree(
