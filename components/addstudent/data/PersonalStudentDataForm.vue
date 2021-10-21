@@ -7,19 +7,19 @@
           {{ $t("double_lastNames_hint") }}
         </span>
       </label>
-      {{v.form.fullName}}
-      {{v.form.fullName.required}}
-      {{v.form.fullName.fullName}}
       <input
         type="text"
         id="name"
         name="name"
-        v-model.trim="form.fullName"
+        v-model.trim="v.form.fullName.$model"
         maxlength="30"
         autocomplete="off"
         class="text-center"
         @change="v.form.fullName.$touch()"
       />
+      {{v.form.fullName}}
+      {{v.form.fullName.required}}
+      {{v.form.fullName.fullName}}
       <transition name="bounce">
         <div class="errorFullName d-block text-light" v-if="v.form.fullName.$invalid && v.form.fullName.$dirty">
             {{ v.form.fullName.fullName ? $t("no_characters") : $t("fillname")}}
@@ -47,23 +47,11 @@
 <script>
 import { defineComponent, ref, watch } from "@nuxtjs/composition-api";
 import AdditionalDataForm from "@/components/addstudent/data/AdditionalDataForm.vue";
-import { helpers, required } from "vuelidate/lib/validators";
-const fullName = helpers.regex(
-  "fullName",
-  // /^[A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]*( [A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]*)+(-[A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]+)?$/
-   /^[0-9]{2}$/
-);
 export default defineComponent({
   name: "PersonalStudentDataForm",
   components: {
     AdditionalDataForm,
   },
-   validations: {
-    form: {
-      fullName: {
-        required,
-        fullName,
-      },}},
   props: ['v'],
   setup(_, { root }) {
     // const fullName = ref("");

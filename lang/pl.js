@@ -97,6 +97,7 @@ export default {
   failed_to_fetch_students_list: 'Nie udało się pobrać listy uczniów',
   failed_to_add_new_student: 'Nie udało się dodać nowego ucznia',
   failed_to_update_student_data: 'Nie udało się zaktualizować danych ucznia',
+  failed_form_message: 'Operacja przerwana. W formularzu wystąpił błąd',
 
   adding_student_in_progress: 'Trwa dodawanie nowego ucznia',
 

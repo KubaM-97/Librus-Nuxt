@@ -3,7 +3,7 @@
         <div class="container">
 
           <div class="row mt-2 mb-3" v-for="data in formData" :key="data.property">
-            <label class="col-12" :for="data.property" :class="{'errorDataLabel': v.form.student[data.property].$dirty && v.form.student[data.property]}">{{ $t(data.property) }}</label>
+            <label class="col-12" :class="{'errorDataLabel': v.form.student[data.property].$dirty && v.form.student[data.property]}">{{ $t(data.property) }}</label>
             <input
               v-if="!Array.isArray(data.value)"
               type="text"
@@ -25,13 +25,11 @@
               :name="[data.property][subData.property]"
               :id="[data.property][subData.property]"
               v-model.trim.lazy="student[data.property][subData.property]"
-              @change="v.form.student[data.property][subData.property].$touch"
+              @change="v.form.student[data.property][subData.property].$touch()"
               class="col-10"
               :class="{'errorDataInput': v.form.student[data.property].$invalid && v.form.student[data.property].$dirty}"
               autocomplete="off"
             />
-            <div class="errorDataLabel d-block text-light" v-if="v.form.student[data.property].$dirty">
-            {{ v.form.student[data.property] ? $t("no_characters") : $t("fillname")}}
         </div>
           </div>
         </div>
@@ -63,7 +61,6 @@ export default defineComponent({
         }
       }
     }
-    console.log(student);
     const formData = ref([
         {
           property: "pesel",
@@ -163,7 +160,6 @@ export default defineComponent({
       ]);
 
 onUpdated(()=>{
-  console.log(props.v, props.v.form.student.pesel);
   const clonedStudent = {...student.value}
   root.$accessor.setStudent(clonedStudent);
 })
