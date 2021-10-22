@@ -98,8 +98,8 @@ export default defineComponent({
     const router = useRouter();
     const gradesLength = ref(1);
 const x = ref('')
-  const studentState = computed(() => root.$accessor.student)
-    const student = ref(Object.assign({}, studentState.value))
+  const student = computed(() => root.$accessor.student)
+    // const student = ref(Object.assign({}, studentState.value))
     function handleCancel() {
       root.$accessor.resetStudent()
       gradesLength.value = 0;

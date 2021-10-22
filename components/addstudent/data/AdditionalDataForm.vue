@@ -1,39 +1,37 @@
 <template>
   <div class="showAdditionalDataForm" v-if="showAdditionalDataForm">
         <div class="container">
-
+aaa:{{form2}}:bbb
+<!-- xxx:{{student.street}}:yyy -->
           <div class="row mt-2 mb-3" v-for="data in formData" :key="data.property">
-            {{v.form.student[data.property]}}
-            <label class="col-12" :class="{'errorDataLabel': v.form.student[data.property].$dirty && v.form.student[data.property]}">{{ $t(data.property) }}</label>
-            <input
+            <label class="col-12" :class="{'errorDataLabel': v.form.student[data.property].$invalid && v.form.student[data.property].$dirty}">{{ $t(data.property) }}</label>
+            <!-- <input
               v-if="!Array.isArray(data.value)"
               type="text"
               :placeholder="data.errorMessage"
               :name="data.property"
               :id="data.property"
-              v-model.trim="student[data.property]"
+              v-model.trim="form.student[data.property]"
               @change="showError($event.target.value, data.property)"
               class="col-10"
-              :class="{'errorDataInput': v.form.student[data.property].$dirty && v.form.student[data.property].$invalid}"
+              :class="{'errorDataInput': v.form.student[data.property].$invalid && v.form.student[data.property].$dirty}"
               autocomplete="off"
-            />
+            /> -->
             <input
-              v-else
               v-for="subData in data.value"
               :key="subData.property"
               type="text"
               :placeholder="subData.errorMessage"
               :name="[data.property][subData.property]"
               :id="[data.property][subData.property]"
-              v-model.trim.lazy="student[data.property][subData.property]"
-              @change="v.form.student[data.property][subData.property].$touch()"
+              v-model="form2.street.name"
               class="col-10"
-              :class="{'errorDataInput': v.form.student[data.property].$invalid && v.form.student[data.property].$dirty}"
+              :class="{'errorDataInput': v.form.student[data.property][subData.property].$invalid && v.form.student[data.property][subData.property].$dirty}"
               autocomplete="off"
             />
+              <!-- @change="showError($event.target.value, [data.property], [subData.property])" -->
         </div>
           </div>
-        </div>
   </div>
 </template>
 
@@ -42,8 +40,13 @@ import { defineComponent, ref, computed, onUpdated } from "@nuxtjs/composition-a
 export default defineComponent({
   props: ['showAdditionalDataForm', 'v', 'form'],
   setup(props, {root} ){
+    const form = {...props.form}
+    const form2 = ref({...props.form.student, street: Object.assign({},form.student.street)})
+    console.log(form);
     const studentState = computed(() => root.$accessor.student)
-    const student = ref(Object.assign({}, studentState.value))
+    const student = ref({
+      street: Object.assign({},form.student.street)
+    })
     function nestedProperty (property){
       switch(property){
         case 'street': {
@@ -63,120 +66,139 @@ export default defineComponent({
       }
     }
     const formData = ref([
-        {
-          property: "pesel",
-          value: student.value.pesel,
-          errorMessage: root.$t('pesel_error'),
-        },
-        {
-          property: "phone",
-          value: student.value.phone,
-          errorMessage: root.$t('phone_error'),
-        },
-        {
-          property: "email",
-          value: student.value.email,
-          errorMessage: root.$t('email_error'),
-        },
+        // {
+        //   property: "pesel",
+        //   value: form.student.pesel,
+        //   errorMessage: root.$t('pesel_error'),
+        // },
+        // {
+        //   property: "phone",
+        //   value: form.student.phone,
+        //   errorMessage: root.$t('phone_error'),
+        // },
+        // {
+        //   property: "email",
+        //   value: form.student.email,
+        //   errorMessage: root.$t('email_error'),
+        // },
         {
           property: "street",
           value: [
             {
               property: "name",
-              value: student.value.street.name,
+              // value: {...form.student.street.name},
               errorMessage: root.$t('street_name_error'),
             },
-            {
-              property: "nr",
-              value: student.value.street.nr,
-              errorMessage: root.$t('street_nr_error'),
-            },
-            {
-              property: "flat",
-              value: student.value.street.flat,
-              errorMessage: root.$t('street_flat_error'),
-            },
-            {
-              property: "postcode",
-              value: student.value.street.postcode,
-              errorMessage: root.$t('street_postcode_error'),
-            },
-            {
-              property: "city",
-              value: student.value.street.city,
-              errorMessage: root.$t('street_city_error'),
-            },
-          ],
-        },
-        {
-          property: "mother",
-          value: [
-            {
-              property: "firstName",
-              value: student.value.mother.firstName,
-              errorMessage: root.$t('first_name_error'),
-            },
-            {
-              property: "lastName",
-              value: student.value.mother.lastName,
-              errorMessage: root.$t('last_name_error'),
-            },
-            {
-              property: "phone",
-              value: student.value.mother.phone,
-              errorMessage: root.$t('phone_error'),
-            },
-            {
-              property: "email",
-              value: student.value.mother.email,
-              errorMessage: root.$t('email_error'),
-            },
-          ],
-        },
-        {
-          property: "father",
-          value: [
-            {
-              property: "firstName",
-              value: student.value.father.firstName,
-              errorMessage: root.$t('first_name_error'),
-            },
-            {
-              property: "lastName",
-              value: student.value.father.lastName,
-              errorMessage: root.$t('last_name_error'),
-            },
-            {
-              property: "phone",
-              value: student.value.father.phone,
-              errorMessage: root.$t('phone_error'),
-            },
-            {
-              property: "email",
-              value: student.value.father.email,
-              errorMessage: root.$t('email_error'),
-            },
-          ],
-        },
+          ]
+        }
+        //     {
+        //       property: "nr",
+        //       value: form.student.street.nr,
+        //       errorMessage: root.$t('street_nr_error'),
+        //     },
+        //     {
+        //       property: "flat",
+        //       value: form.student.street.flat,
+        //       errorMessage: root.$t('street_flat_error'),
+        //     },
+        //     {
+        //       property: "postcode",
+        //       value: form.student.street.postcode,
+        //       errorMessage: root.$t('street_postcode_error'),
+        //     },
+        //     {
+        //       property: "city",
+        //       value: form.student.street.city,
+        //       errorMessage: root.$t('street_city_error'),
+        //     },
+        //   ],
+        // },
+        // {
+        //   property: "mother",
+        //   value: [
+        //     {
+        //       property: "firstName",
+        //       value: form.student.mother.firstName,
+        //       errorMessage: root.$t('first_name_error'),
+        //     },
+        //     {
+        //       property: "lastName",
+        //       value: form.student.mother.lastName,
+        //       errorMessage: root.$t('last_name_error'),
+        //     },
+        //     {
+        //       property: "phone",
+        //       value: form.student.mother.phone,
+        //       errorMessage: root.$t('phone_error'),
+        //     },
+        //     {
+        //       property: "email",
+        //       value: form.student.mother.email,
+        //       errorMessage: root.$t('email_error'),
+        //     },
+        //   ],
+        // },
+        // {
+        //   property: "father",
+        //   value: [
+        //     {
+        //       property: "firstName",
+        //       value: form.student.father.firstName,
+        //       errorMessage: root.$t('first_name_error'),
+        //     },
+        //     {
+        //       property: "lastName",
+        //       value: form.student.father.lastName,
+        //       errorMessage: root.$t('last_name_error'),
+        //     },
+        //     {
+        //       property: "phone",
+        //       value: form.student.father.phone,
+        //       errorMessage: root.$t('phone_error'),
+        //     },
+        //     {
+        //       property: "email",
+        //       value: form.student.father.email,
+        //       errorMessage: root.$t('email_error'),
+        //     },
+        //   ],
+        // },
       ]);
 
-onUpdated(()=>{
-  const clonedStudent = {...student.value}
-  root.$accessor.setStudent(clonedStudent);
-})
-function showError(val, data){
-      // props.form.fullName = fullName.value
-      // props.v.form.fullName.$touch()
-      console.log(props);
-      props.form.student[data] = val
-      console.log('2');
+    onUpdated(()=>{
+      console.log(form);
+      const clonedStudent = {...form.student}
+      root.$accessor.setStudent(clonedStudent);
+    })
+    function showError(val, data, subData){
+      // form.student[data] = val
+      // props.v.form.student[data].$touch()
+      form.student[data][subData] = val
       props.v.form.student[data].$touch()
+
+      // console.log(data, subData, val);
+
+    //   form.student.pesel = 88
+    // form.student.street = {name: 44}
+      // if(subData) {
+      //   form.student[data][subData] = val
+      //   v.form.student[data].$touch()
+      // }
+      // else{
+
+      //   props.form.student[data] = val
+      // props.v.form.student[data].$touch()
+      // }
+      // if(Array.isArray(props.v.form.student[data].value)) console.log('2222')
+      // props.v.form.student[data.property][subData.property].$touch()
+
     }
     return {
+      form2,
       formData,
-      student,
       nestedProperty,
       showError,
+      student,
     }
   }
 });

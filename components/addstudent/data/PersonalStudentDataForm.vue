@@ -7,6 +7,7 @@
           {{ $t("double_lastNames_hint") }}
         </span>
       </label>
+      {{fullName}}
       <input
         type="text"
         id="name"
@@ -67,7 +68,7 @@ export default defineComponent({
   setup(props, { root }) {
     console.log(props);
     const fullName = ref("");
-    const showAdditionalDataForm = ref(false);
+    const showAdditionalDataForm = ref(true);
     const firstName = ref("");
     const lastName = ref("");
     // const form = ref({
@@ -79,7 +80,7 @@ export default defineComponent({
 
     function getFirstAndLastName(fullName) {
       const fullNameArray = fullName.toLowerCase().split(" ");
-
+console.log('dddd', fullNameArray);
       firstName.value = capitalize(fullNameArray[0]);
       lastName.value =
         fullNameArray.length > 1 ? capitalize(fullNameArray[1]) : "";
