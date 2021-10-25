@@ -1,5 +1,6 @@
 <template>
-  <div class="addStudentPanelGradesContentSingle mb-3" :ref="`grade_${index}`">
+  <!-- <div class="addStudentPanelGradesContentSingle mb-3" :ref="`grade_${index}`"> -->
+  <div class="addStudentPanelGradesContentSingle mb-3">
     <div class="container">
       <div class="row singleGrade">
         <div class="col-2 col-md-3">
@@ -64,13 +65,11 @@
 import {
   defineComponent,
   ref,
-  reactive,
   watch,
   onBeforeUpdate,
   useStore,
   computed,
 } from "@nuxtjs/composition-api";
-// import gradesService from "@/assets/mixins/gradesMixins.ts";
 
 export default defineComponent({
   name: "Grade",
@@ -148,16 +147,14 @@ export default defineComponent({
     function updateStudentGrade() {
       clonedGrades = [...grades.value];
       clonedGrades[index] = { ...grade };
-      // console.log(clonedGrades);
       root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
     }
 
     //clears newGrades object in Vuex
     function remove(index) {
       root.$accessor.removeGrade(index);
-      const refEl = this.$refs[`grade_${index}`];
-      // console.log(refEl);
-      refEl.parentNode.removeChild(refEl);
+      // const refEl = this.$refs[`grade_${index}`];
+      // refEl.parentNode.removeChild(refEl);
     }
 
     return {

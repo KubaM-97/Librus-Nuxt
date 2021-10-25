@@ -1,168 +1,66 @@
 <template>
-  <div class="showAdditionalDataForm" v-if="showAdditionalDataForm">
         <div class="container">
-          <div class="row mt-2 mb-3" v-for="data in formData" :key="data.property">
-            <label class="col-12" :class="{'errorDataLabel': v.form.student[data.property].$invalid && v.form.student[data.property].$dirty}">{{ $t(data.property) }}</label>
+          <div class="row mt-2 mb-3" v-for="property in orderedStudentProperties" :key="property">
+            <label class="col-12" :class="{'errorDataLabel': v.form.student[property].$invalid && v.form.student[property].$dirty}">{{ $t(property) }}</label>
+            
             <input
-              v-if="!Array.isArray(data.value)"
+              v-if="typeof form.student[property] !== 'object' && form.student[property] !== null"
               type="text"
-              :placeholder="data.errorMessage"
-              :name="data.property"
-              :id="data.property"
-              v-model.trim="form.student[data.property]"
-              @change="showError($event.target.value, data.property)"
+              :placeholder="$t(`${property}_error`)"
+              :name="property"
+              :id="property"
+              :value="form.student[property]"
+              @change="setStudentState($event.target.value, property)"
               class="col-10"
-              :class="{'errorDataInput': v.form.student[data.property].$invalid && v.form.student[data.property].$dirty}"
+              :class="{'errorDataInput': v.form.student[property].$invalid && v.form.student[property].$dirty}"
               autocomplete="off"
             />
             <input
-              v-for="subData in data.value"
-              :key="subData.property"
+              v-else
+              v-for="(_subValue, subProperty) in form.student[property]"
+              :key="subProperty"
               type="text"
-              :placeholder="subData.errorMessage"
-              :name="[data.property][subData.property]"
-              :id="[data.property][subData.property]"
-              v-model="form.student[data.property][subData.property]"
-              @change="showError($event.target.value, [data.property], [subData.property])"
+              :placeholder="$t(`${property}_${subProperty}_error`)"
+              :name="property[subProperty]"
+              :id="property[subProperty]"
+              :value="form.student[property][subProperty]"
+              @change="setStudentState($event.target.value, property, subProperty)"
               class="col-10"
-              :class="{'errorDataInput': v.form.student[data.property][subData.property].$invalid && v.form.student[data.property][subData.property].$dirty}"
+              :class="{'errorDataInput': v.form.student[property][subProperty].$invalid && v.form.student[property][subProperty].$dirty}"
               autocomplete="off"
             />
         </div>
-          </div>
-  </div>
+           </div>
 </template>
 
 <script>
-import { defineComponent, ref, onUpdated } from "@nuxtjs/composition-api";
+import { defineComponent, ref } from "@nuxtjs/composition-api";
 export default defineComponent({
-  props: ['showAdditionalDataForm', 'v', 'form'],
-  setup(props, {root} ){
-    const form = props.form
-    function nestedProperty (property){
-      switch(property){
-        case 'street': {
-          return `ul. ${student.value.street.name} ${student.value.street.nr} m.${student.value.street.flat} 
-          
-          ${student.value.street.postcode} ${student.value.street.city}`
-        }
-        case 'mother': {
-          return `${student.value.mother.firstName} ${student.value.mother.lastName} ${student.value.mother.phone} ${student.value.mother.email}`
-        }
-        case 'father': {
-          return `${student.value.father.firstName} ${student.value.father.lastName} ${student.value.father.phone} ${student.value.father.email}`
-        }
-        default: {
-          return ''
-        }
+  props: {
+      v: {
+        type: Object,
+        required: false,
+        default: () => {},
+      },
+      form: {
+        type: Object,
+        required: false,
+        default: () => {},
       }
-    }
-    const formData = ref([
-        {
-          property: "pesel",
-          value: form.student.pesel,
-          errorMessage: root.$t('pesel_error'),
-        },
-        {
-          property: "phone",
-          value: form.student.phone,
-          errorMessage: root.$t('phone_error'),
-        },
-        {
-          property: "email",
-          value: form.student.email,
-          errorMessage: root.$t('email_error'),
-        },
-        {
-          property: "street",
-          value: [
-            {
-              property: "name",
-              value: form.student.street.name,
-              errorMessage: root.$t('street_name_error'),
-            },
-            {
-              property: "nr",
-              value: form.student.street.nr,
-              errorMessage: root.$t('street_nr_error'),
-            },
-            {
-              property: "flat",
-              value: form.student.street.flat,
-              errorMessage: root.$t('street_flat_error'),
-            },
-            {
-              property: "postcode",
-              value: form.student.street.postcode,
-              errorMessage: root.$t('street_postcode_error'),
-            },
-            {
-              property: "city",
-              value: form.student.street.city,
-              errorMessage: root.$t('street_city_error'),
-            },
-          ],
-        },
-        {
-          property: "mother",
-          value: [
-            {
-              property: "firstName",
-              value: form.student.mother.firstName,
-              errorMessage: root.$t('first_name_error'),
-            },
-            {
-              property: "lastName",
-              value: form.student.mother.lastName,
-              errorMessage: root.$t('last_name_error'),
-            },
-            {
-              property: "phone",
-              value: form.student.mother.phone,
-              errorMessage: root.$t('phone_error'),
-            },
-            {
-              property: "email",
-              value: form.student.mother.email,
-              errorMessage: root.$t('email_error'),
-            },
-          ],
-        },
-        {
-          property: "father",
-          value: [
-            {
-              property: "firstName",
-              value: form.student.father.firstName,
-              errorMessage: root.$t('first_name_error'),
-            },
-            {
-              property: "lastName",
-              value: form.student.father.lastName,
-              errorMessage: root.$t('last_name_error'),
-            },
-            {
-              property: "phone",
-              value: form.student.father.phone,
-              errorMessage: root.$t('phone_error'),
-            },
-            {
-              property: "email",
-              value: form.student.father.email,
-              errorMessage: root.$t('email_error'),
-            },
-          ],
-        },
-      ]);
+  },
+  setup(props, {root} ){
+    const v = props.v
 
-    onUpdated(()=>{
-      props.v.form.student.$touch()
-      root.$accessor.setStudent(form.student);
-    })
-    
+    const orderedStudentProperties = ref([
+      'pesel', 'phone', 'email', 'street', 'mother', 'father'
+    ])
+    function setStudentState(value, property, subProperty){
+      v.form.student.$touch()
+      root.$accessor.updateStudent({property, value: value.trim(), subProperty})
+    }
     return {
-      formData,
-      nestedProperty,
+      orderedStudentProperties,
+      setStudentState,
     }
   }
 });

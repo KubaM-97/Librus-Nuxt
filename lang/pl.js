@@ -1,3 +1,5 @@
+const phone_error = 'Dokładnie 7 lub 9 cyfr'
+const email_error = 'nazwa@domena.pl'
 export default {
 
   // Students' table
@@ -38,9 +40,9 @@ export default {
   date: 'Data',
   address: 'Adres',
   street: 'Adres',
-  // full_address: `ul.{address.streetName} {address.streetNr} m.{address.streetFlat} <br>  {address.streetPostcode} {address.streetCity}`,
+  full_address: `ul.{address{name}}{x}{name}{address.name}{address{name}{{address}.{address.name}}`,
   // full_address: 'ul.{address.name} {address.nr} m.{address.flat} \n  {address.postcode} {address.city}',
-  full_address: '{addressname.name}.{addressname->name}',
+  // full_address: '{addressname.name}.{addressname->name}',
   pesel: 'Pesel',
   phone: 'Telefon',
   email: 'Email',
@@ -53,15 +55,21 @@ export default {
 
   //Errors
   pesel_error: 'Dokładnie 11 cyfr',
-  phone_error: 'Dokładnie 7 lub 9 cyfr',
-  email_error: 'nazwa@domena.pl',
+  phone_error,
+  email_error,
   street_name_error: 'Bez znaków specjalnych',
   street_nr_error: 'Nr, Nr/Nr, Nr Litera np. 11 11/13 11A 11A/13B',
   street_flat_error: 'Liczba + ew.litera np.116F',
   street_postcode_error: '_ _ - _ _ _',
   street_city_error: 'Bez i znaków specjalnych',
-  first_name_error: 'Możliwe drugie imię np. Jan Maria',
-  last_name_error: 'Brak cyfr i znaków specjalnych. Możliwe drugie nazwisko po myślniku np. Ćwierć-Parzącha',
+  mother_firstName_error: 'Możliwe drugie imię np. Anna Maria',
+  mother_lastName_error: 'Brak cyfr i znaków specjalnych. Możliwe drugie nazwisko po myślniku np. Ćwierć-Parzącha',
+  mother_phone_error: phone_error,
+  mother_email_error: email_error,
+  father_firstName_error: 'Możliwe drugie imię np. Jan Maria',
+  father_lastName_error: 'Brak cyfr i znaków specjalnych. Możliwe drugie nazwisko po myślniku np. Ćwierć-Parzącha',
+  father_phone_error: phone_error,
+  father_email_error: email_error,
 
 
 

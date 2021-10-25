@@ -21,11 +21,12 @@ router.post('/users', async function (req, res, next) {
       lastName: data.lastName,
       firstName: data.firstName,
       group: data.group,
-    }))
+    })).catch(err => res.json(err))
     await mongo.close()
   
   } catch (err) {
     console.error(err)
+    res.sendStatus(500)
   }
   finally {
     

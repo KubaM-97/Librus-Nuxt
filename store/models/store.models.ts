@@ -20,6 +20,7 @@ export interface State {
     isLogged: boolean,
     user: User,
     student: any,
+    gradesLength: Number
     // student: Student,
 }
 export interface Getters {

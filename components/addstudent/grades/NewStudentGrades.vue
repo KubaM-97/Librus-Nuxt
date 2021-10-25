@@ -1,51 +1,53 @@
 <template>
-    <div class="addStudentPanelGrades">
-            <div class="addStudentPanelGradesTitle mb-2">
-              <span class="addStudentGradeSubpanelTitle">{{ $t('accumulated_grades') }}:</span>
-            </div>
-              <Grade :index="n-1"  @remove="handleRemove"
-              class="addStudentPanelGradesContent"
-              v-for="n in gradesLength"
-              :key="n"
-              :ref="`gradeRef_${n-1}`"
-              />
+  <div class="addStudentPanelGrades">
+    <div class="addStudentPanelGradesTitle mb-2">
+      <span class="addStudentGradeSubpanelTitle"
+        >{{ $t("accumulated_grades") }}:</span
+      >
+    </div>
+    <Grade
+      :index="n - 1"
+      @remove="handleRemove"
+      class="addStudentPanelGradesContent"
+      v-for="n in gradesLength"
+      :key="n"
+      :ref="`gradeRef_${n - 1}`"
+    />
 
-            <div class="showAnotherGrade">
-              <button name="moreGradesAddStudent" @click="gradesLength++">
-                +
-              </button>
-            </div>
-          </div>
+    <div class="showAnotherGrade">
+      <button name="moreGradesAddStudent" @click="$accessor.increase()">
+        +
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed } from "@nuxtjs/composition-api";
 
-import Grade from '@/components/global/Grade.vue'
+import Grade from "@/components/global/Grade.vue";
 export default defineComponent({
-    name: 'NewStudentGrades',
-    components: {
-        Grade,
+  name: "NewStudentGrades",
+  components: {
+    Grade,
+  },
+  props: {
+    grades: {
+      type: Object,
+      required: false,
     },
-    props:{
-      grades: {
-        type: Object,
-        required: false
-      }
-    },
-    setup(props){
-      const gradesLength = ref(1)
-      const gradesRefs = ref([])
-      function handleRemove(index){
-        props.grades.splice(index, 1)
-      }
-      return {
-        gradesLength,
-        handleRemove,
-        gradesRefs
-      }
+  },
+  setup(props, { root }) {
+    const gradesLength = computed(() => root.$accessor.gradesLength);
+    function handleRemove(index) {
+      props.grades.splice(index, 1);
     }
-})
+    return {
+      gradesLength,
+      handleRemove,
+    };
+  },
+});
 </script>
 
 <style>
@@ -78,5 +80,5 @@ export default defineComponent({
     padding: 1px 9px;
     font-weight: 300;
   }
-  }
+}
 </style>

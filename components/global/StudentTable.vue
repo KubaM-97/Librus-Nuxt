@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <tr>
     <td v-if="orderNo">{{ orderNo }}.</td>
     <td>{{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
     <td>
@@ -19,7 +19,7 @@
         {{ $t("at_risk").toUpperCase() }}
       </span>
     </td>
-  </fragment>
+  </tr>
 </template>
 
 

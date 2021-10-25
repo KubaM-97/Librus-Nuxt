@@ -38,7 +38,8 @@ export const state = () => ({
       phone: '',
       email: '',
     }
-  }
+  },
+  gradesLength: 1,
 })
 
 type RootState = ReturnType<typeof state>
@@ -56,16 +57,16 @@ export const mutations = mutationTree(state, {
   setUser(state: State, payload: User): void {
     state.user = payload;
   },
-  setStudent(state: State, payload): void {
-    console.log('store:',payload.value);
-    state.student = payload.value;
-    console.log('state:',state);
-  },
   updateStudent(state: State, payload) :void {
-    state.student[payload.property] = payload.value;
-    console.log('store: ', payload, state);
+    if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
+    else state.student[payload.property] = payload.value;
+  },
+  increase(state):void{
+    state.gradesLength++
   },
   resetStudent(state: State, payload) :void {
+    state.gradesLength = 1
+
     state.student = {
         firstName: '',
         lastName: '',
@@ -94,6 +95,7 @@ export const mutations = mutationTree(state, {
         }
       
     }
+    console.log(state);
   },
   removeGrade(state: State, payload: any) :void {
     state.student.grades[payload] = {

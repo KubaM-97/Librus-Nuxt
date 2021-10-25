@@ -64,7 +64,8 @@ export default {
       ],
       lazy: true,
       langDir: 'lang/',
-      defaultLocale: 'pl'
+      defaultLocale: 'pl',
+      keySeparator: '.'
     }],
     '@nuxt/http'
   ],

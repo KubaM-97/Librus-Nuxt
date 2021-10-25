@@ -38,7 +38,7 @@
       </button>
 
       <transition @enter="enter" @leave="leave" :css="false">
-        <AdditionalDataForm :showAdditionalDataForm="showAdditionalDataForm" :v="v" :form="form"/>
+        <AdditionalDataForm v-if="showAdditionalDataForm" :v="v" :form="form"/>
       </transition>
     </div>
   </form>
@@ -47,40 +47,23 @@
 <script>
 import { defineComponent, ref, watch , onUpdated} from "@nuxtjs/composition-api";
 import AdditionalDataForm from "@/components/addstudent/data/AdditionalDataForm.vue";
-// import { helpers, required } from "vuelidate/lib/validators";
-// const fullName = helpers.regex(
-//   "fullName",
-//   // /^[A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]*( [A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]*)+(-[A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]+)?$/
-//    /^[0-9]{2}$/
-// );
 export default defineComponent({
   name: "PersonalStudentDataForm",
   components: {
     AdditionalDataForm,
   },
-  //  validations: {
-  //   form: {
-  //     fullName: {
-  //       required,
-  //       fullName,
-  //     },}},
   props: ['v', 'form'],
   setup(props, { root }) {
-    console.log(props);
     const fullName = ref("");
-    const showAdditionalDataForm = ref(true);
+    const showAdditionalDataForm = ref(false);
     const firstName = ref("");
     const lastName = ref("");
-    // const form = ref({
-    //   fullName: ''
-    // })
     function capitalize(val) {
       return val.charAt(0).toUpperCase() + val.slice(1).toLowerCase();
     }
 
     function getFirstAndLastName(fullName) {
       const fullNameArray = fullName.toLowerCase().split(" ");
-console.log('dddd', fullNameArray);
       firstName.value = capitalize(fullNameArray[0]);
       lastName.value =
         fullNameArray.length > 1 ? capitalize(fullNameArray[1]) : "";
@@ -104,14 +87,12 @@ console.log('dddd', fullNameArray);
       el.style.animationDirection = "reverse";
     }
     function showError(){
-      props.form.fullName = fullName.value
+      // props.form.fullName = fullName.value
       props.v.form.fullName.$touch()
     }
     watch(
       () => fullName.value,
       (val) => {
-        // props.v.form.fullName = val
-        console.log('watch', val, props.v.form.fullName);
         getFirstAndLastName(val);
         root.$accessor.updateStudent({
           property: "firstName",
@@ -126,7 +107,6 @@ console.log('dddd', fullNameArray);
 
     return {
       fullName,
-      // form,
       showAdditionalDataForm,
       enter,
       leave,

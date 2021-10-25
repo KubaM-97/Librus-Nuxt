@@ -53,17 +53,13 @@ export default defineComponent({
     const router = useRouter();
     const login = ref("");
     const password = ref("");
-    // const showError = ref(false);
     async function signIn() {
-      // showError.value = true;
-      return
       try {
         this.$toast.show(this.$t("logging_in_progress"));
         const response = await axios.post("/api/users/", {
           login: login.value,
           password: password.value,
         });
-        // if (1!==2) showError.value = true
         this.$toast.clear();
         this.$toast.success(this.$t("successed_logged"));
         router.push({
@@ -71,6 +67,7 @@ export default defineComponent({
           params: { groupId: response.data.group },
         });
       } catch (error) {
+        console.log('error', error);
         switch (error) {
           case 404: {
             this.$toast.error(this.$t("not_found_user_with_this_login"));
@@ -88,7 +85,6 @@ export default defineComponent({
       login,
       password,
       signIn,
-      // showError,
     };
   },
 });
