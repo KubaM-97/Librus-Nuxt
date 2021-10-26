@@ -1,19 +1,14 @@
   
 const express = require('express')
 const app = express()
-
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
-// const rootRouter = require('./routes')
-
-// app.use('/api', rootRouter)
 const users = require('./routes/users')
 const students = require('./routes/students')
 app.use(users);
 app.use(students);
-// router.all('/api/*')
 module.exports = app
 
 // Start standalone server if directly running

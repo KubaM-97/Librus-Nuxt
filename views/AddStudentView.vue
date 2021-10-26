@@ -19,10 +19,12 @@
 import FormActions from "@/components/global/FormActions";
 import StudentTable from "@/components/global/StudentTable";
 import PersonalStudentData from "@/components/addstudent/data/PersonalStudentData";
+import axios from 'axios'
 import { helpers, required } from "vuelidate/lib/validators";
 const fullName = helpers.regex(
   "fullName",
   /^[A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]*( [A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]*)+(-[A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]+)?$/
+  // /^[0-9]{2}$/
 );
 const firstName = helpers.regex(
   "firstName",
@@ -97,6 +99,7 @@ export default defineComponent({
     const router = useRouter();
     const gradesLength = ref(1);
     const student = computed(()=>root.$accessor.student)
+    console.log(student.value);
     const PersonalStudentData = ref(null)
     function handleCancel() {
 
@@ -105,23 +108,24 @@ export default defineComponent({
       root.$refs.PersonalStudentData.$refs.PersonalStudentDataForm.showAdditionalDataForm.value = false 
     }
     function handleSubmit(v) {
-      router.push({ path: "/group/3B" });
-      // if(v.$invalid) {
-      //   this.$toast.error(root.$t('failed_form_message'));
-      //   return
-      // }
-      // this.$toast.show(root.$t('adding_student_in_progress'));
-      // student.value.grades.map((grade) => grade.score && grade.weight);
-      // try {
-      //   // axios.post("/api/students/new", {
-      //   //   student: student.value,
-      //   // });
-      //   this.$toast.success(root.$t('successfully_added_new_student'));
-      //   router.push({ path: "/group/3B" });
-      // } catch (err) {
-      //   console.error(err);
-      //   this.$toast.error(root.$t('failed_to_add_new_student'));
-      // }
+      if(v.$invalid) {
+        this.$toast.error(root.$t('failed_form_message'));
+        return
+      }
+      this.$toast.show(root.$t('adding_student_in_progress'));
+      console.log('pre', student);
+      student.value.grades.map((grade) => grade.score && grade.weight);
+      try {
+        console.log('studentAXIOS: ', student);
+        axios.post("/api/students/new", {
+          student: student.value
+        });
+        this.$toast.success(root.$t('successfully_added_new_student'));
+        router.push({ path: "/group/3B" });
+      } catch (err) {
+        console.error(err);
+        this.$toast.error(root.$t('failed_to_add_new_student'));
+      }
     };
 
     function getNewStudentNameHandler(fullName) {

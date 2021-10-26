@@ -12,7 +12,7 @@
         type="text"
         id="name"
         name="name"
-        v-model.trim="fullName"
+        v-model.trim="v.form.fullName.$model"
         maxlength="30"
         autocomplete="off"
         class="text-center"
@@ -91,7 +91,8 @@ export default defineComponent({
       props.v.form.fullName.$touch()
     }
     watch(
-      () => fullName.value,
+      // () => fullName.value,
+      () => props.v.form.fullName.$model,
       (val) => {
         getFirstAndLastName(val);
         root.$accessor.updateStudent({

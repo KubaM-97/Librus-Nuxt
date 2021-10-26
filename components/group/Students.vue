@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <NuxtLink  
+        <!-- <NuxtLink  
           v-for="(student, index) in students"
           :key="student._id"
           tag="tr"
@@ -18,9 +18,12 @@
             path: `student/${student._id }`,
             params: { id: student._id },
           }"
-          append>
-          <StudentTable :student="student" :orderNo="index+1" />
-        </NuxtLink>
+          append> -->
+          <StudentTable v-for="(student, index) in students" :key="student._id" 
+          :student="student" :orderNo="index+1" 
+          @click="$router.push({ path: `student/${student._id }`,
+            params: { id: student._id }, append: true})"/>
+        <!-- </NuxtLink> -->
         
       </tbody>
     </table>

@@ -1,8 +1,8 @@
 <template>
-  <fragment>
+  <div>
     <AddStudentView />
     <ClosePrompt ref="ClosePrompt"/>
-  </fragment>
+  </div>
 </template>
 
 <script>
