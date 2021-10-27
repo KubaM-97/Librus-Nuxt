@@ -10,33 +10,22 @@
         </tr>
       </thead>
       <tbody>
-        <!-- <NuxtLink  
-          v-for="(student, index) in students"
-          :key="student._id"
-          tag="tr"
-          :to="{
-            path: `student/${student._id }`,
-            params: { id: student._id },
-          }"
-          append> -->
-          <StudentTable v-for="(student, index) in students" :key="student._id" 
-          :student="student" :orderNo="index+1" 
-          @click="$router.push({ path: `student/${student._id }`,
-            params: { id: student._id }, append: true})"/>
-        <!-- </NuxtLink> -->
-        
+        <StudentRow v-for="(student, index) in students" :key="student._id" 
+        :student="student" :orderNo="index+1" 
+        @click.native="router.push({ path: `/group/3B/student/${student._id }`,
+        params: { id: student._id }})"/>
       </tbody>
     </table>
 </template>
 
 <script>
-import { defineComponent } from "@nuxtjs/composition-api";
-import StudentTable from '@/components/global/StudentTable'
+import { defineComponent, useRouter } from "@nuxtjs/composition-api";
+import StudentRow from '@/components/global/StudentRow'
 import gradesService from "@/assets/mixins/gradesMixins.ts";
 export default defineComponent({
   name: "Students",
   components: {
-    StudentTable,
+    StudentRow,
   },
   props: {
     students: {
@@ -46,6 +35,10 @@ export default defineComponent({
     }
   },
   mixins: [gradesService],
+  setup(){
+    const router = useRouter()
+    return {router}
+  }
 });
 </script>
 

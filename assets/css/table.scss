@@ -14,7 +14,7 @@ table {
   width: 90%;
   margin: auto;
 
-  table tbody tr:hover {
+  &.students tbody tr:hover {
     background-color: darkgoldenrod;
     cursor: pointer;
   }

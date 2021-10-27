@@ -1,6 +1,6 @@
 <template>
-  <div class="EditStudentGrades" ref="editStudentGrades">
-    <span id="EditStudentGradesTitle">{{ $t('edit_grade') }}:</span>
+  <div class="editStudent" ref="editStudentGrades">
+    <span class="d-block mb-3">{{ $t('edit_grade') }}:</span>
     <div class="container">
       <div class="row">
 
@@ -13,21 +13,19 @@
         </div>
       </div>
     </div>
-     
     <StudentTable :student="student"/>
      
-    <!-- <button name="possibleSaveData" class="btn btn-success btn-lg save" :disabled="!isPossibleSave"> -->
-    <button name="possibleSaveData" class="btn btn-success btn-lg save">
+    <button name="possibleSaveData" class="btn btn-success btn-lg save" :disabled="v.form.student.$invalid">
       {{ $t('save_changes') }}
     </button>
-   <button name="closeTheGradesPanel" @click="$router.go(-1)"><img class="closeThePanel" src="@/assets/images/eXit.png"/></button>
+   <!-- <button name="closeTheGradesPanel" @click="$emit()$router.go(-1)"><img class="closeThePanel" src="@/assets/images/eXit.png"/></button> -->
  </div>
 </template>
 
 <script>
 import gradesService from "@/assets/mixins/gradesMixins.ts";
 import Grade from "@/components/global/Grade.vue";
-import StudentTable from "@/components/global/StudentTable.vue";
+import StudentTable from "~/components/global/StudentRow.vue";
 import { ref } from "@nuxtjs/composition-api";
 export default {
   name: "EditGrades",
@@ -50,7 +48,7 @@ export default {
   },
 };
 </script>
-<style lang="css" scoped>
+<style lang="scss" scoped>
 div.EditStudentGrades {
   width: 90%;
   max-width: 1400px;
@@ -66,10 +64,6 @@ div.EditStudentGrades {
   left: 50%;
   transform: translateX(-50%);
   padding: 70px 0 40px;
-}
-#EditStudentGradesTitle {
-  display: block;
-  margin-bottom: 40px;
 }
 div.gainedGradesAndNewGrades {
   width: 80%;

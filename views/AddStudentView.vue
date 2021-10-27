@@ -1,16 +1,8 @@
 <template>
   <div class="wrapper">
-    <NuxtLink :to="`/group/${$route.params.groupId || '3B'}`">
-        <button active-class="active" class="btn btn-primary btn-lg">
-          {{ $t('class') }}
-        </button>
-      </NuxtLink>
+    {{$t('full_address', {returnObjects: true, a: xxx})}}
     <PersonalStudentData :ref="PersonalStudentData" @getNewStudentName="getNewStudentNameHandler" :v="$v" :form="form" :gradesLength="gradesLength"/>
-    <table>
-      <tbody> 
-          <StudentTable :student="student" />
-      </tbody>
-    </table>
+    <StudentTable :student="student" />
     <FormActions @cancel="handleCancel" @submit="handleSubmit($v, ...arguments)" />
   </div>
 </template>
@@ -99,10 +91,8 @@ export default defineComponent({
     const router = useRouter();
     const gradesLength = ref(1);
     const student = computed(()=>root.$accessor.student)
-    console.log(student.value);
     const PersonalStudentData = ref(null)
     function handleCancel() {
-
       form.value.fullName = ''
       root.$accessor.resetStudent()
       root.$refs.PersonalStudentData.$refs.PersonalStudentDataForm.showAdditionalDataForm.value = false 
@@ -138,7 +128,10 @@ export default defineComponent({
       student
     })
 
+    const xxx = ref({name: 'sezam', nr: 33})
+    console.log('xxx',root.$t('full_address', {returnObjects: true} ));
     return {
+      xxx,
       handleCancel,
       handleSubmit,
       getNewStudentNameHandler,
@@ -146,7 +139,6 @@ export default defineComponent({
       form,
       gradesLength,
       PersonalStudentData
-      // student2,
     };
   },
 });

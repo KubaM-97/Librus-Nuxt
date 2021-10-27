@@ -27,7 +27,6 @@ export default defineComponent({
     const route = useRoute()
     const groupId = route.value.params.groupId;
     const students = ref([]);
-    // const studentsa = ref([]);
 
     const { $http } = useContext();
 

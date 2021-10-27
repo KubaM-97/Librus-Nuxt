@@ -1,65 +1,32 @@
 <template>
-  <div class="wrapper text-left pl-2">
-      <div class="summary">
-        <table>
-          <tbody> 
-      <tr>
-        <StudentTable :student="student" />
-      </tr>
-      </tbody>
-      </table>
+<div> 
+<div v-if="$fetchState.pending"> Cierpliwości</div> 
+  <div class="wrapper text-left pl-2" v-else>
+      <div  class="summary">
+      <StudentTable :student="student" />
       </div>
-      <div>
-        <div class="form-group">
-          <span class="title">PESEL:</span>
-          <span class="data">{{ student.pesel }}</span>
-        </div>
+      <div class="p-4 w-75">
+        <div class="form-group w-100 d-flex justify-content-between" v-for="property in orderedStudentProperties" :key="property">
+          <span class="title biggerfont">{{$t(property)}}:</span>
 
-        <div class="form-group">
-          <span class="title">{{ $t("address") }}:</span>
-          <span class="data"
-          
-            >ul.{{ student.street.name }} {{ student.street.nr }} m.{{
-              student.street.flat
-            }}
-            <br />
-            {{ student.street.postcode }} {{ student.street.city }}</span
-          >
-        </div>
-
-        <div class="form-group">
-          <span class="title">{{ $t("phone") }}:</span>
-          <span class="data">{{ student.phone }}</span>
-        </div>
-
-        <div class="form-group">
-          <span class="title">{{ $t("email") }}:</span>
-          <span class="data">{{ student.email }}</span>
-        </div>
-
-        <div class="form-group">
-          <span class="title">{{ $t("mother") }}:</span>
-          <span class="data"
-            >{{ student.mother.firstname }} {{ student.mother.lastname }} <br />
-            {{ student.mother.phone }} <br />
-            {{ student.mother.email }}
+          <span class="data" v-if="typeof student[property] !== 'object' && student[property] !== null">
+            {{ student[property] }}
+          </span>
+            
+          <span class="data" v-else v-for="(_subValue, subProperty) in student[property]" :key="subProperty">
+            {{student[property][subProperty]}}
           </span>
         </div>
-
-        <div class="form-group">
-          <span class="title">{{ $t("father") }}:</span>
-          <span class="data"
-            >{{ student.father.firstname }} {{ student.father.lastname }} <br />
-            {{ student.father.phone }} <br />
-            {{ student.father.email }}</span
-          >
-        </div>
+        
       </div>
-      <div>
-        <NuxtLink tag="button" :to="{ query: { edit: 'data' }}">{{ $t("edit_data") }}</NuxtLink> 
-        <NuxtLink tag="button" :to="{ query: { edit: 'grades' }}">{{ $t("edit_grades") }}</NuxtLink> 
-       <component :is="chosenComponent" :student="student"/>
+      <div class="pr-3 d-flex justify-content-end">
+        <NuxtLink tag="button" class="btn btn-lg" :to="{ query: { edit: 'data' }}">{{ $t("edit_data") }}</NuxtLink> 
+        <NuxtLink tag="button" class="btn btn-lg" :to="{ query: { edit: 'grades' }}">{{ $t("edit_grades") }}</NuxtLink> 
+             <transition name="EditStudentDataPanel" mode="out-in">
+        <component :is="chosenComponent" :student="student" />
+      </transition>
       </div>
+    </div>
     </div>
 
 </template>
@@ -87,12 +54,15 @@ export default defineComponent({
     EditGrades,
   },
   mixins: [gradesService],
+  // asyncData
   setup() {
     const route = useRoute();
     const studentId = route.value.params.id;
     const student = ref("");
     const property = ref(null);
-
+    const orderedStudentProperties = ref([
+      'pesel', 'phone', 'email', 'street', 'mother', 'father'
+    ])
     const chosenComponent = shallowRef(null);
     if(route.value.query.data){
       chosenComponent.value = data
@@ -124,19 +94,28 @@ export default defineComponent({
     // }
     const { $http } = useContext();
 
-    useFetch(async () => {
-      console.log(studentId);
+    // useFetch(async () => {
+    //   console.log('to jest id: ',studentId);
 
-      student.value = await $http.$get(`api/students/${studentId}`);
-      console.log(student.value);
-      // xxx()
-    });
+    //   student.value = await $http.$get(`api/students/${studentId}`);
+    //   console.log(student.value);
+    //   // xxx()
+    // });
+ const { fetch, fetchState } = useFetch(async () => {
+            student.value = await $http.$get(`api/students/${studentId}`);
 
+    })
+
+    // Manually trigger a refetch
+    fetch()
+fetchState
     return {
       studentId,
       student,
       property,
       chosenComponent,
+      fetchState,
+      orderedStudentProperties
     };
   },
 });
@@ -146,7 +125,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 
 button {
-  background-color: blueviolet;
+  background-color: #2f76e2;
   display: inline-block;
   font-size: 13px;
   color: #fff;

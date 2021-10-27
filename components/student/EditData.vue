@@ -1,5 +1,6 @@
 <template>
   <div class="ourStudentPanel" ref="editDataPanel">
+    {{$t('full_address', {address: student.street})}}
       <form
         action="#"
         enctype="application/x-www-form-urlencoded"
@@ -7,7 +8,7 @@
         @submit.prevent="saveChanges"
       >
         <div class="container">
-          <div class="row" v-for="data in formData" :key="data.property">
+          <div class="row mb-3" v-for="data in formData" :key="data.property">
             <div class="col-6">
 
             <label :for="data.property">{{ $t(data.property) }}</label>
@@ -258,7 +259,7 @@ export default {
         this.$toast.success(this.$t("successfully_updated_student_data"));
       } catch (err) {
         console.error(err);
-        this.$toast.success(this.$t("successfully_updated_student_data"));
+        this.$toast.error(this.$t("successfully_updated_student_data"));
       }
     }
     return {
