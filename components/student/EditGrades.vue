@@ -1,12 +1,12 @@
 <template>
-  <div class="editStudent" ref="editStudentGrades">
+  <div class="editStudent mb-3" ref="editStudentGrades">
     <span class="d-block mb-3">{{ $t('edit_grade') }}:</span>
     <div class="container">
       <div class="row">
-
+{{gradesLength + student.grades.length}}
       <Grade class="col-12 col-md-11" v-for="(grade, index) in student.grades" :key="index" :index="index" :grade="grade" />
 
-      <Grade class="col-12 col-md-11" v-for="n in gradesLength" :key="n" :index="gradesLength + student.grades.length" :gradesLength="gradesLength" />
+      <Grade class="col-12 col-md-11" v-for="n in gradesLength" :key="n + student.grades.length" :index="gradesLength + student.grades.length" :gradesLength="gradesLength" />
 
         <div class="showAnotherGrade">
           <button name="moreGradesEditGrades" @click="gradesLength++">  +  </button>
@@ -15,19 +15,24 @@
     </div>
     <StudentTable :student="student"/>
      
-    <button name="possibleSaveData" class="btn btn-success btn-lg save" :disabled="v.form.student.$invalid">
-      {{ $t('save_changes') }}
-    </button>
-   <!-- <button name="closeTheGradesPanel" @click="$emit()$router.go(-1)"><img class="closeThePanel" src="@/assets/images/eXit.png"/></button> -->
+    <button
+        class="btn btn-success btn-lg save mr-3"
+        @click="saveChanges"
+      >
+        <!-- :disabled="$v.student.$invalid && $v.student.$anyDirty" -->
+        {{ $t("save_changes") }}
+      </button>
+   <button name="closeTheGradesPanel" @click="$router.go(-1)"><img class="closeThePanel" src="@/assets/images/eXit.png"/></button>
  </div>
 </template>
 
 <script>
 import gradesService from "@/assets/mixins/gradesMixins.ts";
 import Grade from "@/components/global/Grade.vue";
-import StudentTable from "~/components/global/StudentRow.vue";
-import { ref } from "@nuxtjs/composition-api";
-export default {
+import StudentTable from "~/components/global/StudentTable";
+import { defineComponent, ref, useMeta } from "@nuxtjs/composition-api";
+import axios from 'axios'
+export default defineComponent({
   name: "EditGrades",
   components: {
     Grade,
@@ -40,16 +45,33 @@ export default {
     }
   },
   mixins: [gradesService],
-  setup() {
+  setup(props) {
     const gradesLength = ref(0);
+    const student = props.student;
+    const { title } = useMeta();
+    title.value = this.$t('student_edit_page_title', { student: `${ student.lastName } ${ student.firstName }` }),
+
+    function saveChanges() {
+      
+      try {
+        axios.put(`/api/students/${student._id}`, {
+          student: student,
+        });
+        this.$toast.success(this.$t("successfully_updated_student_data"));
+      } catch (err) {
+        console.error(err);
+        this.$toast.error(this.$t("successfully_updated_student_data"));
+      }
+    }
     return {
       gradesLength,
+      saveChanges,
     };
   },
-};
+});
 </script>
 <style lang="scss" scoped>
-div.EditStudentGrades {
+div.editStudent {
   width: 90%;
   max-width: 1400px;
   margin: 100px auto;
@@ -60,25 +82,10 @@ div.EditStudentGrades {
   text-align: center;
   font-size: 13px;
   position: absolute;
-  top: -20%;
+  top: 20%;
   left: 50%;
   transform: translateX(-50%);
   padding: 70px 0 40px;
-}
-div.gainedGradesAndNewGrades {
-  width: 80%;
-}
-div.gainedGrades {
-  margin: auto;
-}
-div.gainedGrades .row > div {
-  align-content: flex-end;
-  display: grid;
-  margin-bottom: 30px;
-}
-.studentPanelSummary {
-  width: 80%;
-  margin: 150px auto 100px;
 }
 button.save {
   font-size: 15px;
@@ -113,7 +120,7 @@ img.closeThePanel {
   border-radius: 50px;
 }
 @media (max-width: 768px) {
-  div.EditStudentGrades {
+  div.editStudent {
     width: 95%;
     top: -30%;
   }

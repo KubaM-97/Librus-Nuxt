@@ -40,10 +40,7 @@ export default {
   date: 'Data',
   address: 'Adres',
   street: 'Adres',
-  full_address: 'tłumaczcie {returnObjects}{a.name}',
-  // full_address: `ul.{address{name}}{x}{name}{address.name}{address{name}{{address}.{address.name}}`,
-  // full_address: 'ul.{address.name} {address.nr} m.{address.flat} \n  {address.postcode} {address.city}',
-  // full_address: '{addressname.name}.{addressname->name}',
+  full_address: 'ul.{streetName} {streetNr} m.{streetFlat} <br /> {streetPostCode} {streetCity}',
   pesel: 'Pesel',
   phone: 'Telefon',
   email: 'Email',
@@ -113,4 +110,11 @@ export default {
 
   fillname:'Uzupełnij imię i nazwisko',
   no_characters:'Bez cyfr i znaków specjalnych',
+
+  //titles
+  logged_out_page_title: 'Librus - strona logowania',
+  group_page_title: 'Librus - klasa { group }',
+  student_page_title: 'Librus - uczeń { student }',
+  student_edit_page_title: 'Librus - edycja ucznia { student }',
+  error_page_title: 'Librus - błędny adres',
 }

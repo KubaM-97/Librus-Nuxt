@@ -21,7 +21,6 @@ class StudentController {
   }
   async getStudent(req, res) {
     const id = req.params.id
-    console.log('getStudent',id);
     try {
       const db = await mongo.connect('students');
       const collection = db.collection(`group_3B`);
@@ -55,16 +54,27 @@ class StudentController {
 
   }
   async updateStudent(req, res) {
-    const id = req.params.id;
     const student = req.body.student;
-    console.log(id, student._id, student);
     try {
       const db = await mongo.connect('students');
       const collection = db.collection(`group_3B`);
 
-      await collection.updateOne({
-        _id: mongodb.ObjectId(id)
-      })
+      await collection.updateOne(  {_id: mongodb.ObjectId(student._id)},
+      {
+        $set: {
+          firstName: student.firstName,
+          lastName: student.lastName,
+          pesel: student.pesel,
+          phone: student.phone,
+          email: student.email,
+          street: student.street,
+          mother: student.mother,
+          father: student.father,
+          grades: student.grades,
+        }
+      }
+      
+      )
       res.sendStatus(201)
 
     } catch (err) {

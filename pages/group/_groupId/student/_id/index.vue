@@ -13,18 +13,22 @@
             {{ student[property] }}
           </span>
             
-          <span class="data" v-else v-for="(_subValue, subProperty) in student[property]" :key="subProperty">
+          <span class="data" v-else>
+            <span v-for="(_subValue, subProperty) in student[property]" :key="subProperty">
             {{student[property][subProperty]}}
+            </span>
           </span>
         </div>
         
       </div>
+      <!-- <StudentEditData :student="student"/> -->
+      <StudentEditGrades :student="student"/>
       <div class="pr-3 d-flex justify-content-end">
         <NuxtLink tag="button" class="btn btn-lg" :to="{ query: { edit: 'data' }}">{{ $t("edit_data") }}</NuxtLink> 
         <NuxtLink tag="button" class="btn btn-lg" :to="{ query: { edit: 'grades' }}">{{ $t("edit_grades") }}</NuxtLink> 
-             <transition name="EditStudentDataPanel" mode="out-in">
+             <!-- <transition name="EditStudentDataPanel" mode="out-in"> -->
         <component :is="chosenComponent" :student="student" />
-      </transition>
+      <!-- </transition> -->
       </div>
     </div>
     </div>
@@ -44,6 +48,7 @@ import {
   useFetch,
   shallowRef,
   watch,
+  useMeta
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
@@ -56,9 +61,14 @@ export default defineComponent({
   mixins: [gradesService],
   // asyncData
   setup() {
+    
     const route = useRoute();
     const studentId = route.value.params.id;
     const student = ref("");
+    const { title } = useMeta()
+    
+    title.value = this.$t('student_page_title', { student: `${ student.lastName } ${ student.firstName }` })
+    
     const property = ref(null);
     const orderedStudentProperties = ref([
       'pesel', 'phone', 'email', 'street', 'mother', 'father'

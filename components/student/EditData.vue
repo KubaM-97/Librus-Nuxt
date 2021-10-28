@@ -1,6 +1,5 @@
 <template>
   <div class="ourStudentPanel" ref="editDataPanel">
-    {{$t('full_address', {address: student.street})}}
       <form
         action="#"
         enctype="application/x-www-form-urlencoded"
@@ -30,20 +29,20 @@
             />
             </div>
             <div class="col-6">
-            {{ !Array.isArray(data.value) ? student[data.property] : nestedProperty(data.property) }}
+              <span v-html="!Array.isArray(data.value) ? student[data.property] : nestedProperty(data.property)"></span>
+              <!-- <span>{{ $t(`${property}_${subProperty}_error`) }}</span> -->
             
             <div v-if="!Array.isArray(data.value) && $v.$invalid && $v.$dirty">{{data.errorMessage}}</div>
+              <span>{{ $t(`${property}_error`) }}</span>
             <!-- <div v-else-if="Array.isArray(data.value)">{{student[data.property][subData].errorMessage]}}</div> -->
             </div>
           </div>
         </div>
       </form>
       <button
-        name="possibleSaveData"
-        class="btn btn-success btn-lg save"
-        :class="{ 'btn-primary': $v.student.$invalid && $v.student.$anyDirty }"
-        :disabled="!isPossibleSave"
-        @click="saved = !saved"
+        class="btn btn-success btn-lg save mr-3"
+        :disabled="$v.student.$invalid && $v.student.$anyDirty"
+        @click="saveChanges"
       >
         {{ $t("save_changes") }}
       </button>
@@ -55,7 +54,8 @@
 </template>
 
 <script>
-import { useRoute, ref, useContext, useFetch, onUpdated } from "@nuxtjs/composition-api";
+import { defineComponent, ref, useMeta} from "@nuxtjs/composition-api";
+import axios from 'axios'
 import { helpers } from "vuelidate/lib/validators";
 const firstName = helpers.regex(
   "firstName",
@@ -65,7 +65,7 @@ const lastName = helpers.regex(
   "lastName",
   /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)?$/
 );
-const pesel = helpers.regex("pesel", /^[0-9]{2}$/);
+const pesel = helpers.regex("pesel", /^[0-9]{11}$/);
 const phone = helpers.regex("phone", /^([0-9]{7}|[0-9]{9})$/);
 const email = helpers.regex(
   "email",
@@ -77,12 +77,12 @@ const streetNr = helpers.regex(
   /^[0-9]+[a-zA-Z]?(\/?[0-9]*[a-zA-Z]?)?$/
 );
 const flat = helpers.regex("flat", /^[0-9]+[a-zA-Z]?$/);
-const postCode = helpers.regex("postCode", /^[0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]*$/);
+const postCode = helpers.regex("postCode", /^[0-9]{2}-[0-9]{3}$/);
 const city = helpers.regex(
   "city",
   /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*( (- )?[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)*$/
 );
-export default {
+export default defineComponent({
   name: "EditData",
   validations:{
     student: {
@@ -124,18 +124,28 @@ export default {
     const student = props.student;
     const saved = ref(false);
     const formData = ref([]);
+    
+    const { title } = useMeta()
+    
+  title.value = this.$t('student_edit_page_title', { student: `${ student.lastName } ${ student.firstName }` }),
     function nestedProperty (property){
       switch(property){
         case 'street': {
-          return `ul. ${student.street.name} ${student.street.nr} m.${student.street.flat} 
-          
-          ${student.street.postcode} ${student.street.city}`
+          return root.$t('full_address', {
+            streetName: student.street.name, 
+            streetNr: student.street.nr, 
+            streetFlat: student.street.flat, 
+            streetPostCode: student.street.postode, 
+            streetCity: student.street.city
+          })
         }
         case 'mother': {
-          return `${student.mother.firstName} ${student.mother.lastName} ${student.mother.phone} ${student.mother.email}`
+          return `${student.mother.firstName} ${student.mother.lastName} <br />
+          ${student.mother.phone} <br /> ${student.mother.email}`
         }
         case 'father': {
-          return `${student.father.firstName} ${student.father.lastName} ${student.father.phone} ${student.father.email}`
+          return `${student.father.firstName} ${student.father.lastName} <br />
+          ${student.father.phone} <br /> ${student.father.email}`
         }
         default: {
           return ''
@@ -251,11 +261,11 @@ export default {
       ];
 
     function saveChanges() {
-      saved.value = true;
+      
       try {
-        // axios.put(`api/students/${id}`, {
-        //   student,
-        // });
+        axios.put(`/api/students/${student._id}`, {
+          student: student,
+        });
         this.$toast.success(this.$t("successfully_updated_student_data"));
       } catch (err) {
         console.error(err);
@@ -270,7 +280,7 @@ export default {
       nestedProperty,
     };
   },
-};
+});
 </script>
 
 <style lang="css" scoped>

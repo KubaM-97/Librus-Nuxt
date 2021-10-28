@@ -130,6 +130,7 @@ export default defineComponent({
 
     const xxx = ref({name: 'sezam', nr: 33})
     console.log('xxx',root.$t('full_address', {returnObjects: true} ));
+    console.log('xxx',root.$t('full_address', {a:xxx.value} ));
     return {
       xxx,
       handleCancel,

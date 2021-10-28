@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td v-if="orderNo">{{ orderNo }}.</td>
-    <td>{{ student.lastName.toUpperCase() }} {{ student.street.name }}</td>
+    <td>{{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
     <td>
       <div
         :class="[{'gradeWeightColor': grade.score || grade.weight}, gradeColor(grade.weight)]"

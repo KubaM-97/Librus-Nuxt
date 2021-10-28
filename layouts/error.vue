@@ -7,9 +7,15 @@
 </template>
 
 <script>
-export default {
-  name: "errorPage"
-}
+import { defineComponent } from '@nuxtjs/composition-api'
+export default defineComponent({
+  name: "errorPage",
+  head() {
+    return{
+      title: this.$t('error_page_title'),
+    }
+  }
+})
 </script>
 
 <style lang="css" scoped>
