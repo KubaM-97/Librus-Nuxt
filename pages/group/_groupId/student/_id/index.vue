@@ -24,8 +24,11 @@
       <div class="pr-3 d-flex justify-content-end">
         <NuxtLink tag="button" class="btn btn-lg" :to="{ query: { edit: 'data' }}">{{ $t("edit_data") }}</NuxtLink> 
         <NuxtLink tag="button" class="btn btn-lg" :to="{ query: { edit: 'grades' }}">{{ $t("edit_grades") }}</NuxtLink> 
-        <transition name="editStudentPanel">
-          <component @close="chosenComponent = null; $router.replace({'query': null})" :is="chosenComponent" :student="student" />
+        <transition name="editStudentPanel" @afterEnter="afterEnter" @enter="enter" @beforeLeave="beforeLeave" @beforeEnter="beforeEnter">
+          <component 
+            ref="editStudentPanel"
+            @close="chosenComponent = null; $router.replace({'query': null})" :is="chosenComponent" :student="student" 
+          />
         </transition>
       </div>
     </div>
@@ -62,13 +65,25 @@ export default defineComponent({
       title: this.$t('student_page_title', { student: `${ this.student.firstName } ${ this.student.lastName }` })
     }
   },
-  setup() {
-    
+  setup(_props, { root }) {
+    function afterEnter(){
+      this.$refs.editStudentPanel.$el.querySelector('.overlay').style.zIndex = -10;
+
+      // this.$refs.editStudentPanel.$el.querySelector('.editStudentGrades').style.animation = 'showEditPanel .1s';
+      // this.$refs.editStudentPanel.$el.querySelector('.editStudentGrades').style.animationFillMode = 'forwards';
+    }
+    function enter(){
+      this.$refs.editStudentPanel.$el.querySelector('.editStudentGrades').style.opacity = 0;
+    }
+    function beforeEnter(){
+    }
+    function beforeLeave(){
+      this.$refs.editStudentPanel.$el.querySelector('.overlay').style.zIndex = 10;
+    }
     const route = useRoute();
     const studentId = route.value.params.id;
     const student = ref("");
     
-    const property = ref(null);
     const orderedStudentProperties = ref([
       'pesel', 'phone', 'email', 'street', 'mother', 'father'
     ])
@@ -103,9 +118,11 @@ export default defineComponent({
 
 
     return {
-      studentId,
+      afterEnter,
+      enter,
+      beforeEnter,
+      beforeLeave,
       student,
-      property,
       chosenComponent,
       orderedStudentProperties
     };
@@ -115,7 +132,10 @@ export default defineComponent({
 
 
 <style lang="scss" scoped>
-
+@keyframes showEditPanel{
+  from {opacity: 0}
+  to {opacity: 1; background-color: orange;}
+  }
 button {
   background-color: #2f76e2;
   display: inline-block;
@@ -144,8 +164,8 @@ button {
     width: 0; 
     height: 0; 
     font-size: 0px !important;
-    .wrapper{
-      background-color: purple;
+    div{
+      background-color: purple !important;
     }
     .xxx{
       opacity: 0;

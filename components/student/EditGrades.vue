@@ -1,10 +1,8 @@
 <template>
-  <div
-    class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute"
-    ref="editStudentGrades"
+  <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute"
   >
-    <div class="yyy" />
-    <div class="container xxx">
+    <div class="overlay" />
+    <div class="container editStudentGrades">
       <span class="d-block mb-3">{{ $t("edit_grade") }}:</span>
       <div class="row">
         <Grade
@@ -27,8 +25,8 @@
           <button name="moreGradesEditGrades" @click="gradesLength++">+</button>
         </div>
       </div>
-    </div>
     <StudentTable :student="student" />
+    </div>
 
     <button
       class="btn btn-success btn-lg save mr-3 px-2 py-2"
@@ -55,11 +53,6 @@ export default defineComponent({
     Grade,
     StudentTable,
   },
-  // transition: 'editStudentPanel',
-  //  transition: {
-  //   name: 'editStudentPanel',
-  //   mode: 'out-in'
-  // },
   props: {
     student: {
       type: Object,
@@ -77,13 +70,6 @@ export default defineComponent({
   setup(props) {
     const gradesLength = ref(0);
     const student = props.student;
-    onMounted(() => {
-      console.log(document.querySelector(".xxx"));
-      setTimeout(() => {
-        document.querySelector(".xxx").style.opacity = 1;
-        document.querySelector(".yyy").style.zIndex = -10;
-      }, 2000);
-    });
     function saveChanges() {
       try {
         axios.put(`/api/students/${student._id}`, {
@@ -103,13 +89,18 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-div.editStudent {
-  .xxx {
-    z-index: -10;
-    opacity: 0;
-    // background-color: transparent;
+@keyframes showEditPanel{
+  from {opacity: 0}
+  to {opacity: 1;}
   }
-  .yyy {
+div.editStudent {
+  .editStudentGrades {
+    opacity: 0;
+    animation: showEditPanel .5s linear;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+  }
+  .overlay {
     background-color: black;
     position: absolute;
     top: 0;
@@ -118,7 +109,6 @@ div.editStudent {
     height: 100%;
     z-index: 10;
   }
-  // background-color: rgba(0, 0, 0, 1);
   font-size: 13px;
   top: 20%;
   left: 50%;
