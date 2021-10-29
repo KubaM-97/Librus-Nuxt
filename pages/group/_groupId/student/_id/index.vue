@@ -21,14 +21,12 @@
         </div>
         
       </div>
-      <!-- <StudentEditData :student="student"/> -->
-      <StudentEditGrades :student="student"/>
       <div class="pr-3 d-flex justify-content-end">
         <NuxtLink tag="button" class="btn btn-lg" :to="{ query: { edit: 'data' }}">{{ $t("edit_data") }}</NuxtLink> 
         <NuxtLink tag="button" class="btn btn-lg" :to="{ query: { edit: 'grades' }}">{{ $t("edit_grades") }}</NuxtLink> 
-             <!-- <transition name="EditStudentDataPanel" mode="out-in"> -->
-        <component :is="chosenComponent" :student="student" />
-      <!-- </transition> -->
+        <transition name="editStudentPanel">
+          <component @close="chosenComponent = null; $router.replace({'query': null})" :is="chosenComponent" :student="student" />
+        </transition>
       </div>
     </div>
     </div>
@@ -40,6 +38,7 @@ import StudentTable from "@/components/global/StudentTable";
 import EditData from "@/components/student/EditData";
 import EditGrades from "@/components/student/EditGrades";
 import gradesService from "@/assets/mixins/gradesMixins.ts";
+import validations from "@/assets/mixins/validations";
 import {
   defineComponent,
   useRoute,
@@ -47,8 +46,7 @@ import {
   useContext,
   useFetch,
   shallowRef,
-  watch,
-  useMeta
+  watch
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
@@ -58,26 +56,27 @@ export default defineComponent({
     EditData,
     EditGrades,
   },
-  mixins: [gradesService],
-  // asyncData
+  mixins: [gradesService, validations],
+  head() {
+    return {
+      title: this.$t('student_page_title', { student: `${ this.student.firstName } ${ this.student.lastName }` })
+    }
+  },
   setup() {
     
     const route = useRoute();
     const studentId = route.value.params.id;
     const student = ref("");
-    const { title } = useMeta()
-    
-    title.value = this.$t('student_page_title', { student: `${ student.lastName } ${ student.firstName }` })
     
     const property = ref(null);
     const orderedStudentProperties = ref([
       'pesel', 'phone', 'email', 'street', 'mother', 'father'
     ])
     const chosenComponent = shallowRef(null);
-    if(route.value.query.data){
-      chosenComponent.value = data
+    if(route.value.query.edit === 'data'){
+      chosenComponent.value = EditData
     }
-    else if(route.value.query.grades) {
+    else if(route.value.query.edit === 'grades') {
       chosenComponent.value = EditGrades
     }
     watch(()=>route.value.query, () => {
@@ -95,36 +94,19 @@ export default defineComponent({
         }
       }
     })
-    // function xxx() {
-    //   history.pushState(
-    //     {},
-    //     null,
-    //     encodeURIComponent(`${student.value.lastName.toLowerCase()} ${student.value.firstName.toLowerCase()}`)
-    //   );
-    // }
+
     const { $http } = useContext();
 
-    // useFetch(async () => {
-    //   console.log('to jest id: ',studentId);
+    useFetch(async () => {
+      student.value = await $http.$get(`api/students/${studentId}`);
+    });
 
-    //   student.value = await $http.$get(`api/students/${studentId}`);
-    //   console.log(student.value);
-    //   // xxx()
-    // });
- const { fetch, fetchState } = useFetch(async () => {
-            student.value = await $http.$get(`api/students/${studentId}`);
 
-    })
-
-    // Manually trigger a refetch
-    fetch()
-fetchState
     return {
       studentId,
       student,
       property,
       chosenComponent,
-      fetchState,
       orderedStudentProperties
     };
   },
@@ -150,4 +132,39 @@ button {
     padding: 5px;
   }
 }
+.editStudentPanel-enter-active{
+  animation: edit 2s linear;
+}
+.editStudentPanel-leave-active{
+  animation: edit 2s linear;
+  animation-direction: reverse;
+}
+@keyframes edit{
+ 0% { 
+    width: 0; 
+    height: 0; 
+    font-size: 0px !important;
+    .wrapper{
+      background-color: purple;
+    }
+    .xxx{
+      opacity: 0;
+    }
+  }
+  20% {
+    width: 0; 
+    height: 100%;
+  }
+  70% {
+    width: 90%;
+    font-size: 0px !important;
+    .yyy{
+      background-color: blue;
+    }
+  }
+  100% {
+    font-size: 100%;
+  }
+}
+
 </style>

@@ -43,7 +43,14 @@ export default {
     'nuxt-typed-vuex',
     '@nuxtjs/composition-api/module'
   ],
-
+  cli: {
+    bannerColor: 'yellow'
+  }, 
+  pageTransition: 'page',
+  layoutTransition: {
+    name: 'layout',
+    mode: 'out-in'
+  },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
@@ -74,6 +81,20 @@ export default {
     position: 'bottom-left',
     duration: 3500,
 },
+head: {
+  title: 'nuxt_project2',
+  htmlAttrs: {
+    lang: 'en'
+  },
+  meta: [
+    { charset: 'utf-8' },
+    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+    { hid: 'description', name: 'description', content: '' }
+  ],
+  link: [
+    { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+  ]
+},
    // specify module rules for css and scss
    module: {
     rules: [
@@ -101,6 +122,17 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    splitChunks: {
+      layouts: false,
+      pages: true,
+      commons: true
+    },
+    extend(config, { isServer }) {
+      // Extend only webpack config for client-bundle
+      if (isServer) {
+        config.devtool = 'source-map'
+      }
+    }
   },
   
   target: 'server',

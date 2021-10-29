@@ -74,7 +74,11 @@ span.descriptionCount {
     font-size: 9px;
 }
 @media (max-width: 768px){
-
+    .showAnotherGrade button {
+        font-size: 19px;
+        padding: 1px 9px;
+        font-weight: 300;
+      }
     div[class^=col-]{
         padding: 0;
     }

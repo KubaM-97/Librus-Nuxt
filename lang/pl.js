@@ -113,8 +113,8 @@ export default {
 
   //titles
   logged_out_page_title: 'Librus - strona logowania',
-  group_page_title: 'Librus - klasa { group }',
-  student_page_title: 'Librus - uczeń { student }',
-  student_edit_page_title: 'Librus - edycja ucznia { student }',
+  group_page_title: 'Librus - klasa {group}',
+  student_page_title: 'Librus - uczeń {student}',
+  student_edit_page_title: 'Librus - edycja ucznia {student}',
   error_page_title: 'Librus - błędny adres',
 }

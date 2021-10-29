@@ -1,6 +1,6 @@
 /* Routing transition's animation */
 .router-enter-active, .router-leave-active{
-  transition: opacity .5s ease-out;
+  transition: opacity 3s ease-out;
 }
 .router-enter, .router-leave-to{
   opacity: 0;
@@ -27,24 +27,58 @@
 
 
 /* Both EditStudentData.vue and EditStudentGrades.vue components */
-.EditStudentDataPanel-enter-active{
+.editStudentPanel-enter-active{
   animation: edit 1.5s linear;
 }
-.EditStudentDataPanel-leave-active{
-  animation: edit 1.5s linear;
-  animation-direction: reverse;
-}
-.EditStudentGradesPanel-enter-active{
-  animation: edit 1.5s linear;
-}
-.EditStudentGradesPanel-leave-active{
+.editStudentPanel-leave-active{
   animation: edit 1.5s linear;
   animation-direction: reverse;
 }
-@keyframes edit{
-  0%{width: 0px; font-size: 0}
-  100%{width: 90%; font-size: 100%}
+@keyframes editStudentPanel{
+//   0% { 
+// opacity: 0; 
+//     }
+//     100% {
+//       opacity: 0.6; 
+
+//     }
+  0% { 
+    width: 0; 
+    height: 0; 
+    font-size: 0px;
+  }
+  20% {
+    height: 100%;
+  }
+  70% {
+    width: 90%;
+  }
+  100% {
+    font-size: 100%;
+  }
+  // 0% { 
+  //   width: 0px; 
+  //   font-size: 0;
+  // }
+  // 100% {
+  //   width: 90%; 
+  //   font-size: 100%;
+  // }
 }
+
+.page-enter-active,
+.page-leave-active,
+.layout-enter-active,
+.layout-leave-active {
+  transition: opacity .15s;
+}
+.page-enter,
+.page-leave-to,
+.layout-enter,
+.layout-leave-to {
+  opacity: 0;
+} 
+
 
 /* EditStudentData.vue: GreenCheckMarks */
 .showGreenMark-leave-active{

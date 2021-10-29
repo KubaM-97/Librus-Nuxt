@@ -16,7 +16,7 @@
               type="text"
               :name="data.property"
               :id="data.property"
-              v-model.trim="$v.student[data.property].$model"
+              v-model.trim="$v.form.student[data.property].$model"
             />
             <input
               v-else
@@ -25,7 +25,7 @@
               type="text"
               :name="[data.property][subData.property]"
               :id="[data.property][subData.property]"
-              v-model.trim="$v.student[data.property][subData.property].$model"
+              v-model.trim="$v.form.student[data.property][subData.property].$model"
             />
             </div>
             <div class="col-6">
@@ -41,7 +41,7 @@
       </form>
       <button
         class="btn btn-success btn-lg save mr-3"
-        :disabled="$v.student.$invalid && $v.student.$anyDirty"
+        :disabled="$v.form.student.$invalid && $v.form.student.$anyDirty"
         @click="saveChanges"
       >
         {{ $t("save_changes") }}
@@ -54,80 +54,31 @@
 </template>
 
 <script>
-import { defineComponent, ref, useMeta} from "@nuxtjs/composition-api";
+import { defineComponent, ref} from "@nuxtjs/composition-api";
 import axios from 'axios'
-import { helpers } from "vuelidate/lib/validators";
-const firstName = helpers.regex(
-  "firstName",
-  /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*( [A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)?$/
-);
-const lastName = helpers.regex(
-  "lastName",
-  /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)?$/
-);
-const pesel = helpers.regex("pesel", /^[0-9]{11}$/);
-const phone = helpers.regex("phone", /^([0-9]{7}|[0-9]{9})$/);
-const email = helpers.regex(
-  "email",
-  /^[a-zA-Z0-9-_\.]+@[a-zA-Z0-9-]+\.[a-z]+$/
-);
-const streetName = helpers.regex("streetName", /^[0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]*$/);
-const streetNr = helpers.regex(
-  "streetNr",
-  /^[0-9]+[a-zA-Z]?(\/?[0-9]*[a-zA-Z]?)?$/
-);
-const flat = helpers.regex("flat", /^[0-9]+[a-zA-Z]?$/);
-const postCode = helpers.regex("postCode", /^[0-9]{2}-[0-9]{3}$/);
-const city = helpers.regex(
-  "city",
-  /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*( (- )?[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)*$/
-);
+import validations from "@/assets/mixins/validations";
+
 export default defineComponent({
   name: "EditData",
-  validations:{
-    student: {
-      firstName: { firstName },
-      lastName: { lastName },
-      pesel: { pesel },
-      phone: { phone },
-      email: { email },
-      street: {
-        name: { streetName },
-        nr: { streetNr },
-        flat: { flat },
-        postcode: { postCode },
-        city: { city },
-      },
-      mother: {
-        firstName: { firstName }, 
-        lastName: { lastName }, 
-        phone: { phone }, 
-        email: { email }, 
-      },
-      father: {
-        firstName: { firstName }, 
-        lastName: { lastName }, 
-        phone: { phone }, 
-        email: { email }, 
-      },
-    },
-  },
+  mixins: [validations],
   props: {
     student: {
       type: Object,
       required: true
     }
   },
+  head() {
+    return {
+      title: this.$t('student_edit_page_title', { student: `${ this.student.lastName } ${ this.student.firstName }` }),
+    }
+  }, 
   setup(props, {root}) {
 
     const isPossibleSave = ref(true);
     const student = props.student;
     const saved = ref(false);
     const formData = ref([]);
-    
-    const { title } = useMeta()
-    
-  title.value = this.$t('student_edit_page_title', { student: `${ student.lastName } ${ student.firstName }` }),
+
     function nestedProperty (property){
       switch(property){
         case 'street': {

@@ -11,10 +11,5 @@ export default defineComponent({
     LoggedOutView,
   },
   layout: 'loggedOut',
-  head() {
-    return{
-      title: this.$t('logged_out_page_title'),
-    }
-  },
 });
 </script>
