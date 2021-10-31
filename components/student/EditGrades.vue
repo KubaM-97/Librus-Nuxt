@@ -1,8 +1,7 @@
 <template>
   <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute"
   >
-    <div class="overlay" />
-    <div class="container editStudentGrades">
+    <div class="container editStudentGrades xxxx panel" :ref="xxx">
       <span class="d-block mb-3">{{ $t("edit_grade") }}:</span>
       <div class="row">
         <Grade
@@ -26,7 +25,6 @@
         </div>
       </div>
     <StudentTable :student="student" />
-    </div>
 
     <button
       class="btn btn-success btn-lg save mr-3 px-2 py-2"
@@ -37,6 +35,9 @@
     <button class="closeEditPanelBtn position-absolute" @click="$emit('close')">
       <img class="closeEditPanelImg w-100" src="@/assets/images/eXit.png" />
     </button>
+    </div>
+    <div class="overlay" />
+
   </div>
 </template>
 
@@ -44,7 +45,7 @@
 import gradesService from "@/assets/mixins/gradesMixins.ts";
 import Grade from "@/components/global/Grade.vue";
 import StudentTable from "~/components/global/StudentTable";
-import { defineComponent, ref, onMounted } from "@nuxtjs/composition-api";
+import { defineComponent, ref, onBeforeUnmount } from "@nuxtjs/composition-api";
 import axios from "axios";
 export default defineComponent({
   name: "EditGrades",
@@ -67,7 +68,20 @@ export default defineComponent({
       }),
     };
   },
-  setup(props) {
+  setup(props, {root}) {
+    const xxx = ref(null)
+    onBeforeUnmount(()=>{
+      // console.log(root.$el);
+      // document.querySelector('.xxxx').style.animation = 'showEditPanel .5s'
+      // document.querySelector('.xxxx').style.animationDirection = 'reverse';
+      // setTimeout(()=>{
+      //   document.querySelector('.overlay').style.zIndex = 10
+      // },1000);
+
+      // console.log(root, this);
+      // root.$refs.xxx.style.animation = 'showEditPanel .5s';
+      // root.$refs.xxx.style.animationDirection = 'reverse';
+    })
     const gradesLength = ref(0);
     const student = props.student;
     function saveChanges() {
@@ -84,21 +98,25 @@ export default defineComponent({
     return {
       gradesLength,
       saveChanges,
+      xxx,
     };
   },
 });
 </script>
 <style lang="scss" scoped>
-@keyframes showEditPanel{
-  from {opacity: 0}
-  to {opacity: 1;}
-  }
+// @keyframes showEditPanel{
+//   from {opacity: 0}
+//   to {opacity: 1;}
+//   }
 div.editStudent {
+  overflow: hidden;
+    background-color: black;
+
   .editStudentGrades {
-    opacity: 0;
-    animation: showEditPanel .5s linear;
-    animation-delay: 2s;
-    animation-fill-mode: forwards;
+    // opacity: 0;
+    // animation: showEditPanel .5s linear;
+    // animation-delay: 2s;
+    // animation-fill-mode: forwards;
   }
   .overlay {
     background-color: black;
@@ -107,7 +125,7 @@ div.editStudent {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 10;
+    // z-index: 10;
   }
   font-size: 13px;
   top: 20%;

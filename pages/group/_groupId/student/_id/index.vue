@@ -1,39 +1,66 @@
 <template>
-<div> 
-<div v-if="$fetchState.pending"> Cierpliwości</div> 
-  <div class="wrapper text-left pl-2" v-else>
-      <div  class="summary">
-      <StudentTable :student="student" />
+  <div>
+    <div v-if="$fetchState.pending">Cierpliwości</div>
+    <div class="wrapper text-left pl-2" v-else>
+      <!-- {{$refs.editStudentPanel.$el.querySelector('.editStudentGrades').style.opacity}} -->
+      <div class="summary">
+        <StudentTable :student="student" />
       </div>
       <div class="p-4 w-75">
-        <div class="form-group w-100 d-flex justify-content-between" v-for="property in orderedStudentProperties" :key="property">
-          <span class="title biggerfont">{{$t(property)}}:</span>
+        <div
+          class="form-group w-100 d-flex justify-content-between"
+          v-for="property in orderedStudentProperties"
+          :key="property"
+        >
+          <span class="title biggerfont">{{ $t(property) }}:</span>
 
-          <span class="data" v-if="typeof student[property] !== 'object' && student[property] !== null">
+          <span
+            class="data"
+            v-if="
+              typeof student[property] !== 'object' &&
+              student[property] !== null
+            "
+          >
             {{ student[property] }}
           </span>
-            
+
           <span class="data" v-else>
-            <span v-for="(_subValue, subProperty) in student[property]" :key="subProperty">
-            {{student[property][subProperty]}}
+            <span
+              v-for="(_subValue, subProperty) in student[property]"
+              :key="subProperty"
+            >
+              {{ student[property][subProperty] }}
             </span>
           </span>
         </div>
-        
       </div>
       <div class="pr-3 d-flex justify-content-end">
-        <NuxtLink tag="button" class="btn btn-lg" :to="{ query: { edit: 'data' }}">{{ $t("edit_data") }}</NuxtLink> 
-        <NuxtLink tag="button" class="btn btn-lg" :to="{ query: { edit: 'grades' }}">{{ $t("edit_grades") }}</NuxtLink> 
-        <transition name="editStudentPanel" @afterEnter="afterEnter" @enter="enter" @beforeLeave="beforeLeave" @beforeEnter="beforeEnter">
-          <component 
+        <NuxtLink
+          tag="button"
+          class="btn btn-lg"
+          :to="{ query: { edit: 'data' } }"
+          >{{ $t("edit_data") }}</NuxtLink
+        >
+        <NuxtLink
+          tag="button"
+          class="btn btn-lg"
+          :to="{ query: { edit: 'grades' } }"
+          >{{ $t("edit_grades") }}</NuxtLink
+        >
+        <transition @enter="enter" @after-enter="afterEnter" @leave="leave" @before-leave="beforeLeave" :css="false">
+          <component
             ref="editStudentPanel"
-            @close="chosenComponent = null; $router.replace({'query': null})" :is="chosenComponent" :student="student" 
+            @close="
+              chosenComponent = null;
+              $router.replace({ query: null });
+            "
+            :is="chosenComponent"
+            :student="student"
           />
         </transition>
       </div>
     </div>
-    </div>
-
+  </div>
 </template>
 
 <script>
@@ -49,7 +76,7 @@ import {
   useContext,
   useFetch,
   shallowRef,
-  watch
+  watch,
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
@@ -62,69 +89,96 @@ export default defineComponent({
   mixins: [gradesService, validations],
   head() {
     return {
-      title: this.$t('student_page_title', { student: `${ this.student.firstName } ${ this.student.lastName }` })
-    }
+      title: this.$t("student_page_title", {
+        student: `${this.student.firstName} ${this.student.lastName}`,
+      }),
+    };
   },
-  setup(_props, { root }) {
-    function afterEnter(){
-      this.$refs.editStudentPanel.$el.querySelector('.overlay').style.zIndex = -10;
+  setup() {
+    function afterEnter(el) {
+      el.addEventListener("animationend", function () {
+        el.style = "";
+      });
+      el.querySelector('.overlay').style.animation = "showDetailDatax 2s";
+      el.querySelector('.overlay').style.animationFillMode = "forwards";
+    }
+    function enter(el, done) {
+      el.addEventListener("animationend", function () {
+        el.style = "";
+        done();
+      });
+      el.style.animation = "edit 2s"
+    }
+    function beforeLeave(el) {
+      el.addEventListener("animationend", function () {
+        el.style = "";
+      });
+      el.querySelector('.overlay').style.animation = "showDetailDatax 2s";
+      el.querySelector('.overlay').style.animationDirection = "reverse";
+      el.querySelector('.overlay').style.animationFillMode = "forwards";
+    }
+    function leave(el, done) { 
 
-      // this.$refs.editStudentPanel.$el.querySelector('.editStudentGrades').style.animation = 'showEditPanel .1s';
-      // this.$refs.editStudentPanel.$el.querySelector('.editStudentGrades').style.animationFillMode = 'forwards';
-    }
-    function enter(){
-      this.$refs.editStudentPanel.$el.querySelector('.editStudentGrades').style.opacity = 0;
-    }
-    function beforeEnter(){
-    }
-    function beforeLeave(){
-      this.$refs.editStudentPanel.$el.querySelector('.overlay').style.zIndex = 10;
+      el.addEventListener("animationend", function () {
+        el.style = "";
+        done();
+      });
+      el.style.animation = "edit 2s";
+      el.style.animationDirection = "reverse";
+      el.style.animationDelay = "2s";
     }
     const route = useRoute();
     const studentId = route.value.params.id;
     const student = ref("");
-    
+
     const orderedStudentProperties = ref([
-      'pesel', 'phone', 'email', 'street', 'mother', 'father'
-    ])
+      "pesel",
+      "phone",
+      "email",
+      "street",
+      "mother",
+      "father",
+    ]);
     const chosenComponent = shallowRef(null);
-    if(route.value.query.edit === 'data'){
-      chosenComponent.value = EditData
+    if (route.value.query.edit === "data") {
+      chosenComponent.value = EditData;
+    } else if (route.value.query.edit === "grades") {
+      chosenComponent.value = EditGrades;
     }
-    else if(route.value.query.edit === 'grades') {
-      chosenComponent.value = EditGrades
-    }
-    watch(()=>route.value.query, () => {
-      switch(route.value.query.edit) {
-        case 'data': {
-          chosenComponent.value = EditData;
-          break;
-        }
-        case 'grades': {
-          chosenComponent.value = EditGrades;
-          break;
-        }
-        default: {
-          chosenComponent.value = null
+    watch(
+      () => route.value.query,
+      () => {
+        switch (route.value.query.edit) {
+          case "data": {
+            chosenComponent.value = EditData;
+            break;
+          }
+          case "grades": {
+            chosenComponent.value = EditGrades;
+            break;
+          }
+          default: {
+            chosenComponent.value = null;
+          }
         }
       }
-    })
+    );
 
     const { $http } = useContext();
 
     useFetch(async () => {
       student.value = await $http.$get(`api/students/${studentId}`);
     });
-
-
+const xxx = ref(false)
     return {
+      xxx, 
       afterEnter,
       enter,
-      beforeEnter,
       beforeLeave,
+      leave,
       student,
       chosenComponent,
-      orderedStudentProperties
+      orderedStudentProperties,
     };
   },
 });
@@ -132,10 +186,6 @@ export default defineComponent({
 
 
 <style lang="scss" scoped>
-@keyframes showEditPanel{
-  from {opacity: 0}
-  to {opacity: 1; background-color: orange;}
-  }
 button {
   background-color: #2f76e2;
   display: inline-block;
@@ -152,39 +202,12 @@ button {
     padding: 5px;
   }
 }
-.editStudentPanel-enter-active{
+.editStudentPanel-enter-active {
   animation: edit 2s linear;
 }
-.editStudentPanel-leave-active{
+.editStudentPanel-leave-active {
   animation: edit 2s linear;
   animation-direction: reverse;
-}
-@keyframes edit{
- 0% { 
-    width: 0; 
-    height: 0; 
-    font-size: 0px !important;
-    div{
-      background-color: purple !important;
-    }
-    .xxx{
-      opacity: 0;
-    }
-  }
-  20% {
-    width: 0; 
-    height: 100%;
-  }
-  70% {
-    width: 90%;
-    font-size: 0px !important;
-    .yyy{
-      background-color: blue;
-    }
-  }
-  100% {
-    font-size: 100%;
-  }
 }
 
 </style>
