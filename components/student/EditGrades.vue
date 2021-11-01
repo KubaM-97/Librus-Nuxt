@@ -72,7 +72,6 @@ export default defineComponent({
   setup(props, {root, emit}) {
     const gradesLength = ref(0);
     const student = props.student
-    const clone5 = JSON.parse(JSON.stringify(student));
     const basedGrades = ref(JSON.parse(JSON.stringify(student)));
     async function saveChanges() {
       try {
@@ -99,7 +98,6 @@ export default defineComponent({
       saveChanges,
       basedGrades,
       yy,
-      clone5,
     };
   },
 });
