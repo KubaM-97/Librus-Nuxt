@@ -67,7 +67,7 @@ class StudentController {
           pesel: student.pesel,
           phone: student.phone,
           email: student.email,
-          street: student.street,
+          address: student.address,
           mother: student.mother,
           father: student.father,
           grades: student.grades,

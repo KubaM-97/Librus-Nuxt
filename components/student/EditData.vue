@@ -92,13 +92,13 @@ export default defineComponent({
     console.log(form.value);
     function nestedProperty (property){
       switch(property){
-        case 'street': {
+        case 'address': {
           return root.$t('full_address', {
-            streetName: student.street.name, 
-            streetNr: student.street.nr, 
-            streetFlat: student.street.flat, 
-            streetPostCode: student.street.postode, 
-            streetCity: student.street.city
+            streetName: student.address.streetName, 
+            streetNr: student.address.streetNr, 
+            flatNr: student.address.flatNr, 
+            postCode: student.address.postCode, 
+            city: student.address.city
           })
         }
         case 'mother': {
@@ -115,7 +115,7 @@ export default defineComponent({
       }
     }
     const orderedStudentProperties = ref([
-      'pesel', 'phone', 'email', 'street', 'mother', 'father'
+      'pesel', 'phone', 'email', 'address', 'mother', 'father'
     ])
       
  function setStudentState(value, property, subProperty){

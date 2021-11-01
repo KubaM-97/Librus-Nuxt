@@ -52,7 +52,7 @@ export default defineComponent({
     const v = props.v
 
     const orderedStudentProperties = ref([
-      'pesel', 'phone', 'email', 'street', 'mother', 'father'
+      'pesel', 'phone', 'email', 'address', 'mother', 'father'
     ])
     function setStudentState(value, property, subProperty){
       v.form.student.$touch()

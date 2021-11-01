@@ -42,10 +42,10 @@ type Parent = {
     email: string,
 }
 type Address = {
-    name: string,
-    nr: number,
-    flat: number,
-    postcode: string,
+    streetName: string,
+    streetNr: number,
+    flatNr: number,
+    postCode: string,
     city: string,
 }
 
@@ -57,7 +57,7 @@ type Address = {
 //     phone: number,
 //     email: string,
 //     grades: SingleGrade[],
-//     street: Address,
+//     address: Address,
 //     mother: Parent,
 //     father: Parent,
 // }

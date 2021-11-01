@@ -24,7 +24,7 @@ const firstName = helpers.regex(
     "streetNr",
     /^[0-9]+[a-zA-Z]?(\/?[0-9]*[a-zA-Z]?)?$/
   );
-  const flat = helpers.regex("flat", /^[0-9]+[a-zA-Z]?$/);
+  const flatNr = helpers.regex("flat", /^[0-9]+[a-zA-Z]?$/);
   const postCode = helpers.regex("postCode", /^[0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]*$/);
   const city = helpers.regex(
     "city",
@@ -41,11 +41,11 @@ export default defineComponent({
             pesel: { pesel },
             phone: { phone },
             email: { email },
-            street: {
-              name: { streetName },
-              nr: { streetNr },
-              flat: { flat },
-              postcode: { postCode },
+            address: {
+              streetName: { streetName },
+              streetNr: { streetNr },
+              flatNr: { flatNr },
+              postCode: { postCode },
               city: { city },
             },
             mother: {

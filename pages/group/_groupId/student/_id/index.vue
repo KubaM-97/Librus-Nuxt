@@ -140,7 +140,7 @@ export default defineComponent({
       "pesel",
       "phone",
       "email",
-      "street",
+      "address",
       "mother",
       "father",
     ]);

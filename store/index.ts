@@ -19,11 +19,11 @@ export const state = () => ({
     phone: '',
     email: '',
     grades: [],
-    street: {
-      name: '',
-      nr: '',
-      flat: '',
-      postcode: '',
+    address: {
+      streetName: '',
+      streetNr: '',
+      flatNr: '',
+      postCode: '',
       city: '',
     },
     mother: {
@@ -79,24 +79,24 @@ export const mutations = mutationTree(state, {
         phone: '',
         email: '',
         grades: [],
-        street: {
-          name: '',
-          nr: '',
-          flat: '',
-          postcode: '',
-          city: '',
+        address: {
+          streetName: '',
+          streetNr: '',
+          flatNr: '',
+          postCode: '',
+          city: ''
         },
         mother: {
           firstName: '',
           lastName: '',
           phone: '',
-          email: '',
+          email: ''
         },
         father: {
           firstName: '',
           lastName: '',
           phone: '',
-          email: '',
+          email: ''
         }
       
     }
