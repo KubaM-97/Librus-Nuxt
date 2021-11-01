@@ -6,9 +6,8 @@
         <div class="col-2 col-md-3">
           <div class="addStudentPanelGradesContentSingleGrade">
             <div class="select">
-              dfgdfgf: {{grade}}
               <label for="score">{{ $t("grade_score") }}:</label>
-              <select v-model.number="grade.score" @change="xx"
+              <select v-model.number="grade.score"
               >
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -27,7 +26,7 @@
 
             <div class="select">
               <select 
-              v-model="grade.weight" 
+              v-model.number="grade.weight" 
               >
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -103,7 +102,6 @@ export default defineComponent({
   emits: ['xxxxxx'],
   setup(props, { root, emit }) {
     const index = props.index;
-console.log('4444');
     const store = useStore();
     const characters = props.characters;
     const grades = computed(() => root.$accessor.student.grades);
@@ -145,13 +143,11 @@ console.log('4444');
 
     onBeforeUpdate(() => {
       grade.date = root.getCurrentDate();
-console.log('1');
       updateStudentGrade();
     });
 
     //places a new mark, weight, description or date in appropriate place according to the provided index inside newGrades in Vuex
     function updateStudentGrade() {
-      console.log('2');
       emit('xxxxxx', grade, index)
       clonedGrades = [...grades.value];
       clonedGrades[index] = { ...grade };
@@ -164,16 +160,12 @@ console.log('1');
       // const refEl = this.$refs[`grade_${index}`];
       // refEl.parentNode.removeChild(refEl);
     }
-function xx(){
-  console.log('333');
-}
     return {
       store,
       updateStudentGrade,
       remove,
       grades,
-      leftCharactersMessage,
-      xx
+      leftCharactersMessage
     };
   },
 });

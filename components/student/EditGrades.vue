@@ -1,12 +1,6 @@
 <template>
   <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute"
   >
-      {{student.grades[0]}}
-<!-- {{clone}} <br />
-{{clone2}} <br />
-{{clone3}} <br />
-{{clone4}} <br /> -->
-{{clone5.grades}} <br />
     <div class="overlay" />
     <div class="container">
       <span class="d-block mb-3">{{ $t("edit_grade") }}:</span>
@@ -52,12 +46,11 @@
 import gradesService from "@/assets/mixins/gradesMixins.ts";
 import Grade from "@/components/global/Grade.vue";
 import StudentTable from "~/components/global/StudentTable";
-import { defineComponent, ref, reactive, computed, watch, onActivated  } from "@nuxtjs/composition-api";
-import { activated } from "vue";
+import { defineComponent, ref } from "@nuxtjs/composition-api";
 import axios from "axios";
 export default defineComponent({
   name: "EditGrades",
-  emit: ["close"],
+  emit: ["close", "refresh"],
   components: {
     Grade,
     StudentTable,
@@ -76,16 +69,18 @@ export default defineComponent({
       }),
     };
   },
-  setup(props, {root}) {
+  setup(props, {root, emit}) {
     const gradesLength = ref(0);
     const student = props.student
     const clone5 = JSON.parse(JSON.stringify(student));
     const basedGrades = ref(JSON.parse(JSON.stringify(student)));
-    function saveChanges() {
+    async function saveChanges() {
       try {
-        axios.put(`/api/students/${student._id}`, {
-          student: student,
+        this.$toast.show(this.$t("successfully_updated_student_data"));
+        await axios.put(`/api/students/${student._id}`, {
+          student: basedGrades.value,
         });
+        await emit('refresh')
         this.$toast.success(this.$t("successfully_updated_student_data"));
       } catch (err) {
         console.error(err);
@@ -93,10 +88,7 @@ export default defineComponent({
       }
     }
     function yy(grade, index){
-      console.log('yy');
-      // basedGrades.grades[index] = grade
-      this.$forceUpdate()
-
+      basedGrades.value.grades[index] = grade
     }
     // onActivated(()=>{
     //   console.log('44', props.student.grades[0]);

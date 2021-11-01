@@ -2,7 +2,6 @@
   <div>
     <div v-if="$fetchState.pending">Cierpliwości</div>
     <div class="wrapper text-left pl-2" v-else>
-      {{student.grades[0]}}
       <div class="summary">
         <StudentTable :student="student" />
       </div>
@@ -51,10 +50,8 @@
           <!-- <keep-alive> -->
             <component
               ref="editStudentPanel"
-              @close="
-                chosenComponent = null;
-                $router.replace({ query: null });
-              "
+              @close="handleClose"
+              @refresh="handleRefresh"
               :is="chosenComponent"
               :student="student"
             />
@@ -74,6 +71,7 @@ import validations from "@/assets/mixins/validations";
 import {
   defineComponent,
   useRoute,
+  useRouter,
   ref,
   useFetch,
   shallowRef,
@@ -99,7 +97,7 @@ export default defineComponent({
     };
   },
   setup(_p, {root}) {
-    
+    const router = useRouter()
     function afterEnter(el) {
       el.addEventListener("animationend", function () {
         el.style = "";
@@ -176,6 +174,15 @@ export default defineComponent({
       student.value = await $http.$get(`/api/students/${studentId}`)
     });
 
+    function handleClose(){
+      chosenComponent.value = null;
+      router.replace({ query: null });
+    }
+    async function handleRefresh(){
+      student.value = await $http.$get(`/api/students/${studentId}`)
+      chosenComponent.value = null;
+      router.replace({ query: null });
+    }
     return {
       afterEnter,
       enter,
@@ -184,6 +191,8 @@ export default defineComponent({
       student,
       chosenComponent,
       orderedStudentProperties,
+      handleClose,
+      handleRefresh,
     };
   },
 });
