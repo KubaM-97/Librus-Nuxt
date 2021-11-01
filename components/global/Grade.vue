@@ -6,8 +6,10 @@
         <div class="col-2 col-md-3">
           <div class="addStudentPanelGradesContentSingleGrade">
             <div class="select">
+              dfgdfgf: {{grade}}
               <label for="score">{{ $t("grade_score") }}:</label>
-              <select v-model.number="grade.score">
+              <select v-model.number="grade.score" @change="xx"
+              >
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -24,7 +26,9 @@
             <label for="weight">{{ $t("grade_weight") }}:</label>
 
             <div class="select">
-              <select v-model.number="grade.weight">
+              <select 
+              v-model="grade.weight" 
+              >
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -96,9 +100,10 @@ export default defineComponent({
       },
     },
   },
-  setup(props, { root }) {
+  emits: ['xxxxxx'],
+  setup(props, { root, emit }) {
     const index = props.index;
-
+console.log('4444');
     const store = useStore();
     const characters = props.characters;
     const grades = computed(() => root.$accessor.student.grades);
@@ -109,7 +114,7 @@ export default defineComponent({
     let clonedGrades = [...grades.value];
     clonedGrades[index] = { ...grade };
 
-    root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
+    // root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
     watch(
       () => [...grade.description],
       () => {
@@ -140,14 +145,17 @@ export default defineComponent({
 
     onBeforeUpdate(() => {
       grade.date = root.getCurrentDate();
+console.log('1');
       updateStudentGrade();
     });
 
     //places a new mark, weight, description or date in appropriate place according to the provided index inside newGrades in Vuex
     function updateStudentGrade() {
+      console.log('2');
+      emit('xxxxxx', grade, index)
       clonedGrades = [...grades.value];
       clonedGrades[index] = { ...grade };
-      root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
+      // root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
     }
 
     //clears newGrades object in Vuex
@@ -156,13 +164,16 @@ export default defineComponent({
       // const refEl = this.$refs[`grade_${index}`];
       // refEl.parentNode.removeChild(refEl);
     }
-
+function xx(){
+  console.log('333');
+}
     return {
       store,
       updateStudentGrade,
       remove,
       grades,
       leftCharactersMessage,
+      xx
     };
   },
 });

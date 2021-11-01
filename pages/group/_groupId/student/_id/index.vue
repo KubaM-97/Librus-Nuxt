@@ -2,7 +2,7 @@
   <div>
     <div v-if="$fetchState.pending">Cierpliwości</div>
     <div class="wrapper text-left pl-2" v-else>
-      <!-- {{$refs.editStudentPanel.$el.querySelector('.editStudentGrades').style.opacity}} -->
+      {{student.grades[0]}}
       <div class="summary">
         <StudentTable :student="student" />
       </div>
@@ -46,17 +46,19 @@
           class="btn btn-lg"
           :to="{ query: { edit: 'grades' } }"
           >{{ $t("edit_grades") }}</NuxtLink
-        >
+        > 
         <transition @enter="enter" @after-enter="afterEnter" @leave="leave" @before-leave="beforeLeave" :css="false">
-          <component
-            ref="editStudentPanel"
-            @close="
-              chosenComponent = null;
-              $router.replace({ query: null });
-            "
-            :is="chosenComponent"
-            :student="student"
-          />
+          <!-- <keep-alive> -->
+            <component
+              ref="editStudentPanel"
+              @close="
+                chosenComponent = null;
+                $router.replace({ query: null });
+              "
+              :is="chosenComponent"
+              :student="student"
+            />
+          <!-- </keep-alive> -->
         </transition>
       </div>
     </div>
@@ -73,11 +75,13 @@ import {
   defineComponent,
   useRoute,
   ref,
-  useContext,
   useFetch,
   shallowRef,
   watch,
+  computed,
+  useContext,
 } from "@nuxtjs/composition-api";
+import Vue from "vue";
 
 export default defineComponent({
   name: "Student",
@@ -94,12 +98,13 @@ export default defineComponent({
       }),
     };
   },
-  setup() {
+  setup(_p, {root}) {
+    
     function afterEnter(el) {
       el.addEventListener("animationend", function () {
         el.style = "";
       });
-      el.querySelector('.overlay').style.animation = "showDetailDatax 2s";
+      el.querySelector('.overlay').style.animation = "showDetailDatax .2s";
       el.querySelector('.overlay').style.animationFillMode = "forwards";
     }
     function enter(el, done) {
@@ -107,13 +112,13 @@ export default defineComponent({
         el.style = "";
         done();
       });
-      el.style.animation = "edit 2s"
+      el.style.animation = "edit .2s"
     }
     function beforeLeave(el) {
       el.addEventListener("animationend", function () {
         el.style = "";
       });
-      el.querySelector('.overlay').style.animation = "showDetailDatax 2s";
+      el.querySelector('.overlay').style.animation = "showDetailDatax .2s";
       el.querySelector('.overlay').style.animationDirection = "reverse";
       el.querySelector('.overlay').style.animationFillMode = "forwards";
     }
@@ -123,13 +128,15 @@ export default defineComponent({
         el.style = "";
         done();
       });
-      el.style.animation = "edit 2s";
+      el.style.animation = "edit .2s";
       el.style.animationDirection = "reverse";
-      el.style.animationDelay = "2s";
+      el.style.animationDelay = ".2s";
     }
     const route = useRoute();
     const studentId = route.value.params.id;
-    const student = ref("");
+    // const student = computed(()=>root.$accessor.student);
+    const student = ref({});
+    const { $http } = useContext();
 
     const orderedStudentProperties = ref([
       "pesel",
@@ -163,15 +170,13 @@ export default defineComponent({
         }
       }
     );
-
-    const { $http } = useContext();
-
     useFetch(async () => {
-      student.value = await $http.$get(`api/students/${studentId}`);
+      // console.log(studentId);
+      // await root.$accessor.fetchUser(studentId)
+      student.value = await $http.$get(`/api/students/${studentId}`)
     });
-const xxx = ref(false)
+
     return {
-      xxx, 
       afterEnter,
       enter,
       beforeLeave,

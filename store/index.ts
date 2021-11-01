@@ -58,11 +58,16 @@ export const mutations = mutationTree(state, {
     state.user = payload;
   },
   updateStudent(state: State, payload) :void {
+    console.log('mutacja:', payload);
     if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
     else state.student[payload.property] = payload.value;
   },
   increase(state):void{
     state.gradesLength++
+  },
+  setStudent(state, payload):void{
+    console.log(payload);
+    state.student = payload
   },
   resetStudent(state: State, payload) :void {
     state.gradesLength = 1
@@ -116,6 +121,13 @@ export const actions = actionTree(
       }).then(response => { return response
         // commit("setUser", response.data);
         // commit("toggleLog");
+      })
+    },
+    async fetchUser({commit}: {commit: Commit}, payload: SignInData): Promise<void> {
+      console.log(payload);
+      await axios.get(`/api/students/${payload}`).then(response => {
+        console.log('actions', response);
+        commit("setStudent", response.data);
       })
     },
   }

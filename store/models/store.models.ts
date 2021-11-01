@@ -32,6 +32,7 @@ export interface Mutations {
 }
 export interface Actions {
     checkLogData(context: any, payload: Object): void
+    fetchUser(context: any, payload: Object): void
 }
 
 type Parent = {

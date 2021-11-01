@@ -28,10 +28,6 @@
   0%{opacity: 1; z-index: 10;}
   100%{ opacity: 0; z-index: -10;}
 }
-@keyframes showDetailDatay {
-  0%{opacity: 0; z-index: -10;}
-  100%{ opacity: 1; z-index: 10;}
-}
 
 @keyframes edit {
   0% {

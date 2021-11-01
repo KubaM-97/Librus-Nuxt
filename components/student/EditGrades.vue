@@ -1,30 +1,39 @@
 <template>
   <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute"
   >
-    <div class="container editStudentGrades xxxx panel" :ref="xxx">
+      {{student.grades[0]}}
+<!-- {{clone}} <br />
+{{clone2}} <br />
+{{clone3}} <br />
+{{clone4}} <br /> -->
+{{clone5.grades}} <br />
+    <div class="overlay" />
+    <div class="container">
       <span class="d-block mb-3">{{ $t("edit_grade") }}:</span>
       <div class="row">
         <Grade
           class="col-12 col-md-11"
-          v-for="(grade, index) in student.grades"
+          v-for="(grade, index) in basedGrades.grades"
           :key="index"
           :index="index"
           :grade="grade"
-        />
+          @xxxxxx="yy"
 
+        />
         <Grade
           class="col-12 col-md-11"
           v-for="n in gradesLength"
           :key="n + student.grades.length"
-          :index="gradesLength + student.grades.length"
+          :index="gradesLength + student.grades.length - 1"
           :gradesLength="gradesLength"
+          @xxxxxx="yy"
         />
 
         <div class="showAnotherGrade">
           <button name="moreGradesEditGrades" @click="gradesLength++">+</button>
         </div>
       </div>
-    <StudentTable :student="student" />
+    <StudentTable :student="basedGrades" />
 
     <button
       class="btn btn-success btn-lg save mr-3 px-2 py-2"
@@ -36,8 +45,6 @@
       <img class="closeEditPanelImg w-100" src="@/assets/images/eXit.png" />
     </button>
     </div>
-    <div class="overlay" />
-
   </div>
 </template>
 
@@ -45,7 +52,8 @@
 import gradesService from "@/assets/mixins/gradesMixins.ts";
 import Grade from "@/components/global/Grade.vue";
 import StudentTable from "~/components/global/StudentTable";
-import { defineComponent, ref, onBeforeUnmount } from "@nuxtjs/composition-api";
+import { defineComponent, ref, reactive, computed, watch, onActivated  } from "@nuxtjs/composition-api";
+import { activated } from "vue";
 import axios from "axios";
 export default defineComponent({
   name: "EditGrades",
@@ -58,7 +66,7 @@ export default defineComponent({
     student: {
       type: Object,
       required: true,
-    },
+    }
   },
   mixins: [gradesService],
   head() {
@@ -69,21 +77,10 @@ export default defineComponent({
     };
   },
   setup(props, {root}) {
-    const xxx = ref(null)
-    onBeforeUnmount(()=>{
-      // console.log(root.$el);
-      // document.querySelector('.xxxx').style.animation = 'showEditPanel .5s'
-      // document.querySelector('.xxxx').style.animationDirection = 'reverse';
-      // setTimeout(()=>{
-      //   document.querySelector('.overlay').style.zIndex = 10
-      // },1000);
-
-      // console.log(root, this);
-      // root.$refs.xxx.style.animation = 'showEditPanel .5s';
-      // root.$refs.xxx.style.animationDirection = 'reverse';
-    })
     const gradesLength = ref(0);
-    const student = props.student;
+    const student = props.student
+    const clone5 = JSON.parse(JSON.stringify(student));
+    const basedGrades = ref(JSON.parse(JSON.stringify(student)));
     function saveChanges() {
       try {
         axios.put(`/api/students/${student._id}`, {
@@ -95,29 +92,30 @@ export default defineComponent({
         this.$toast.error(this.$t("successfully_updated_student_data"));
       }
     }
+    function yy(grade, index){
+      console.log('yy');
+      // basedGrades.grades[index] = grade
+      this.$forceUpdate()
+
+    }
+    // onActivated(()=>{
+    //   console.log('44', props.student.grades[0]);
+    //   basedGrades.value = {...student}
+    // })
     return {
       gradesLength,
       saveChanges,
-      xxx,
+      basedGrades,
+      yy,
+      clone5,
     };
   },
 });
 </script>
 <style lang="scss" scoped>
-// @keyframes showEditPanel{
-//   from {opacity: 0}
-//   to {opacity: 1;}
-//   }
 div.editStudent {
+  background-color: black;
   overflow: hidden;
-    background-color: black;
-
-  .editStudentGrades {
-    // opacity: 0;
-    // animation: showEditPanel .5s linear;
-    // animation-delay: 2s;
-    // animation-fill-mode: forwards;
-  }
   .overlay {
     background-color: black;
     position: absolute;
@@ -128,7 +126,8 @@ div.editStudent {
     // z-index: 10;
   }
   font-size: 13px;
-  top: 20%;
+  // top: 20%;
+  top: 40%;
   left: 50%;
   transform: translateX(-50%);
   button {
