@@ -12,7 +12,6 @@ import FormActions from "@/components/global/FormActions";
 import StudentTable from "@/components/global/StudentTable";
 import PersonalStudentData from "@/components/addstudent/data/PersonalStudentData";
 import validations from "@/assets/mixins/validations";
-import axios from 'axios'
 import {
   defineComponent,
   ref,
@@ -37,7 +36,7 @@ export default defineComponent({
       root.$accessor.resetStudent()
       root.$refs.PersonalStudentData.$refs.PersonalStudentDataForm.showAdditionalDataForm.value = false 
     }
-    function handleSubmit(v) {
+    async function handleSubmit(v) {
       if(v.$invalid) {
         this.$toast.error(root.$t('failed_form_message'));
         return
@@ -45,9 +44,7 @@ export default defineComponent({
       this.$toast.show(root.$t('adding_student_in_progress'));
       student.value.grades.map((grade) => grade.score && grade.weight);
       try {
-        axios.post("/api/students/new", {
-          student: student.value
-        });
+        await root.$accessor.addStudent({student: student.value})
         this.$toast.success(root.$t('successfully_added_new_student'));
         router.push({ path: "/group/3B" });
       } catch (err) {

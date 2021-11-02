@@ -2,6 +2,8 @@
   <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute"
   >
     <div class="overlay" />
+    {{student2.pesel}}
+    <input v-model="student2.pesel">
       <form
         action="#"
         enctype="application/x-www-form-urlencoded"
@@ -9,7 +11,7 @@
         @submit.prevent="saveChanges"
       >
         <div class="container">
-          <div class="row mb-3" v-for="property in orderedStudentProperties" :key="property">
+          <div class="row mb-3 d-flex align-items-center" v-for="property in orderedStudentProperties" :key="property">
             <div class="col-6">
             <label :for="property">{{ $t(property) }}</label>
             <input
@@ -18,8 +20,7 @@
               :placeholder="$t(property)"
               :name="property"
               :id="property"
-              :value="student[property]"
-              @change="setStudentState($event.target.value, property)"
+              v-model="student[property]"
             />
             <input
               v-else
@@ -36,16 +37,19 @@
               autocomplete="off"
             />
             </div>
-            <!-- <div class="col-6">
-              <span v-html="!Array.isArray(data.value) ? student[data.property] : nestedProperty(data.property)"></span>
-              <span>{{ $t(`${property}_${subProperty}_error`) }}</span>
-                          :placeholder="$t(`${property}_error`)"
-              :placeholder="$t(`${property}_${subProperty}_error`)"
+            <div class="col-6">
+              <span v-html="
+              (typeof student[property] !== 'object' && student[property] !== null) ? $t(student[property]) : nestedProperty(property)"></span>
+              {{$v.student[property].$invalid}}
+              <span v-if="$v.student[property].$invalid"> 
+                {{ $t(`${property}_error`) }}
+              </span>
+              <!-- <span>{{ $t(`${property}_${subProperty}_error`) }}</span>
 
             <div v-if="!Array.isArray(data.value) && $v.$invalid && $v.$dirty">{{data.errorMessage}}</div>
               <span>{{ $t(`${property}_error`) }}</span>
-            <div v-else-if="Array.isArray(data.value)">{{student[data.property][subData].errorMessage]}}</div>
-            </div> -->
+            <div v-else-if="Array.isArray(data.value)">{{student[data.property][subData].errorMessage]}}</div> -->
+            </div>
           </div>
         </div>
       </form>
@@ -85,26 +89,27 @@ export default defineComponent({
   emit: ["close", "refresh"],
   setup(props, {root, emit}) {
 
-    const student = JSON.parse(JSON.stringify(props.student));
-
+    const student = ref(JSON.parse(JSON.stringify(props.student)));
+    const student2 = ref(JSON.parse(JSON.stringify(props.student)));
+console.log(student);
     function nestedProperty (property){
       switch(property){
         case 'address': {
           return root.$t('full_address', {
-            streetName: student.address.streetName, 
-            streetNr: student.address.streetNr, 
-            flatNr: student.address.flatNr, 
-            postCode: student.address.postCode, 
-            city: student.address.city
+            streetName: student.value.address.streetName, 
+            streetNr: student.value.address.streetNr, 
+            flatNr: student.value.address.flatNr, 
+            postCode: student.value.address.postCode, 
+            city: student.value.address.city
           })
         }
         case 'mother': {
-          return `${student.mother.firstName} ${student.mother.lastName} <br />
-          ${student.mother.phone} <br /> ${student.mother.email}`
+          return `${student.value.mother.firstName} ${student.value.mother.lastName} <br />
+          ${student.value.mother.phone} <br /> ${student.value.mother.email}`
         }
         case 'father': {
-          return `${student.father.firstName} ${student.father.lastName} <br />
-          ${student.father.phone} <br /> ${student.father.email}`
+          return `${student.value.father.firstName} ${student.value.father.lastName} <br />
+          ${student.value.father.phone} <br /> ${student.value.father.email}`
         }
         default: {
           return ''
@@ -117,22 +122,21 @@ export default defineComponent({
       
  function setStudentState(value, property, subProperty){
       this.$v.student.$touch();
-      subProperty ? student[property][subProperty] = value : student[property] = value
+      subProperty ? student.value[property][subProperty] = value : student.value[property] = value
     }
    async function saveChanges() {
       try {
-        this.$toast.show(this.$t("successfully_updated_student_data"));
-        await axios.put(`/api/students/${student._id}`, {
-          student: student,
-        });
+        this.$toast.show(this.$t("updating_student_data_in_progress"));
+        await root.$accessor.updateStudent2({student: student.value})
         await emit('refresh')
         this.$toast.success(this.$t("successfully_updated_student_data"));
       } catch (err) {
         console.error(err);
-        this.$toast.error(this.$t("successfully_updated_student_data"));
+        this.$toast.error(this.$t("failed_to_update_student_data"));
       }
     }
     return {
+      student2,
       saveChanges,
       orderedStudentProperties,
       nestedProperty,

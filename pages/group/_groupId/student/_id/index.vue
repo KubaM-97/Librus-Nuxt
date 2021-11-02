@@ -168,12 +168,16 @@ export default defineComponent({
         }
       }
     );
+  
     useFetch(async () => {
-      // console.log(studentId);
-      // await root.$accessor.fetchUser(studentId)
-      student.value = await $http.$get(`/api/students/${studentId}`)
-    });
-
+      try{
+        students.value = await $http.$get(`api/students/${studentId}`, 
+        { group: groupId }
+      )
+      } catch (error) {
+        this.$toast.error(this.$t('failed_to_fetch_student'));
+      }
+    })
     function handleClose(){
       chosenComponent.value = null;
       router.replace({ query: null });

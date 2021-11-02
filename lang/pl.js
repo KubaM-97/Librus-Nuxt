@@ -101,10 +101,12 @@ export default {
   server_error: 'Błąd po stronie serwera',
   alternative_log_error: 'Błąd logowania',
 
+  updating_student_data_in_progress: 'Trwa aktualizowanie danych ucznia w toku',
   successfully_added_new_student: 'Pomyślnie dodano nowego ucznia',
   successfully_updated_student_data: 'Pomyślnie zaktualizowano dane ucznia',
 
   failed_to_fetch_students_list: 'Nie udało się pobrać listy uczniów',
+  failed_to_fetch_student: 'Nie udało się pobrać danych ucznia',
   failed_to_add_new_student: 'Nie udało się dodać nowego ucznia',
   failed_to_update_student_data: 'Nie udało się zaktualizować danych ucznia',
   failed_form_message: 'Operacja przerwana. W formularzu wystąpił błąd',

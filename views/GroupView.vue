@@ -31,12 +31,26 @@ export default defineComponent({
     const { $http } = useContext();
 
     useFetch(async () => {
-      // students.value = await $http.$get('http://localhost:1222/posts')
-      // studentsa.value = await $http.$put('http://localhost:1222/posts/255', {imie: 'dupsko', naz: 'jenot'})
-      // studentsa.value = await $http.$get('http://localhost:1222/posts/255')
-      students.value = await $http.$post(`api/students/`, 
+      try{
+        students.value = await $http.$post(`api/students/`, 
         { group: groupId }
       )
+      } catch (error) {
+        const status = error.response.status;
+        switch (status) {
+          case 404: {
+            this.$toast.error(this.$t("failed_to_fetch_students_list"));
+            break;
+          }
+          case 500: {
+            this.$toast.error(this.$t("server_error"));
+            break;
+          }
+          default: {
+            this.$toast.error(this.$t("alternative_log_error"));
+          }
+        }
+      }
     })
 
     return { students }

@@ -9,12 +9,14 @@ class StudentController {
       const collection = db.collection(`group_${group}`);
 
       const results = await collection.find().toArray()
-      res.json(results)
+
+      results.length ? res.json(results) : res.sendStatus(404)
 
       mongo.close();
 
     } catch (err) {
-      // res.throw(500, err)
+      console.error(err);
+      res.sendStatus(500)
     }
 
 

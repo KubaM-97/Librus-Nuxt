@@ -1,6 +1,6 @@
 <template>
-  <!-- <div class="addStudentPanelGradesContentSingle mb-3" :ref="`grade_${index}`"> -->
-  <div class="addStudentPanelGradesContentSingle mb-3">
+  <div class="addStudentPanelGradesContentSingle mb-3" :ref="`grade_${index}`">
+  <!-- <div class="addStudentPanelGradesContentSingle mb-3"> -->
     <div class="container">
       <div class="row singleGrade">
         <div class="col-2 col-md-3">
@@ -108,9 +108,6 @@ export default defineComponent({
     const leftCharactersMessage = ref(
       root.$t("characters_left_many", { characters })
     );
-    // let clonedGrades = [...grades.value];
-    // clonedGrades[index] = { ...grade };
-
     watch(
       () => [...grade.description],
       () => {
@@ -149,11 +146,11 @@ export default defineComponent({
       
     }
 
-    //clears newGrades object in Vuex
     function remove(index) {
+      emit('remove', index)
       root.$accessor.removeGrade(index);
-      // const refEl = this.$refs[`grade_${index}`];
-      // refEl.parentNode.removeChild(refEl);
+      const refEl = this.$refs[`grade_${index}`];
+      refEl.parentNode.removeChild(refEl);
     }
     return {
       store,

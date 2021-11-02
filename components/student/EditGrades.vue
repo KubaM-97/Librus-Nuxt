@@ -75,15 +75,13 @@ export default defineComponent({
     const basedGrades = ref(JSON.parse(JSON.stringify(student)));
     async function saveChanges() {
       try {
-        this.$toast.show(this.$t("successfully_updated_student_data"));
-        await axios.put(`/api/students/${student._id}`, {
-          student: basedGrades.value,
-        });
+        this.$toast.show(this.$t("updating_student_data_in_progress"));
+        await root.$accessor.updateStudent2({student: basedGrades.value})
+
         await emit('refresh')
         this.$toast.success(this.$t("successfully_updated_student_data"));
       } catch (err) {
-        console.error(err);
-        this.$toast.error(this.$t("successfully_updated_student_data"));
+        this.$toast.error(this.$t("failed_to_update_student_data"));
       }
     }
     function yy(grade, index){

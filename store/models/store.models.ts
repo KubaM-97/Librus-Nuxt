@@ -49,15 +49,15 @@ type Address = {
     city: string,
 }
 
-// export interface Student {
-//     _id?: Object,
-//     firstName: string,
-//     lastName: string,
-//     pesel: number,
-//     phone: number,
-//     email: string,
-//     grades: SingleGrade[],
-//     address: Address,
-//     mother: Parent,
-//     father: Parent,
-// }
+export interface Student {
+    _id?: Object,
+    firstName: string,
+    lastName: string,
+    pesel: number,
+    phone: number,
+    email: string,
+    grades: SingleGrade[],
+    address: Address,
+    mother: Parent,
+    father: Parent,
+}

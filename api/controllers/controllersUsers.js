@@ -1,7 +1,7 @@
 import {mongo} from '../mongodb'
 
 class UserController {
-  async postUser(req, res) {
+  async logIn(req, res) {
     const signInData = {
       login: req.body.login,
       password: req.body.password,
@@ -10,24 +10,24 @@ class UserController {
 
       const db = await mongo.connect('users');
       const collection = await db.collection('registeredUsers')
-
-      await collection.findOne({
+      const results = await collection.findOne({
         login: signInData.login,
         password: signInData.password
-      }).then(data => res.json({
-        lastName: data.lastName,
-        firstName: data.firstName,
-        group: data.group,
-      })).catch(err => res.json(err))
+      })
+      if(results) {
+        res.json({
+          lastName: results.lastName,
+          firstName: results.firstName,
+          group: results.group
+        })
+      }
+      else { res.sendStatus(404) }
       await mongo.close()
 
     } catch (err) {
       console.error(err)
       res.sendStatus(500)
-    } finally {
-
     }
-
 
   }
 }

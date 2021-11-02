@@ -1,6 +1,6 @@
 import { getAccessorType, getterTree, mutationTree, actionTree } from 'typed-vuex'
 
-import { SignInData, User, State, Getters, Mutations, Actions } from '@/store/models/store.models';
+import { SignInData, User, State, Getters, Mutations, Actions, Student } from '@/store/models/store.models';
 import { Context } from '@nuxt/types'
 import axios from 'axios';
 import { Commit } from 'vuex'; 
@@ -114,15 +114,33 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state },
   {
-    async checkLogData({commit}: {commit: Commit}, payload: SignInData): Promise<void> {
-      await axios.post('/api/users/', {
+    async checkLogData({commit}: {commit: Commit}, payload: SignInData): Promise<any> {
+      return axios.post('/api/users/', {
         login: payload.login, 
         password: payload.password
-      }).then(response => { return response
-        // commit("setUser", response.data);
-        // commit("toggleLog");
       })
-    },
+      // .then(response => {return response.data}).catch(err => err)
+    //   return new Promise((resolve, reject) => {
+    //   axios.post('/api/users/', {
+    //     login: payload.login, 
+    //     password: payload.password
+    //   }).then(response => resolve(response)).catch(err => reject(err))
+    // })
+  },
+    async addStudent({commit}: {commit: Commit}, payload: Student): Promise<any> {
+      return new Promise((resolve, reject) => {
+        axios.post("/api/students/new", {
+          student: payload
+        }).then(response=>resolve(response)).catch(err => reject(err))
+    })
+  },
+    async updateStudent2({commit}: {commit: Commit}, payload: Student): Promise<any> {
+      return new Promise((resolve, reject) => {
+        axios.put(`/api/students/${payload._id}`, {
+          student: payload
+        }).then(response=>resolve(response)).catch(err => reject(err))
+    })
+  },
     async fetchUser({commit}: {commit: Commit}, payload: SignInData): Promise<void> {
       console.log(payload);
       await axios.get(`/api/students/${payload}`).then(response => {

@@ -46,34 +46,36 @@
 <script>
 import { defineComponent, ref, useRouter } from "@nuxtjs/composition-api";
 
-import axios from "axios";
 export default defineComponent({
   name: "LoggedOutView",
-  setup() {
+  setup(_props, {root}) {
     const router = useRouter();
     const login = ref("");
     const password = ref("");
     async function signIn() {
       try {
         this.$toast.show(this.$t("logging_in_progress"));
-        const response = await axios.post("/api/users/", {
+        await root.$accessor.checkLogData({
           login: login.value,
           password: password.value,
-        });
-        this.$toast.clear();
-        this.$toast.success(this.$t("successed_logged"));
-        router.push({
-          path: `/group/${response.data.group}`,
-          params: { groupId: response.data.group },
-        });
+        }).then(response => { 
+          this.$toast.clear();
+          this.$toast.success(this.$t("successed_logged"));
+          router.push({
+            path: `/group/${response.data.group}`,
+            params: { groupId: response.data.group },
+          });
+        })
       } catch (error) {
-        console.log('error', error);
-        switch (error) {
+        const status = error.response.status;
+        switch (status) {
           case 404: {
             this.$toast.error(this.$t("not_found_user_with_this_login"));
+            break;
           }
           case 500: {
             this.$toast.error(this.$t("server_error"));
+            break;
           }
           default: {
             this.$toast.error(this.$t("alternative_log_error"));
