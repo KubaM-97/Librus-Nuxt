@@ -12,7 +12,7 @@
         type="text"
         id="name"
         name="name"
-        v-model.trim="v.form.fullName.$model"
+        v-model.trim="v.fullName.$model"
         maxlength="30"
         autocomplete="off"
         class="text-center"
@@ -20,7 +20,7 @@
       />
         <!-- @change="v.form.fullName.$touch()" -->
       <transition name="bounce">
-        <div class="errorFullName d-block text-light" v-if="v.form.fullName.$invalid && v.form.fullName.$dirty">
+        <div class="errorFullName d-block text-light" v-if="v.fullName.$invalid && v.fullName.$dirty">
             <!-- {{ v.form.fullName.fullName ? $t("no_characters") : $t("fillname")}}  -->
             Błąd
         </div>
@@ -38,7 +38,7 @@
       </button>
 
       <transition @enter="enter" @leave="leave" :css="false">
-        <AdditionalDataForm v-if="showAdditionalDataForm" :v="v" :form="form"/>
+        <AdditionalDataForm v-if="showAdditionalDataForm" :v="v" :fullName="fullName" :student="student"/>
       </transition>
     </div>
   </form>
@@ -52,9 +52,8 @@ export default defineComponent({
   components: {
     AdditionalDataForm,
   },
-  props: ['v', 'form'],
+  props: ['v', 'student', 'fullName'],
   setup(props, { root }) {
-    const fullName = ref("");
     const showAdditionalDataForm = ref(false);
     const firstName = ref("");
     const lastName = ref("");
@@ -88,11 +87,11 @@ export default defineComponent({
     }
     function showError(){
       // props.form.fullName = fullName.value
-      props.v.form.fullName.$touch()
+      props.v.fullName.$touch()
     }
     watch(
       // () => fullName.value,
-      () => props.v.form.fullName.$model,
+      () => props.v.fullName.$model,
       (val) => {
         getFirstAndLastName(val);
         root.$accessor.updateStudent({
@@ -107,7 +106,6 @@ export default defineComponent({
     );
 
     return {
-      fullName,
       showAdditionalDataForm,
       enter,
       leave,

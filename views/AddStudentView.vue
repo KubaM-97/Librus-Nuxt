@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
-    <PersonalStudentData :ref="PersonalStudentData" @getNewStudentName="getNewStudentNameHandler" :v="$v" :form="form" :gradesLength="gradesLength"/>
+    {{student}}
+    <PersonalStudentData :ref="PersonalStudentData" @getNewStudentName="getNewStudentNameHandler" :v="$v" :fullName="fullName" :student="student" :gradesLength="gradesLength"/>
     <StudentTable :student="student" />
     <FormActions @cancel="handleCancel" @submit="handleSubmit($v, ...arguments)" />
   </div>
@@ -29,9 +30,10 @@ export default defineComponent({
     const router = useRouter();
     const gradesLength = ref(1);
     const student = computed(()=>root.$accessor.student)
+    const fullName = ref('')
     const PersonalStudentData = ref(null)
     function handleCancel() {
-      form.value.fullName = ''
+      fullName.value = ''
       root.$accessor.resetStudent()
       root.$refs.PersonalStudentData.$refs.PersonalStudentDataForm.showAdditionalDataForm.value = false 
     }
@@ -59,17 +61,13 @@ export default defineComponent({
       student.value.name = formattedFullname;
     }
 
-    const form = ref({
-      fullName: '',
-      student
-    })
 
     return {
       handleCancel,
       handleSubmit,
       getNewStudentNameHandler,
       student,
-      form,
+      fullName,
       gradesLength,
       PersonalStudentData
     };

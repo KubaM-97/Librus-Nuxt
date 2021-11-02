@@ -1,32 +1,32 @@
 <template>
         <div class="container">
           <div class="row mt-2 mb-3" v-for="property in orderedStudentProperties" :key="property">
-            <label class="col-12" :class="{'errorDataLabel': v.form.student[property].$invalid && v.form.student[property].$dirty}">{{ $t(property) }}</label>
+            <label class="col-12" :class="{'errorDataLabel': v.student[property].$invalid && v.student[property].$dirty}">{{ $t(property) }}</label>
             
             <input
-              v-if="typeof form.student[property] !== 'object' && form.student[property] !== null"
+              v-if="typeof student[property] !== 'object' && student[property] !== null"
               type="text"
               :placeholder="$t(`${property}_error`)"
               :name="property"
               :id="property"
-              :value="form.student[property]"
+              :value="student[property]"
               @change="setStudentState($event.target.value, property)"
               class="col-10"
-              :class="{'errorDataInput': v.form.student[property].$invalid && v.form.student[property].$dirty}"
+              :class="{'errorDataInput': v.student[property].$invalid && v.student[property].$dirty}"
               autocomplete="off"
             />
             <input
               v-else
-              v-for="(_subValue, subProperty) in form.student[property]"
+              v-for="(_subValue, subProperty) in student[property]"
               :key="subProperty"
               type="text"
               :placeholder="$t(`${property}_${subProperty}_error`)"
               :name="property[subProperty]"
               :id="property[subProperty]"
-              :value="form.student[property][subProperty]"
+              :value="student[property][subProperty]"
               @change="setStudentState($event.target.value, property, subProperty)"
               class="col-10"
-              :class="{'errorDataInput': v.form.student[property][subProperty].$invalid && v.form.student[property][subProperty].$dirty}"
+              :class="{'errorDataInput': v.student[property][subProperty].$invalid && v.student[property][subProperty].$dirty}"
               autocomplete="off"
             />
         </div>
@@ -42,11 +42,16 @@ export default defineComponent({
         required: false,
         default: () => {},
       },
-      form: {
+      fullName: {
+        type: String,
+        required: false,
+        default: '',
+      },
+      student: {
         type: Object,
         required: false,
         default: () => {},
-      }
+      },
   },
   setup(props, {root} ){
     const v = props.v
@@ -55,7 +60,7 @@ export default defineComponent({
       'pesel', 'phone', 'email', 'address', 'mother', 'father'
     ])
     function setStudentState(value, property, subProperty){
-      v.form.student.$touch()
+      v.student.$touch()
       root.$accessor.updateStudent({property, value: value.trim(), subProperty})
     }
     return {

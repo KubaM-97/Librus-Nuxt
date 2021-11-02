@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12 col-lg-4 mt-4">
-        <PersonalStudentDataForm :ref="PersonalStudentDataForm" :v="v" :form="form" />
+        <PersonalStudentDataForm :ref="PersonalStudentDataForm" :v="v" :fullName="fullName" :student="student" />
       </div>
       <div class="col-12 col-lg-8">
         <NewStudentGrades />
@@ -30,7 +30,12 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    form: {
+    fullName: {
+      type: String,
+      required: false,
+      default: '',
+    },
+    student: {
       type: Object,
       required: false,
       default: () => {},

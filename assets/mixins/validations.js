@@ -31,36 +31,34 @@ const firstName = helpers.regex(
     /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*( (- )?[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)*$/
   );
 export default defineComponent({
-    validations: {
-        form: {
-          fullName: {
-            required,
-            fullName,
-          },
-          student: {
-            pesel: { pesel },
-            phone: { phone },
-            email: { email },
-            address: {
-              streetName: { streetName },
-              streetNr: { streetNr },
-              flatNr: { flatNr },
-              postCode: { postCode },
-              city: { city },
-            },
-            mother: {
-              firstName: { firstName },
-              lastName: { lastName },
-              phone: { phone },
-              email: { email },
-            },
-            father: {
-              firstName: { firstName },
-              lastName: { lastName },
-              phone: { phone },
-              email: { email },
-            },
-          },
-        },
-      }
+  validations: {
+    fullName: {
+      required,
+      fullName,
+    },
+    student: {
+      pesel: { pesel },
+      phone: { phone },
+      email: { email },
+      address: {
+        streetName: { streetName },
+        streetNr: { streetNr },
+        flatNr: { flatNr },
+        postCode: { postCode },
+        city: { city },
+      },
+      mother: {
+        firstName: { firstName },
+        lastName: { lastName },
+        phone: { phone },
+        email: { email },
+      },
+      father: {
+        firstName: { firstName },
+        lastName: { lastName },
+        phone: { phone },
+        email: { email },
+      },
+    },
+  }
 })

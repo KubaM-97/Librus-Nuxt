@@ -5,6 +5,7 @@
         >{{ $t("accumulated_grades") }}:</span
       >
     </div>
+    grades: {{grades}}
     <Grade
       :index="n - 1"
       @remove="handleRemove"
@@ -12,6 +13,8 @@
       v-for="n in gradesLength"
       :key="n"
       :ref="`gradeRef_${n - 1}`"
+      @xxxxxx="yy"
+
     />
 
     <div class="showAnotherGrade">
@@ -42,7 +45,20 @@ export default defineComponent({
     function handleRemove(index) {
       props.grades.splice(index, 1);
     }
+    const grades = computed(() => root.$accessor.student.grades);
+    let clonedGrades = [...grades.value];
+    console.log(grades)
+    function yy(grade, index){
+      clonedGrades = [...grades.value];
+      console.log(clonedGrades);
+      clonedGrades[index] = { ...grade };
+      root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
+
+      // basedGrades.value.grades[index] = grade
+    }
     return {
+      yy,
+      // grades,
       gradesLength,
       handleRemove,
     };

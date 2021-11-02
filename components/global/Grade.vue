@@ -104,15 +104,13 @@ export default defineComponent({
     const index = props.index;
     const store = useStore();
     const characters = props.characters;
-    const grades = computed(() => root.$accessor.student.grades);
     const grade = props.grade;
     const leftCharactersMessage = ref(
       root.$t("characters_left_many", { characters })
     );
-    let clonedGrades = [...grades.value];
-    clonedGrades[index] = { ...grade };
+    // let clonedGrades = [...grades.value];
+    // clonedGrades[index] = { ...grade };
 
-    // root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
     watch(
       () => [...grade.description],
       () => {
@@ -146,12 +144,9 @@ export default defineComponent({
       updateStudentGrade();
     });
 
-    //places a new mark, weight, description or date in appropriate place according to the provided index inside newGrades in Vuex
     function updateStudentGrade() {
       emit('xxxxxx', grade, index)
-      clonedGrades = [...grades.value];
-      clonedGrades[index] = { ...grade };
-      // root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
+      
     }
 
     //clears newGrades object in Vuex
@@ -164,7 +159,6 @@ export default defineComponent({
       store,
       updateStudentGrade,
       remove,
-      grades,
       leftCharactersMessage
     };
   },

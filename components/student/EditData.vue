@@ -13,26 +13,26 @@
             <div class="col-6">
             <label :for="property">{{ $t(property) }}</label>
             <input
-              v-if="typeof form.student[property] !== 'object' && form.student[property] !== null"
+              v-if="typeof student[property] !== 'object' && student[property] !== null"
               type="text"
               :placeholder="$t(property)"
               :name="property"
               :id="property"
-              :value="form.student[property]"
+              :value="student[property]"
               @change="setStudentState($event.target.value, property)"
             />
             <input
               v-else
-              v-for="(_subValue, subProperty) in form.student[property]"
+              v-for="(_subValue, subProperty) in student[property]"
               :key="subProperty"
               type="text"
               :placeholder="$t(subProperty)"
               :name="property[subProperty]"
               :id="property[subProperty]"
-              :value="form.student[property][subProperty]"
+              :value="student[property][subProperty]"
               @change="setStudentState($event.target.value, property, subProperty)"
               class="col-10"
-              :class="{'errorDataInput': $v.form.student[property][subProperty].$invalid && $v.form.student[property][subProperty].$dirty}"
+              :class="{'errorDataInput': $v.student[property][subProperty].$invalid && $v.student[property][subProperty].$dirty}"
               autocomplete="off"
             />
             </div>
@@ -51,7 +51,7 @@
       </form>
       <button
         class="btn btn-success btn-lg save mr-3"
-        :disabled="$v.form.student.$invalid && $v.form.student.$anyDirty"
+        :disabled="$v.student.$invalid && $v.student.$anyDirty"
         @click="saveChanges"
       >
         {{ $t("save_changes") }}
@@ -85,13 +85,8 @@ export default defineComponent({
   emit: ["close", "refresh"],
   setup(props, {root, emit}) {
 
-    const student = props.student;
-    const form = ref({
-      student: JSON.parse(JSON.stringify(student))
-    }
-      
-    );
-    console.log(form.value);
+    const student = JSON.parse(JSON.stringify(props.student));
+
     function nestedProperty (property){
       switch(property){
         case 'address': {
@@ -121,14 +116,14 @@ export default defineComponent({
     ])
       
  function setStudentState(value, property, subProperty){
-      this.$v.form.student.$touch();
-      subProperty ? form.value.student[property][subProperty] = value : form.value.student[property] = value
+      this.$v.student.$touch();
+      subProperty ? student[property][subProperty] = value : student[property] = value
     }
    async function saveChanges() {
       try {
         this.$toast.show(this.$t("successfully_updated_student_data"));
         await axios.put(`/api/students/${student._id}`, {
-          student: form.value.student,
+          student: student,
         });
         await emit('refresh')
         this.$toast.success(this.$t("successfully_updated_student_data"));
@@ -142,7 +137,6 @@ export default defineComponent({
       orderedStudentProperties,
       nestedProperty,
       setStudentState,
-      form,
     };
   },
 });
