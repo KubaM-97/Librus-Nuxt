@@ -15,7 +15,7 @@
             <input
               v-if="typeof form.student[property] !== 'object' && form.student[property] !== null"
               type="text"
-              :placeholder="$t(`${property}_error`)"
+              :placeholder="$t(property)"
               :name="property"
               :id="property"
               :value="form.student[property]"
@@ -26,7 +26,7 @@
               v-for="(_subValue, subProperty) in form.student[property]"
               :key="subProperty"
               type="text"
-              :placeholder="$t(`${property}_${subProperty}_error`)"
+              :placeholder="$t(subProperty)"
               :name="property[subProperty]"
               :id="property[subProperty]"
               :value="form.student[property][subProperty]"
@@ -39,7 +39,9 @@
             <!-- <div class="col-6">
               <span v-html="!Array.isArray(data.value) ? student[data.property] : nestedProperty(data.property)"></span>
               <span>{{ $t(`${property}_${subProperty}_error`) }}</span>
-            
+                          :placeholder="$t(`${property}_error`)"
+              :placeholder="$t(`${property}_${subProperty}_error`)"
+
             <div v-if="!Array.isArray(data.value) && $v.$invalid && $v.$dirty">{{data.errorMessage}}</div>
               <span>{{ $t(`${property}_error`) }}</span>
             <div v-else-if="Array.isArray(data.value)">{{student[data.property][subData].errorMessage]}}</div>
@@ -81,7 +83,7 @@ export default defineComponent({
     }
   }, 
   emit: ["close", "refresh"],
-  setup(props, {root}) {
+  setup(props, {root, emit}) {
 
     const student = props.student;
     const form = ref({
@@ -120,16 +122,13 @@ export default defineComponent({
       
  function setStudentState(value, property, subProperty){
       this.$v.form.student.$touch();
-      console.log(this.$v.form.student);
-      form.value.student[property]=value
-      // root.$accessor.updateStudent({property, value: value.trim(), subProperty})
+      subProperty ? form.value.student[property][subProperty] = value : form.value.student[property] = value
     }
    async function saveChanges() {
-     console.log(form.value.student);
       try {
         this.$toast.show(this.$t("successfully_updated_student_data"));
         await axios.put(`/api/students/${student._id}`, {
-          student: form.student.value,
+          student: form.value.student,
         });
         await emit('refresh')
         this.$toast.success(this.$t("successfully_updated_student_data"));
