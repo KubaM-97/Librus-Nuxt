@@ -102,7 +102,7 @@ export default defineComponent({
       el.addEventListener("animationend", function () {
         el.style = "";
       });
-      el.querySelector('.overlay').style.animation = "showDetailDatax .2s";
+      el.querySelector('.overlay').style.animation = "showEditStudentPanelOverlay .2s";
       el.querySelector('.overlay').style.animationFillMode = "forwards";
     }
     function enter(el, done) {
@@ -110,13 +110,13 @@ export default defineComponent({
         el.style = "";
         done();
       });
-      el.style.animation = "edit .2s"
+      el.style.animation = "showEditStudentPanel .2s"
     }
     function beforeLeave(el) {
       el.addEventListener("animationend", function () {
         el.style = "";
       });
-      el.querySelector('.overlay').style.animation = "showDetailDatax .2s";
+      el.querySelector('.overlay').style.animation = "showEditStudentPanelOverlay .2s";
       el.querySelector('.overlay').style.animationDirection = "reverse";
       el.querySelector('.overlay').style.animationFillMode = "forwards";
     }
@@ -126,7 +126,7 @@ export default defineComponent({
         el.style = "";
         done();
       });
-      el.style.animation = "edit .2s";
+      el.style.animation = "showEditStudentPanel .2s";
       el.style.animationDirection = "reverse";
       el.style.animationDelay = ".2s";
     }
@@ -219,13 +219,6 @@ button {
     font-size: 9px;
     padding: 5px;
   }
-}
-.editStudentPanel-enter-active {
-  animation: edit 2s linear;
-}
-.editStudentPanel-leave-active {
-  animation: edit 2s linear;
-  animation-direction: reverse;
 }
 
 </style>

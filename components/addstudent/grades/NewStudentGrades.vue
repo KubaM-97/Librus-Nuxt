@@ -78,11 +78,6 @@ export default defineComponent({
 .addStudentPanelGradesContent {
   width: 90%;
 }
-.showAnotherGrade {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-}
 @media (max-width: 768px) {
   .addStudentPanelGradesTitle {
     padding-top: 70px;

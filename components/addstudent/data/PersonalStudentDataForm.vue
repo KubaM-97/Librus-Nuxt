@@ -19,7 +19,7 @@
         @change="showError"
       />
         <!-- @change="v.form.fullName.$touch()" -->
-      <transition name="bounce">
+      <transition name="shake">
         <div class="errorFullName d-block text-light" v-if="v.fullName.$invalid && v.fullName.$dirty">
             <!-- {{ v.form.fullName.fullName ? $t("no_characters") : $t("fillname")}}  -->
             Błąd
@@ -37,7 +37,7 @@
         {{ !showAdditionalDataForm ? $t("expand") : $t("collapse") }}
       </button>
 
-      <transition @enter="enter" @leave="leave" :css="false">
+      <transition name="showDetailData" :css="false">
         <AdditionalDataForm v-if="showAdditionalDataForm" :v="v" :fullName="fullName" :student="student"/>
       </transition>
     </div>
@@ -67,24 +67,6 @@ export default defineComponent({
       lastName.value =
         fullNameArray.length > 1 ? capitalize(fullNameArray[1]) : "";
     }
-    //starts animation of Student's detail data
-    function enter(el, done) {
-      el.addEventListener("animationend", function () {
-        el.style = "";
-        done();
-      });
-      el.style.animation = "showDetailData 1s";
-    }
-    //ends animation of Student's detail data
-    function leave(el, done) {
-      el.addEventListener("animationend", function () {
-        el.style = "";
-        done();
-      });
-      el.style.animationName = "showDetailData";
-      el.style.animationDuration = "1s";
-      el.style.animationDirection = "reverse";
-    }
     function showError(){
       // props.form.fullName = fullName.value
       props.v.fullName.$touch()
@@ -107,8 +89,6 @@ export default defineComponent({
 
     return {
       showAdditionalDataForm,
-      enter,
-      leave,
       showError,
     };
   },

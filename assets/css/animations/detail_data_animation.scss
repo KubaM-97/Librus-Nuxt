@@ -1,0 +1,12 @@
+/* AddStudent.vue: shows detail data of a new student: PESEL, phone, email etc... */
+@keyframes showDetailData {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}

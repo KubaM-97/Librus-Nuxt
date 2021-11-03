@@ -1,0 +1,13 @@
+
+/* required new student's firstName nad LastName */
+.shake-enter-active {
+    animation: shake .73s ease;
+    transform: translate3d(0,0,0);
+    backface-visibility: hidden;
+  }
+  @keyframes shake {
+    10%, 30%, 50%, 70%, 90% { transform: translate3d(-2px, .1px, 0) }
+    20%, 80% { transform: translate3d(2px, -.1px, 0) }
+    40%, 60% { transform: translate3d(2px, .1px, 0) }
+  }
+  

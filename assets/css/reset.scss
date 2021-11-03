@@ -1,28 +1,27 @@
 /* Background pattern from Toptal Subtle Patterns */
 * {
-    padding: 0;
-    margin: 0;
-    letter-spacing: 1px;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 700;
-    text-shadow: 5px 0px 20px #00c3ff, -5px 0px 20px #00c3ff, 0px 5px 20px #00c3ff, 0px -5px 20px #00c3ff;
-    color: #fff;
+  padding: 0;
+  margin: 0;
+  letter-spacing: 1px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  text-shadow: 5px 0px 20px #00c3ff, -5px 0px 20px #00c3ff, 0px 5px 20px #00c3ff, 0px -5px 20px #00c3ff;
+  color: #fff;
 }
 
 :root {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 html body {
-    background: url(../images/fancy-cushion.png);
-}
+  background: url(../images/fancy-cushion.png);
 
-#app {
+  #app {
     max-width: 2500px;
     margin: auto;
-}
+  }
 
-.wrapper{
+  .wrapper {
     width: 90%;
     max-width: 1400px;
     margin: 100px auto;
@@ -33,5 +32,49 @@ html body {
     text-align: center;
     font-size: 15px;
     padding: 40px 0;
+
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 0;
+    }
+
+    input {
+      outline: none;
+      display: block;
+      margin: auto;
+      margin-top: 10px;
+      width: 90%;
+      height: 23px;
+      font-size: 14px;
+      text-align: center;
+      background-color: black;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+      text-shadow: none;
+    }
+
+    select {
+      font-size: 13px;
+      width: 35px;
+      margin-top: 5px;
+      line-height: 1.7em;
+      text-shadow: none;
+      padding-left: 6px;
+      border-radius: 2px;
+      background-color: black;
+      appearance: none;
+      background-image: url("../images/arrow_down.png");
+      background-repeat: no-repeat, repeat;
+      background-position: right .3em top 50%, 0 0;
+      background-size: .55em auto, 130%;
+
+      option {
+        color: #00c3ff;
+        text-align: center;
+        border-bottom: 1px solid blue;
+      }
+    }
+  }
 }
-// font-size: 11px;

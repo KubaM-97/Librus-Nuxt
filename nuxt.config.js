@@ -5,9 +5,9 @@ export default {
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'expressSM',
+    title: 'Librus',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'pl'
     },
     meta: [
       { charset: 'utf-8' },
@@ -28,11 +28,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/bootstrap.js',
-    // '~/plugins/toast.js',
     '~/plugins/mixins.js',
     '~/plugins/vuelidate.js',
-    '~/plugins/vue-fragment.js',
-    '~/plugins/v-mask.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -46,7 +43,10 @@ export default {
   cli: {
     bannerColor: 'yellow'
   }, 
-  pageTransition: 'page',
+  pageTransition: {
+    name: 'page',
+    mode: 'out-in'
+  },
   layoutTransition: {
     name: 'layout',
     mode: 'out-in'
@@ -80,20 +80,6 @@ export default {
   toast: {
     position: 'bottom-left',
     duration: 3500,
-},
-head: {
-  title: 'nuxt_project2',
-  htmlAttrs: {
-    lang: 'en'
-  },
-  meta: [
-    { charset: 'utf-8' },
-    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { hid: 'description', name: 'description', content: '' }
-  ],
-  link: [
-    { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-  ]
 },
    // specify module rules for css and scss
    module: {
