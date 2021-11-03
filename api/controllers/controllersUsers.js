@@ -21,6 +21,7 @@ class UserController {
           group: results.group
         })
       }
+      // else { res.sendStatus(401) - brak autoryzacji }
       else { res.sendStatus(404) }
       await mongo.close()
 
