@@ -175,7 +175,7 @@ export default defineComponent({
         { group: groupId }
       )
       } catch (error) {
-        this.$toast.error(this.$t('failed_to_fetch_student'));
+        this.$toast.error(this.$t('failed_to_fetch_student_data'));
       }
     })
     function handleClose(){

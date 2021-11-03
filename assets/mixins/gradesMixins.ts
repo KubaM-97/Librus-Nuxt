@@ -2,7 +2,7 @@ import { defineComponent } from "@nuxtjs/composition-api";
 import { SingleGrade } from '@/store/models/store.models'
 
 export default defineComponent({
-  setup(p, { root }) {
+  setup(_props, { root }) {
 
     //colors
     function gradeColor(weight: number): string {

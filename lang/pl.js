@@ -73,6 +73,8 @@ export default {
   father_phone_error: phone_error,
   father_email_error: email_error,
 
+  fillname:'Uzupełnij imię i nazwisko',
+  no_characters:'Bez cyfr i znaków specjalnych',
 
 
   // Close prompt
@@ -95,29 +97,24 @@ export default {
 
   // Toasts
   logging_in_progress: 'Trwa logowanie...',
-  successed_logged: 'Zalogowano pomyślnie. Trwa pobieranie danych...',
-  login_and_password_must_match: 'Login i hasło muszą się zgadzać!',
-  not_found_user_with_this_login: 'Nie znaleziono użytkownika z takim loginem',
-  server_error: 'Błąd po stronie serwera',
-  alternative_log_error: 'Błąd logowania',
-
+  adding_student_in_progress: 'Trwa dodawanie nowego ucznia',
   updating_student_data_in_progress: 'Trwa aktualizowanie danych ucznia w toku',
+  
+  successed_logged: 'Zalogowano pomyślnie. Trwa pobieranie danych...',
   successfully_added_new_student: 'Pomyślnie dodano nowego ucznia',
   successfully_updated_student_data: 'Pomyślnie zaktualizowano dane ucznia',
 
   failed_to_fetch_students_list: 'Nie udało się pobrać listy uczniów',
-  failed_to_fetch_student: 'Nie udało się pobrać danych ucznia',
+  failed_to_fetch_student_data: 'Nie udało się pobrać danych ucznia',
   failed_to_add_new_student: 'Nie udało się dodać nowego ucznia',
   failed_to_update_student_data: 'Nie udało się zaktualizować danych ucznia',
   failed_form_message: 'Operacja przerwana. W formularzu wystąpił błąd',
+  
+  login_and_password_must_match: 'Login i hasło muszą się zgadzać!',
+  alternative_log_error: 'Błąd logowania',
+  server_error: 'Błąd po stronie serwera',
 
-  adding_student_in_progress: 'Trwa dodawanie nowego ucznia',
-
-
-  fillname:'Uzupełnij imię i nazwisko',
-  no_characters:'Bez cyfr i znaków specjalnych',
-
-  //titles
+  //Pages' titles
   logged_out_page_title: 'Librus - strona logowania',
   group_page_title: 'Librus - klasa {group}',
   student_page_title: 'Librus - uczeń {student}',
