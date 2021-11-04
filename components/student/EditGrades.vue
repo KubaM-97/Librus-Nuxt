@@ -1,6 +1,7 @@
 <template>
   <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute"
   >
+  {{basedGrades.grades}}
     <div class="overlay" />
     <div class="container">
       <span class="d-block mb-3">{{ $t("edit_grade") }}:</span>
@@ -11,20 +12,25 @@
           :key="index"
           :index="index"
           :grade="grade"
-          @xxxxxx="yy"
+          @initGrade="handleInitGrade"
+          @updateGrade="handleUpdateGrade"
+          @removeGrade="handleRemoveGrade"
 
         />
-        <Grade
+        =================================
+        <!-- <Grade
           class="col-12 col-md-11"
           v-for="n in gradesLength"
           :key="n + student.grades.length"
           :index="gradesLength + student.grades.length - 1"
           :gradesLength="gradesLength"
-          @xxxxxx="yy"
-        />
+          @initGrade="handleInitGrade"
+          @updateGrade="handleUpdateGrade"
+          @removeGrade="handleRemoveGrade"
+        /> -->
 
         <div class="showAnotherGrade">
-          <button name="moreGradesEditGrades" @click="gradesLength++">+</button>
+          <button name="moreGradesEditGrades" @click="handleInitGrade">+</button>
         </div>
       </div>
     <StudentTable :student="basedGrades" />
@@ -47,7 +53,6 @@ import gradesService from "@/assets/mixins/gradesMixins.ts";
 import Grade from "@/components/global/Grade.vue";
 import StudentTable from "~/components/global/StudentTable";
 import { defineComponent, ref } from "@nuxtjs/composition-api";
-import axios from "axios";
 export default defineComponent({
   name: "EditGrades",
   emit: ["close", "refresh"],
@@ -69,22 +74,42 @@ export default defineComponent({
       }),
     };
   },
-  setup(props, {root, emit}) {
+  setup(props) {
     const gradesLength = ref(0);
     const student = props.student
     const basedGrades = ref(JSON.parse(JSON.stringify(student)));
     
-    function yy(grade, index){
-      basedGrades.value.grades[index] = grade
-    }
     // onActivated(()=>{
     //   console.log('44', props.student.grades[0]);
     //   basedGrades.value = {...student}
     // })
+    function handleInitGrade(){
+      gradesLength.value++
+      basedGrades.value.grades.push({score: null, weigth: null, description: '', date: ''})
+    }
+
+    function handleUpdateGrade(grade, index) {
+      console.log('update:', grade, index);
+      // basedGrades.value.grades[index] = grade
+      // clonedGrades = [...grades.value];
+      // clonedGrades[index] = { ...grade };
+      
+      // root.$accessor.updateStudentProperty({
+      //   property: "grades",
+      //   value: clonedGrades,
+      // });
+    }
+
+    function handleRemoveGrade(index) {
+      console.log('usunięto ocenę z indexem: ', index);
+      basedGrades.value.grades[index] = {score: null, weigth: null, description: '', date: ''}
+    }
     return {
       gradesLength,
       basedGrades,
-      yy,
+      handleInitGrade,
+      handleUpdateGrade,
+      handleRemoveGrade,
     };
   },
 });
