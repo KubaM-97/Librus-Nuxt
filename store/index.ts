@@ -80,9 +80,10 @@ export const actions = actionTree(
         student: payload
       })
     },
-    async updateStudent({ }, payload: Student): Promise<any> {
+    async updateStudent({ }, payload: any): Promise<any> {
       await axios.put(`/api/students/${payload._id}`, {
-        student: payload
+        student: payload.student,
+        group: payload.group
       })
     }
   }

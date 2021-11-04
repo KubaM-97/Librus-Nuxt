@@ -1,9 +1,7 @@
 <template>
   <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute"
   >
-    <div class="overlay" />
-    {{student2.pesel}}
-    <input v-model="student2.pesel">
+    <div class="overlay" />>
       <form
         action="#"
         enctype="application/x-www-form-urlencoded"
@@ -56,7 +54,8 @@
       <button
         class="btn btn-success btn-lg save mr-3"
         :disabled="$v.student.$invalid && $v.student.$anyDirty"
-        @click="saveChanges"
+        @click="$emit('submit')"
+
       >
         {{ $t("save_changes") }}
       </button>
@@ -78,7 +77,12 @@ export default defineComponent({
   props: {
     student: {
       type: Object,
-      required: true
+      required: false,
+      default: () => {},
+    },
+    fetch: {
+      type: Function,
+      required: true,
     }
   },
   head() {
@@ -90,8 +94,6 @@ export default defineComponent({
   setup(props, {root, emit}) {
 
     const student = ref(JSON.parse(JSON.stringify(props.student)));
-    const student2 = ref(JSON.parse(JSON.stringify(props.student)));
-console.log(student);
     function nestedProperty (property){
       switch(property){
         case 'address': {
@@ -124,20 +126,8 @@ console.log(student);
       this.$v.student.$touch();
       subProperty ? student.value[property][subProperty] = value : student.value[property] = value
     }
-   async function saveChanges() {
-      try {
-        this.$toast.show(this.$t("updating_student_data_in_progress"));
-        await root.$accessor.updateStudent({student: student.value})
-        await emit('refresh')
-        this.$toast.success(this.$t("successfully_updated_student_data"));
-      } catch (err) {
-        console.error(err);
-        this.$toast.error(this.$t("failed_to_update_student_data"));
-      }
-    }
+  
     return {
-      student2,
-      saveChanges,
       orderedStudentProperties,
       nestedProperty,
       setStudentState,

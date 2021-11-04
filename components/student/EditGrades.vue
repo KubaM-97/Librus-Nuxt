@@ -31,7 +31,7 @@
 
     <button
       class="btn btn-success btn-lg save mr-3 px-2 py-2"
-      @click="saveChanges"
+      @click="$emit('submit')"
     >
       {{ $t("save_changes") }}
     </button>
@@ -73,17 +73,7 @@ export default defineComponent({
     const gradesLength = ref(0);
     const student = props.student
     const basedGrades = ref(JSON.parse(JSON.stringify(student)));
-    async function saveChanges() {
-      try {
-        this.$toast.show(this.$t("updating_student_data_in_progress"));
-        await root.$accessor.updateStudent({student: basedGrades.value})
-
-        await emit('refresh')
-        this.$toast.success(this.$t("successfully_updated_student_data"));
-      } catch (err) {
-        this.$toast.error(this.$t("failed_to_update_student_data"));
-      }
-    }
+    
     function yy(grade, index){
       basedGrades.value.grades[index] = grade
     }
@@ -93,7 +83,6 @@ export default defineComponent({
     // })
     return {
       gradesLength,
-      saveChanges,
       basedGrades,
       yy,
     };

@@ -5,8 +5,6 @@
         >{{ $t("accumulated_grades") }}:</span
       >
     </div>
-    <!-- {{$store.state.student.grades}} -->
-    {{grades}}
     <Grade
       :ref="`grade_${n - 1}`"
       :index="n - 1"
@@ -19,7 +17,6 @@
     />
 
     <div class="showAnotherGrade">
-      <!-- <button name="moreGradesAddStudent" @click="gradesLength.value++"> -->
       <button name="moreGradesAddStudent" @click="handleInitGrade">
         +
       </button>
@@ -43,39 +40,34 @@ export default defineComponent({
       default: () => []
     },
   },
-  setup(props, { root }) {
+  setup(_props, { root }) {
     const gradesLength = ref(1);
-    function handleRemoveGrade(index) {
-      root.$accessor.removeGrade(index);
-    }
-    // const grades = props.grades;
-    const grades = computed(()=>root.$accessor.student.grades)
-
-    let clonedGrades = [...grades.value];
-    function handleUpdateGrade(grade, index) {
-    clonedGrades = [...grades.value];
-
-      clonedGrades[index] = { ...grade };
-      console.log(clonedGrades)
-      root.$accessor.updateStudentProperty({
-        property: "grades",
-        value: clonedGrades,
-      });
-      // root.$accessor.updateGrade({
-      //   grade,
-      //   index,
-      // });
-      this.$forceUpdate()
-    }
+      const grades = computed(()=>root.$accessor.student.grades)
+      let clonedGrades = [...grades.value];
+      
     function handleInitGrade(){
       gradesLength.value++
       root.$accessor.initGrade();
     }
+
+    function handleUpdateGrade(grade, index) {
+      clonedGrades = [...grades.value];
+      clonedGrades[index] = { ...grade };
+      
+      root.$accessor.updateStudentProperty({
+        property: "grades",
+        value: clonedGrades,
+      });
+    }
+
+    function handleRemoveGrade(index) {
+      root.$accessor.removeGrade(index);
+    }
     return {
-      handleUpdateGrade,
       gradesLength,
-      handleRemoveGrade,
       handleInitGrade,
+      handleUpdateGrade,
+      handleRemoveGrade,
     };
   },
 });

@@ -22,10 +22,13 @@ class StudentController {
 
   }
   async getStudent(req, res) {
-    const id = req.params.id
+    const id = req.params.id;
+    console.log(req.body);
+    const group = req.body.group;
+    
     try {
       const db = await mongo.connect('students');
-      const collection = db.collection(`group_3B`);
+      const collection = db.collection(`group_${group||'3B'}`);
 
       await collection.findOne({
         _id: mongodb.ObjectId(id)
@@ -34,32 +37,37 @@ class StudentController {
       });
 
     } catch (err) {
-      console.log('błąd', err);
-      // res.throw(500, err)
+      console.error(err);
+      res.sendStatus(500)
     }
   }
   async createStudent(req, res) {
     const student = req.body.student;
+    const group = req.body.group;
 
     try {
       const db = await mongo.connect('students');
-      const collection = db.collection(`group_3B`);
-      const results = await collection.insertOne(student)
+      const collection = db.collection(`group_${group}`);
+      await collection.insertOne(student)
 
-      res.json(results)
+      res.sendStatus(201)
 
       mongo.close();
 
     } catch (err) {
-      // res.throw(500, err)
+      console.error(err);
+      res.sendStatus(500)
     }
 
   }
   async updateStudent(req, res) {
     const student = req.body.student;
+    console.log('oceny:', student.grades);
+    const group = req.body.group;
+    console.log(group);
     try {
       const db = await mongo.connect('students');
-      const collection = db.collection(`group_3B`);
+      const collection = db.collection(`group_${group}`);
 
       await collection.updateOne(  {_id: mongodb.ObjectId(student._id)},
       {
@@ -80,7 +88,7 @@ class StudentController {
       res.sendStatus(201)
 
     } catch (err) {
-      console.log('błąd', err);
+      console.error(err);
       res.sendStatus(500)
     }
 

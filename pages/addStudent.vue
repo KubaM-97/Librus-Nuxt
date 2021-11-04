@@ -1,7 +1,7 @@
 <template>
   <div>
     <AddStudentView />
-    <ClosePrompt ref="ClosePrompt"/>X
+    <ClosePrompt ref="ClosePrompt"/>
   </div>
 </template>
 
