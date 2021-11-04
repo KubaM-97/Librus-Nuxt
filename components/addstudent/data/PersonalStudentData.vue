@@ -1,11 +1,12 @@
 <template>
   <div class="container">
+    {{student.grades}}
     <div class="row">
       <div class="col-12 col-lg-4 mt-4">
-        <PersonalStudentDataForm :ref="PersonalStudentDataForm" :v="v" :fullName="fullName" :student="student" />
+        <PersonalStudentDataForm ref="PersonalStudentDataForm" :v="v" :fullName="fullName" :student="student" />
       </div>
       <div class="col-12 col-lg-8">
-        <NewStudentGrades />
+        <NewStudentGrades :grades="student.grades"/>
       </div>
     </div>
   </div>

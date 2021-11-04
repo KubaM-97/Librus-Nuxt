@@ -1,5 +1,8 @@
 <template>
   <div class="logInPanel px-9 pt-4 pb-3 position-absolute text-center">
+    {{a}}
+    <br />
+    {{b}}
     <form
       action="#"
       enctype="application/x-www-form-urlencoded"
@@ -67,10 +70,10 @@ export default defineComponent({
           });
         })
       } catch (error) {
-        const status = error.response.status;
-        switch (status) {
-          case 404: {
-            this.$toast.error(this.$t("not_found_user_with_this_login"));
+        const statusCode = error.response.status;
+        switch (statusCode) {
+          case 401: {
+            this.$toast.error(this.$t("login_and_password_must_match"));
             break;
           }
           case 500: {
@@ -83,7 +86,16 @@ export default defineComponent({
         }
       }
     }
+    const a = ref([{
+      score: 1,
+      weight: 2
+    },{
+    score: 4,
+    weight: ''}])
+    const b = a.value.map(x=>x.score && x.weight)
     return {
+      a,
+      b,
       login,
       password,
       signIn,

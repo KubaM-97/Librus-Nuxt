@@ -5,20 +5,22 @@
         >{{ $t("accumulated_grades") }}:</span
       >
     </div>
-    grades: {{grades}}
+    <!-- {{$store.state.student.grades}} -->
+    {{grades}}
     <Grade
+      :ref="`grade_${n - 1}`"
       :index="n - 1"
-      @remove="handleRemove"
       class="addStudentPanelGradesContent"
       v-for="n in gradesLength"
       :key="n"
-      :ref="`gradeRef_${n - 1}`"
-      @xxxxxx="yy"
-
+      @initGrade="handleInitGrade"
+      @updateGrade="handleUpdateGrade"
+      @removeGrade="handleRemoveGrade"
     />
 
     <div class="showAnotherGrade">
-      <button name="moreGradesAddStudent" @click="$accessor.increase()">
+      <!-- <button name="moreGradesAddStudent" @click="gradesLength.value++"> -->
+      <button name="moreGradesAddStudent" @click="handleInitGrade">
         +
       </button>
     </div>
@@ -36,48 +38,58 @@ export default defineComponent({
   },
   props: {
     grades: {
-      type: Object,
+      type: Array,
       required: false,
+      default: () => []
     },
   },
   setup(props, { root }) {
-    const gradesLength = computed(() => root.$accessor.gradesLength);
-    function handleRemove(index) {
-      props.grades.splice(index, 1);
+    const gradesLength = ref(1);
+    function handleRemoveGrade(index) {
+      root.$accessor.removeGrade(index);
     }
-    const grades = computed(() => root.$accessor.student.grades);
-    let clonedGrades = [...grades.value];
-    console.log(grades)
-    function yy(grade, index){
-      clonedGrades = [...grades.value];
-      console.log(clonedGrades);
+    const grades = props.grades;
+    let clonedGrades = [...grades];
+    function handleUpdateGrade(grade, index) {
       clonedGrades[index] = { ...grade };
-      root.$accessor.updateStudent({ property: "grades", value: clonedGrades });
-
-      // basedGrades.value.grades[index] = grade
+      console.log(clonedGrades)
+      root.$accessor.updateStudentProperty({
+        property: "grades",
+        value: clonedGrades,
+      });
+      // root.$accessor.updateGrade({
+      //   grade,
+      //   index,
+      // });
+      this.$forceUpdate()
+    }
+    function handleInitGrade(){
+      gradesLength.value++
+      root.$accessor.initGrade();
     }
     return {
-      yy,
-      // grades,
+      handleUpdateGrade,
       gradesLength,
-      handleRemove,
+      handleRemoveGrade,
+      handleInitGrade,
     };
   },
 });
 </script>
 
-<style>
+<style lang="scss">
 .addStudentPanelGrades {
   position: relative;
+  .addStudentPanelGradesTitle {
+    padding-top: 10px;
+    margin-bottom: 50px;
+    font-size: 11px;
+    .addStudentPanelGradesContent {
+      width: 90%;
+    }
+  }
 }
-.addStudentPanelGradesTitle {
-  padding-top: 10px;
-  margin-bottom: 50px;
-  font-size: 11px;
-}
-.addStudentPanelGradesContent {
-  width: 90%;
-}
+
 @media (max-width: 768px) {
   .addStudentPanelGradesTitle {
     padding-top: 70px;

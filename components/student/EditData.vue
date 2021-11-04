@@ -127,7 +127,7 @@ console.log(student);
    async function saveChanges() {
       try {
         this.$toast.show(this.$t("updating_student_data_in_progress"));
-        await root.$accessor.updateStudent2({student: student.value})
+        await root.$accessor.updateStudent({student: student.value})
         await emit('refresh')
         this.$toast.success(this.$t("successfully_updated_student_data"));
       } catch (err) {

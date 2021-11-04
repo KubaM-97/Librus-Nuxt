@@ -61,7 +61,7 @@ export default defineComponent({
     ])
     function setStudentState(value, property, subProperty){
       v.student.$touch()
-      root.$accessor.updateStudent({property, value: value.trim(), subProperty})
+      root.$accessor.updateStudentProperty({property, value: value.trim(), subProperty})
     }
     return {
       orderedStudentProperties,

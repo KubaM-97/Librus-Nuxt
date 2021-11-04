@@ -76,7 +76,7 @@ export default defineComponent({
     async function saveChanges() {
       try {
         this.$toast.show(this.$t("updating_student_data_in_progress"));
-        await root.$accessor.updateStudent2({student: basedGrades.value})
+        await root.$accessor.updateStudent({student: basedGrades.value})
 
         await emit('refresh')
         this.$toast.success(this.$t("successfully_updated_student_data"));

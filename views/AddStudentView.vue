@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-    {{student}}
-    <PersonalStudentData :ref="PersonalStudentData" @getNewStudentName="getNewStudentNameHandler" :v="$v" :fullName="fullName" :student="student" :gradesLength="gradesLength"/>
+    xxx{{grades}}
+    <PersonalStudentData ref="PersonalStudentData" @getNewStudentName="getNewStudentNameHandler" :v="$v" :fullName="fullName" :student="student" :gradesLength="gradesLength"/>
     <StudentTable :student="student" />
     <FormActions @cancel="handleCancel" @submit="handleSubmit($v, ...arguments)" />
   </div>
@@ -17,6 +17,8 @@ import {
   ref,
   useRouter,
   computed,
+  watch,
+  useStore,
 } from "@nuxtjs/composition-api";
 export default defineComponent({
   components: {
@@ -27,24 +29,27 @@ export default defineComponent({
   mixins: [validations],
   setup(_, {root}) {
     const router = useRouter();
+    const store = useStore();
     const gradesLength = ref(1);
     const student = computed(()=>root.$accessor.student)
+    const grades = computed(()=>root.$accessor.student.grades)
     const fullName = ref('')
     const PersonalStudentData = ref(null)
     function handleCancel() {
       fullName.value = ''
       root.$accessor.resetStudent()
-      root.$refs.PersonalStudentData.$refs.PersonalStudentDataForm.showAdditionalDataForm.value = false 
+      this.$refs.PersonalStudentData.$refs.PersonalStudentDataForm.showAdditionalDataForm = false 
     }
     async function handleSubmit(v) {
       if(v.$invalid) {
         this.$toast.error(root.$t('failed_form_message'));
         return
       }
+      const clonedStudent = {...student.value}
+      clonedStudent.grades = clonedStudent.grades.filter((grade) => grade.score && grade.weight)
       this.$toast.show(root.$t('adding_student_in_progress'));
-      student.value.grades.map((grade) => grade.score && grade.weight);
       try {
-        await root.$accessor.addStudent({student: student.value})
+        await root.$accessor.addStudent(clonedStudent)
         this.$toast.success(root.$t('successfully_added_new_student'));
         router.push({ path: "/group/3B" });
       } catch (err) {
@@ -52,7 +57,11 @@ export default defineComponent({
         this.$toast.error(root.$t('failed_to_add_new_student'));
       }
     };
+watch(()=>{...student.value}, ()=>{
+  console.log('store watcher');
+      // this.$forceUpdate()
 
+})
     function getNewStudentNameHandler(fullName) {
       const formattedFullname = fullName.split(" ").reverse().join();
       student.value.name = formattedFullname;
@@ -66,7 +75,8 @@ export default defineComponent({
       student,
       fullName,
       gradesLength,
-      PersonalStudentData
+      PersonalStudentData,
+      grades,
     };
   },
 });

@@ -1,6 +1,5 @@
 <template>
   <div class="addStudentPanelGradesContentSingle mb-3" :ref="`grade_${index}`">
-  <!-- <div class="addStudentPanelGradesContentSingle mb-3"> -->
     <div class="container">
       <div class="row singleGrade">
         <div class="col-2 col-md-3">
@@ -70,8 +69,7 @@ import {
   ref,
   watch,
   onBeforeUpdate,
-  useStore,
-  computed,
+  onMounted,
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
@@ -99,15 +97,17 @@ export default defineComponent({
       },
     },
   },
-  emits: ['xxxxxx'],
+  emits: ['initGrade', 'updateGrade', 'removeGrade'],
   setup(props, { root, emit }) {
     const index = props.index;
-    const store = useStore();
     const characters = props.characters;
-    const grade = props.grade;
+    const grade = props.grade || ref();
     const leftCharactersMessage = ref(
       root.$t("characters_left_many", { characters })
     );
+    onMounted(()=>{
+      // emit('initGrade')
+    })
     watch(
       () => [...grade.description],
       () => {
@@ -138,25 +138,17 @@ export default defineComponent({
 
     onBeforeUpdate(() => {
       grade.date = root.getCurrentDate();
-      updateStudentGrade();
+      emit('updateGrade', grade, index)
     });
+    function remove(index){
+      emit('removeGrade', index)
 
-    function updateStudentGrade() {
-      emit('xxxxxx', grade, index)
-      
-    }
-
-    function remove(index) {
-      emit('remove', index)
-      root.$accessor.removeGrade(index);
-      const refEl = this.$refs[`grade_${index}`];
+        const refEl = this.$refs[`grade_${index}`];
       refEl.parentNode.removeChild(refEl);
     }
     return {
-      store,
-      updateStudentGrade,
-      remove,
-      leftCharactersMessage
+      leftCharactersMessage,
+      remove
     };
   },
 });

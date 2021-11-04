@@ -7,7 +7,6 @@
           {{ $t("double_lastNames_hint") }}
         </span>
       </label>
-      {{fullName}}
       <input
         type="text"
         id="name"
@@ -37,7 +36,7 @@
         {{ !showAdditionalDataForm ? $t("expand") : $t("collapse") }}
       </button>
 
-      <transition name="showDetailData" :css="false">
+      <transition name="showDetailData" mode="out-in">
         <AdditionalDataForm v-if="showAdditionalDataForm" :v="v" :fullName="fullName" :student="student"/>
       </transition>
     </div>
@@ -76,11 +75,11 @@ export default defineComponent({
       () => props.v.fullName.$model,
       (val) => {
         getFirstAndLastName(val);
-        root.$accessor.updateStudent({
+        root.$accessor.updateStudentProperty({
           property: "firstName",
           value: firstName.value,
         });
-        root.$accessor.updateStudent({
+        root.$accessor.updateStudentProperty({
           property: "lastName",
           value: lastName.value,
         });

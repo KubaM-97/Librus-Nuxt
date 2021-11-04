@@ -33,48 +33,49 @@ html body {
     font-size: 15px;
     padding: 40px 0;
 
-    label {
-      display: block;
-      font-size: 13px;
-      margin-bottom: 0;
-    }
+    
+  }
+}
+label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 0;
+}
 
-    input {
-      outline: none;
-      display: block;
-      margin: auto;
-      margin-top: 10px;
-      width: 90%;
-      height: 23px;
-      font-size: 14px;
-      text-align: center;
-      background-color: black;
-      border-radius: 5px;
-      border: 1px solid #ddd;
-      box-sizing: border-box;
-      text-shadow: none;
-    }
+input {
+  outline: none;
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+  width: 90%;
+  height: 23px;
+  font-size: 14px;
+  text-align: center;
+  background-color: black;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  text-shadow: none;
+}
 
-    select {
-      font-size: 13px;
-      width: 35px;
-      margin-top: 5px;
-      line-height: 1.7em;
-      text-shadow: none;
-      padding-left: 6px;
-      border-radius: 2px;
-      background-color: black;
-      appearance: none;
-      background-image: url("../images/arrow_down.png");
-      background-repeat: no-repeat, repeat;
-      background-position: right .3em top 50%, 0 0;
-      background-size: .55em auto, 130%;
+select {
+  font-size: 13px;
+  width: 35px;
+  margin-top: 5px;
+  line-height: 1.7em;
+  text-shadow: none;
+  padding-left: 6px;
+  border-radius: 2px;
+  background-color: black;
+  appearance: none;
+  background-image: url("../images/arrow_down.png");
+  background-repeat: no-repeat, repeat;
+  background-position: right .3em top 50%, 0 0;
+  background-size: .55em auto, 130%;
 
-      option {
-        color: #00c3ff;
-        text-align: center;
-        border-bottom: 1px solid blue;
-      }
-    }
+  option {
+    color: #00c3ff;
+    text-align: center;
+    border-bottom: 1px solid blue;
   }
 }

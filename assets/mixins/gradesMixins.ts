@@ -1,5 +1,5 @@
 import { defineComponent } from "@nuxtjs/composition-api";
-import { SingleGrade } from '@/store/models/store.models'
+import { SingleGrade } from '@/store/models/grade'
 
 export default defineComponent({
   setup(_props, { root }) {
@@ -86,12 +86,12 @@ export default defineComponent({
         }
       })
 
-      //round avg to 2 decimal places
       const avgValue = gradesSuperValue / weightSum;
 
-      let roundedAvgValue: number = +(Math.round(avgValue * 100) / 100).toFixed(2);
+      const roundedAvgValue = (Math.round(avgValue * 100) / 100).toFixed(2)
+      let finalAvgValue: string = isNaN(+roundedAvgValue) ? '' : roundedAvgValue;
 
-      return roundedAvgValue;
+      return finalAvgValue;
 
     }
 

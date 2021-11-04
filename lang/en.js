@@ -118,6 +118,7 @@ export default {
   logged_out_page_title: 'Librus - logging page',
   group_page_title: 'Librus - group {group}',
   student_page_title: 'Librus - student {student}',
+  student_add_page_title: 'Librus - add student',
   student_edit_page_title: 'Librus - edit student {student}',
   error_page_title: 'Librus - error page',
 }

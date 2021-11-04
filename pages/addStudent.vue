@@ -18,8 +18,7 @@ export default defineComponent({
   },
   head() {
     return{
-      // title: this.$t('add_student_page_title'),
-      title: 'Librus - dodaj ucznia',
+      title: this.$t('student_add_page_title'),
     }
   },
   // beforeRouteLeave(to, from, next) {

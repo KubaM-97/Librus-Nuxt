@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td v-if="orderNo">{{ orderNo }}.</td>
-    <td>{{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
+    <td> {{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
     <td>
       <div
         :class="[{'gradeWeightColor': grade.score || grade.weight}, gradeColor(grade.weight)]"
@@ -13,9 +13,9 @@
         {{ grade.score }}
       </div>
     </td>
-    <td>{{ calculateAvgGrade(student.grades) || '' }}</td>
+    <td>{{ avg }}</td>
     <td>
-      <span v-if="calculateAvgGrade(student.grades) < 2" class="fire">
+      <span v-if="avg && avg < 2" class="fire">
         {{ $t("at_risk").toUpperCase() }}
       </span>
     </td>
@@ -25,7 +25,6 @@
 
 <script>
 import { defineComponent } from "@nuxtjs/composition-api";
-import gradesService from "@/assets/mixins/gradesMixins.ts";
 
 export default defineComponent({
   name: "StudentRow",
@@ -41,6 +40,10 @@ export default defineComponent({
       default: 0
     },
   },
-  mixins: [gradesService],
+  computed: {
+    avg(){
+      return this.calculateAvgGrade(this.student.grades)
+    }
+  }
 })
 </script>
