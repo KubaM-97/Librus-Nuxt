@@ -70,6 +70,8 @@ import {
   watch,
   onBeforeUpdate,
   onMounted,
+  // useStore,
+  computed,
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
@@ -100,6 +102,8 @@ export default defineComponent({
   emits: ['initGrade', 'updateGrade', 'removeGrade'],
   setup(props, { root, emit }) {
     const index = props.index;
+    // const store = useStore();
+    const grades = computed(()=>root.$accessor.student.grades)
     const characters = props.characters;
     const grade = props.grade || ref();
     const leftCharactersMessage = ref(
@@ -135,10 +139,19 @@ export default defineComponent({
         }
       }
     );
+    let clonedGrades = [...grades.value];
 
     onBeforeUpdate(() => {
       grade.date = root.getCurrentDate();
       emit('updateGrade', grade, index)
+      // clonedGrades = [...grades.value];
+
+      // clonedGrades[index] = { ...grade };
+      // console.log(clonedGrades)
+      // root.$accessor.updateStudentProperty({
+      //   property: "grades",
+      //   value: clonedGrades,
+      // });
     });
     function remove(index){
       emit('removeGrade', index)

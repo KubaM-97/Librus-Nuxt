@@ -48,9 +48,13 @@ export default defineComponent({
     function handleRemoveGrade(index) {
       root.$accessor.removeGrade(index);
     }
-    const grades = props.grades;
-    let clonedGrades = [...grades];
+    // const grades = props.grades;
+    const grades = computed(()=>root.$accessor.student.grades)
+
+    let clonedGrades = [...grades.value];
     function handleUpdateGrade(grade, index) {
+    clonedGrades = [...grades.value];
+
       clonedGrades[index] = { ...grade };
       console.log(clonedGrades)
       root.$accessor.updateStudentProperty({

@@ -1,8 +1,5 @@
 <template>
   <div class="logInPanel px-9 pt-4 pb-3 position-absolute text-center">
-    {{a}}
-    <br />
-    {{b}}
     <form
       action="#"
       enctype="application/x-www-form-urlencoded"
@@ -86,16 +83,7 @@ export default defineComponent({
         }
       }
     }
-    const a = ref([{
-      score: 1,
-      weight: 2
-    },{
-    score: 4,
-    weight: ''}])
-    const b = a.value.map(x=>x.score && x.weight)
     return {
-      a,
-      b,
       login,
       password,
       signIn,

@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    xxx{{grades}}
     <PersonalStudentData ref="PersonalStudentData" @getNewStudentName="getNewStudentNameHandler" :v="$v" :fullName="fullName" :student="student" :gradesLength="gradesLength"/>
     <StudentTable :student="student" />
     <FormActions @cancel="handleCancel" @submit="handleSubmit($v, ...arguments)" />
@@ -17,8 +16,6 @@ import {
   ref,
   useRouter,
   computed,
-  watch,
-  useStore,
 } from "@nuxtjs/composition-api";
 export default defineComponent({
   components: {
@@ -29,10 +26,8 @@ export default defineComponent({
   mixins: [validations],
   setup(_, {root}) {
     const router = useRouter();
-    const store = useStore();
     const gradesLength = ref(1);
     const student = computed(()=>root.$accessor.student)
-    const grades = computed(()=>root.$accessor.student.grades)
     const fullName = ref('')
     const PersonalStudentData = ref(null)
     function handleCancel() {
@@ -57,11 +52,6 @@ export default defineComponent({
         this.$toast.error(root.$t('failed_to_add_new_student'));
       }
     };
-watch(()=>{...student.value}, ()=>{
-  console.log('store watcher');
-      // this.$forceUpdate()
-
-})
     function getNewStudentNameHandler(fullName) {
       const formattedFullname = fullName.split(" ").reverse().join();
       student.value.name = formattedFullname;
@@ -76,7 +66,6 @@ watch(()=>{...student.value}, ()=>{
       fullName,
       gradesLength,
       PersonalStudentData,
-      grades,
     };
   },
 });

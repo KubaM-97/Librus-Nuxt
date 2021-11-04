@@ -30,6 +30,7 @@ export default {
     '~/plugins/bootstrap.js',
     '~/plugins/mixins.js',
     '~/plugins/vuelidate.js',
+    '~/plugins/vue-portal.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <StudentView /> -->
     <div v-if="$fetchState.pending">Cierpliwości</div>
     <div class="wrapper text-left pl-2" v-else>
       <div class="summary">
