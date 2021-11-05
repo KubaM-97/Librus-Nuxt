@@ -2,11 +2,14 @@
         <div class="container">
           <div class="row mt-2 mb-3" v-for="property in orderedStudentProperties" :key="property">
             <label class="col-12" :class="{'errorDataLabel': v.student[property].$invalid && v.student[property].$dirty}">{{ $t(property) }}</label>
-            
+            <span class="col-12" :class="{'errorDataLabel': v.student[property].$invalid && v.student[property].$dirty}">{{ $t(`${property}_error`) }}</span>
+            <template> 
+              <div class="tutaj głupcze"></div>
+            </template>
             <input
               v-if="typeof student[property] !== 'object' && student[property] !== null"
               type="text"
-              :placeholder="$t(`${property}_error`)"
+              :placeholder="$t(property)"
               :name="property"
               :id="property"
               :value="student[property]"

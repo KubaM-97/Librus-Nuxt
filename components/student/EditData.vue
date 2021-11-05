@@ -1,64 +1,88 @@
 <template>
-  <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute"
-  >
-    <div class="overlay" />>
-      <form
-        action="#"
-        enctype="application/x-www-form-urlencoded"
-        method="post"
-        @submit.prevent="saveChanges"
-      >
-        <div class="container">
-          <div class="row mb-3 d-flex align-items-center" v-for="property in orderedStudentProperties" :key="property">
-            <div class="col-6">
+  <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute">
+    <div class="overlay" />
+    {{student}}
+    {{student2}}
+    <form
+      action="#"
+      enctype="application/x-www-form-urlencoded"
+      method="post"
+      @submit.prevent="saveChanges"
+    >
+      <div class="container">
+        <div
+          class="row mb-3 d-flex align-items-center"
+          v-for="property in orderedStudentProperties"
+          :key="property"
+        >
+          <div class="col-6">
+            <!-- <template class="redLabel"> -->
             <label :for="property">{{ $t(property) }}</label>
             <input
-              v-if="typeof student[property] !== 'object' && student[property] !== null"
+              v-if="
+                typeof student[property] !== 'object' &&
+                student[property] !== null
+              "
               type="text"
               :placeholder="$t(property)"
               :name="property"
               :id="property"
-              v-model="student[property]"
+              autocomplete="off"
+              v-model="student2[property]"
             />
-            <input
+            <template
               v-else
               v-for="(_subValue, subProperty) in student[property]"
-              :key="subProperty"
-              type="text"
-              :placeholder="$t(subProperty)"
-              :name="property[subProperty]"
-              :id="property[subProperty]"
-              :value="student[property][subProperty]"
-              @change="setStudentState($event.target.value, property, subProperty)"
-              class="col-10"
-              :class="{'errorDataInput': $v.student[property][subProperty].$invalid && $v.student[property][subProperty].$dirty}"
-              autocomplete="off"
-            />
-            </div>
-            <div class="col-6">
-              <span v-html="
-              (typeof student[property] !== 'object' && student[property] !== null) ? $t(student[property]) : nestedProperty(property)"></span>
-              {{$v.student[property].$invalid}}
-              <span v-if="$v.student[property].$invalid"> 
-                {{ $t(`${property}_error`) }}
+            >
+              <span :key="subProperty" v-if="$v.student[property][subProperty].$invalid && $v.student[property][subProperty].$dirty" class='errorDataLabel'>
+                {{ $t(`${property}_${subProperty}_error`) }}
               </span>
-              <!-- <span>{{ $t(`${property}_${subProperty}_error`) }}</span>
+              <input
+                :key="subProperty"
+                type="text"
+                :placeholder="$t(subProperty)"
+                :name="property[subProperty]"
+                :id="property[subProperty]"
+                v-model="student[property][subProperty]"
+                class="col-10"
+                :class="{
+                  errorDataInput:
+                    $v.student[property][subProperty].$invalid &&
+                    $v.student[property][subProperty].$dirty,
+                }"
+                autocomplete="off"
+              />
+            </template>
+          </div>
+
+          <div class="col-6">
+            <span
+              v-html="
+                typeof student[property] !== 'object' &&
+                student[property] !== null
+                  ? $t(student[property])
+                  : nestedProperty(property)
+              "
+            ></span>
+            <span v-if="$v.student[property].$invalid">
+              {{ $t(`${property}_error`) }}
+            </span>
+            <!-- <span>{{ $t(`${property}_${subProperty}_error`) }}</span>
 
             <div v-if="!Array.isArray(data.value) && $v.$invalid && $v.$dirty">{{data.errorMessage}}</div>
               <span>{{ $t(`${property}_error`) }}</span>
             <div v-else-if="Array.isArray(data.value)">{{student[data.property][subData].errorMessage]}}</div> -->
-            </div>
           </div>
         </div>
-      </form>
-      <button
-        class="btn btn-success btn-lg save mr-3"
-        :disabled="$v.student.$invalid && $v.student.$anyDirty"
-        @click="$emit('submit')"
-
-      >
-        {{ $t("save_changes") }}
-      </button>
+      </div>
+    </form>
+    <button
+      class="btn btn-success btn-lg save mr-3"
+      :disabled="$v.student.$invalid && $v.student.$anyDirty"
+      @click="$emit('submit')"
+    >
+      {{ $t("save_changes") }}
+    </button>
 
     <button class="closeEditPanelBtn position-absolute" @click="$emit('close')">
       <img class="closeEditPanelImg w-100" src="@/assets/images/eXit.png" />
@@ -67,7 +91,7 @@
 </template>
 
 <script>
-import { defineComponent, ref} from "@nuxtjs/composition-api";
+import { defineComponent, ref } from "@nuxtjs/composition-api";
 import validations from "@/assets/mixins/validations";
 
 export default defineComponent({
@@ -79,57 +103,63 @@ export default defineComponent({
       required: false,
       default: () => {},
     },
-    fetch: {
-      type: Function,
-      required: true,
-    }
   },
   head() {
     return {
-      title: this.$t('student_edit_page_title', { student: `${ this.student.lastName } ${ this.student.firstName }` }),
-    }
-  }, 
+      title: this.$t("student_edit_page_title", {
+        student: `${this.student.lastName} ${this.student.firstName}`,
+      }),
+    };
+  },
   emit: ["close", "refresh"],
-  setup(props, {root, emit}) {
-
+  setup(props, { root, emit }) {
     const student = ref(JSON.parse(JSON.stringify(props.student)));
-    function nestedProperty (property){
-      switch(property){
-        case 'address': {
-          return root.$t('full_address', {
-            streetName: student.value.address.streetName, 
-            streetNr: student.value.address.streetNr, 
-            flatNr: student.value.address.flatNr, 
-            postCode: student.value.address.postCode, 
-            city: student.value.address.city
-          })
+    const student2 = ref(JSON.parse(JSON.stringify(props.student2)));
+    function nestedProperty(property) {
+      switch (property) {
+        case "address": {
+          return root.$t("full_address", {
+            streetName: student.value.address.streetName,
+            streetNr: student.value.address.streetNr,
+            flatNr: student.value.address.flatNr,
+            postCode: student.value.address.postCode,
+            city: student.value.address.city,
+          });
         }
-        case 'mother': {
+        case "mother": {
           return `${student.value.mother.firstName} ${student.value.mother.lastName} <br />
-          ${student.value.mother.phone} <br /> ${student.value.mother.email}`
+          ${student.value.mother.phone} <br /> ${student.value.mother.email}`;
         }
-        case 'father': {
+        case "father": {
           return `${student.value.father.firstName} ${student.value.father.lastName} <br />
-          ${student.value.father.phone} <br /> ${student.value.father.email}`
+          ${student.value.father.phone} <br /> ${student.value.father.email}`;
         }
         default: {
-          return ''
+          return "";
         }
       }
     }
     const orderedStudentProperties = ref([
-      'pesel', 'phone', 'email', 'address', 'mother', 'father'
-    ])
-      
- function setStudentState(value, property, subProperty){
+      "pesel",
+      "phone",
+      "email",
+      "address",
+      "mother",
+      "father",
+    ]);
+
+    function setStudentState(value, property, subProperty) {
       this.$v.student.$touch();
-      subProperty ? student.value[property][subProperty] = value : student.value[property] = value
+      subProperty
+        ? (student.value[property][subProperty] = value)
+        : (student.value[property] = value);
     }
-  
+
     return {
       orderedStudentProperties,
       nestedProperty,
       setStudentState,
+      student2,
     };
   },
 });
