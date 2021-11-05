@@ -49,7 +49,8 @@ type RootState = ReturnType<typeof state>
 
 
 export const mutations = mutationTree(state, {
-  updateStudentProperty(state: State, payload): void {
+  updateStudentProperty(state: State, payload: any): void {
+    // state.student
     if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
     else state.student[payload.property] = payload.value;
   },

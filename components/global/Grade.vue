@@ -156,8 +156,8 @@ export default defineComponent({
     function remove(index){
       emit('removeGrade', index)
 
-        const refEl = this.$refs[`grade_${index}`];
-      refEl.parentNode.removeChild(refEl);
+      //   const refEl = this.$refs[`grade_${index}`];
+      // refEl.parentNode.removeChild(refEl);
     }
     return {
       leftCharactersMessage,

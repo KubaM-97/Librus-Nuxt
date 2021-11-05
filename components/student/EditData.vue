@@ -68,7 +68,6 @@
 
 <script>
 import { defineComponent, ref} from "@nuxtjs/composition-api";
-import axios from 'axios'
 import validations from "@/assets/mixins/validations";
 
 export default defineComponent({

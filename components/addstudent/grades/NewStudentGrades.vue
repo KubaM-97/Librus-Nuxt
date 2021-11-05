@@ -53,7 +53,7 @@ export default defineComponent({
     function handleUpdateGrade(grade, index) {
       clonedGrades = [...grades.value];
       clonedGrades[index] = { ...grade };
-      
+
       root.$accessor.updateStudentProperty({
         property: "grades",
         value: clonedGrades,
@@ -61,6 +61,8 @@ export default defineComponent({
     }
 
     function handleRemoveGrade(index) {
+      const refEl = this.$refs[`grade_${index}`][0].$el;
+      refEl.parentNode.removeChild(refEl);
       root.$accessor.removeGrade(index);
     }
     return {
