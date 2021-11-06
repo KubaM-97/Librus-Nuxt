@@ -63,12 +63,18 @@ export default {
       },
     strategies: {
       local: {
+          token: {
+            property: 'token',
+            global: true,
+            // required: true,
+            // type: 'Bearer'
+          },
         user: {
-          property: 'user',
+          property: false, // here should be `false`, as you defined in user endpoint `propertyName`
           autoFetch: true
         },
         endpoints: {
-          login: { url: '/api/users/', method: 'post', propertyName: 'data.token' },
+          login: { url: '/api/users/', method: 'post', propertyName: 'user' },
           user: { url: 'me', method: 'get', propertyName: 'data' },
           logout: false
         }

@@ -63,22 +63,22 @@ export default defineComponent({
       try {
 
         this.$toast.show(this.$t("logging_in_progress"));
-        await root.$accessor.checkLogData({
-          login: login.value,
-          password: password.value,
-        })
+        // await root.$accessor.checkLogData({
+        //   login: login.value,
+        //   password: password.value,
+        // })
         const response =  await this.$auth.loginWith('local', {
           data: {
             login: login.value,
             password: password.value,
           },
         })
-        console.log(response.data);
+        // console.log(response.data);
         this.$auth.setUser(response.data)
-        // this.$auth.setUserToken(response.data.user)
-        console.log(response);
-        console.log(this.$auth);
-        console.log(store.state);
+        this.$auth.setUserToken(response.data.user)
+        console.log(this.$auth.loggedIn);
+        // console.log(this.$auth);
+        // console.log(store.state);
 
           this.$toast.clear();
           this.$toast.success(this.$t("successed_logged"));

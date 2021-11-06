@@ -10,6 +10,6 @@ export default defineComponent({
   components: {
     LoggedOutView,
   },
-  layout: 'loggedOut',
+  // layout: 'loggedOut',
 });
 </script>
