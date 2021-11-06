@@ -1,4 +1,4 @@
-import { getAccessorType, mutationTree, actionTree } from 'typed-vuex'
+import { getAccessorType, getterTree, mutationTree, actionTree } from 'typed-vuex'
 
 import { SignInData, State, Mutations, Actions, Student } from '@/store/models';
 import axios from 'axios';
@@ -42,12 +42,24 @@ export const state = () => ({
     firstName: '',
     group: ''
   },
-  student: getDefaultStudent
+  student: getDefaultStudent,
+  auth:{
+    loggedIn: false,
+    user: {}
+  }
 })
 
 type RootState = ReturnType<typeof state>
 
-
+export const getters = getterTree(state, {
+    isAuthenticated(state: RootState) {
+      return state.auth.loggedIn
+    },
+  
+    loggedInUser(state: RootState) {
+      return state.auth.user
+    }
+})
 export const mutations = mutationTree(state, {
   updateStudentProperty(state: State, payload: any): void {
     // state.student
@@ -92,6 +104,7 @@ export const actions = actionTree(
 
 export const accessorType = getAccessorType({
   state,
+  getters,
   mutations,
   actions,
 })

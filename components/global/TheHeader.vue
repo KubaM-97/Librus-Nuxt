@@ -43,6 +43,11 @@
         {{ $t('sign_out') }}
       </button>
       </NuxtLink>
+      <button class="btn btn-primary btn-lg with-logout-icon" @click="$auth.logout()">
+
+        <img src="@/assets/images/logout.png" alt="logout icon" height="20" />
+        {{ $t('sign_out') }}
+      </button>
     </nav>
   </header>
 </template>

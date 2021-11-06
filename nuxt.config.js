@@ -19,7 +19,9 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
-  
+  router: {
+    middleware: ['auth']
+  },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/scss/main.scss',
@@ -52,6 +54,27 @@ export default {
     name: 'layout',
     mode: 'out-in'
   },
+  auth: {
+    redirect: {
+        login: '/loggedOut',
+        logout: '/loggedOut2',
+        callback: '/a',
+        home: '/b'
+      },
+    strategies: {
+      local: {
+        user: {
+          property: 'user',
+          autoFetch: true
+        },
+        endpoints: {
+          login: { url: '/api/users/', method: 'post', propertyName: 'data.token' },
+          user: { url: 'me', method: 'get', propertyName: 'data' },
+          logout: false
+        }
+      }
+    }
+  },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
@@ -59,6 +82,7 @@ export default {
     'bootstrap-vue/nuxt',
     '@nuxt/typescript-build',
     '@nuxtjs/toast',
+    '@nuxtjs/auth-next',
     ['@nuxtjs/i18n', {
       locales: [
         {

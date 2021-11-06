@@ -2,6 +2,7 @@ import {mongo} from '../mongodb'
 
 class UserController {
   async logIn(req, res) {
+    console.log('Rumcajs:',req.body);
     const signInData = {
       login: req.body.login,
       password: req.body.password,

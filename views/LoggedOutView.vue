@@ -44,28 +44,48 @@
 </template>
 
 <script>
-import { defineComponent, ref, useRouter } from "@nuxtjs/composition-api";
+import { defineComponent, ref, useRouter,useStore } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   name: "LoggedOutView",
+  mounted(){
+
+    console.log(this.$auth);
+        console.log(this.$store.state);
+        // this.$auth.refreshTokens()
+  },
   setup(_props, {root}) {
     const router = useRouter();
+    const store = useStore();
     const login = ref("");
     const password = ref("");
     async function signIn() {
       try {
+
         this.$toast.show(this.$t("logging_in_progress"));
         await root.$accessor.checkLogData({
           login: login.value,
           password: password.value,
-        }).then(response => { 
+        })
+        const response =  await this.$auth.loginWith('local', {
+          data: {
+            login: login.value,
+            password: password.value,
+          },
+        })
+        console.log(response.data);
+        this.$auth.setUser(response.data)
+        // this.$auth.setUserToken(response.data.user)
+        console.log(response);
+        console.log(this.$auth);
+        console.log(store.state);
+
           this.$toast.clear();
           this.$toast.success(this.$t("successed_logged"));
           router.push({
             path: `/group/${response.data.group}`,
             params: { groupId: response.data.group },
           });
-        })
       } catch (error) {
         const statusCode = error.response.status;
         switch (statusCode) {
