@@ -60,48 +60,59 @@ export default defineComponent({
     const login = ref("");
     const password = ref("");
     async function signIn() {
-      try {
-
-        this.$toast.show(this.$t("logging_in_progress"));
-        // await root.$accessor.checkLogData({
-        //   login: login.value,
-        //   password: password.value,
-        // })
-        const response =  await this.$auth.loginWith('local', {
+      await this.$auth
+        .loginWith('local', {
           data: {
-            login: login.value,
-            password: password.value,
-          },
+            username: login.value,
+            password: password.value
+          }
         })
-        // console.log(response.data);
-        this.$auth.setUser(response.data)
-        this.$auth.setUserToken(response.data.user)
-        console.log(this.$auth.loggedIn);
-        // console.log(this.$auth);
-        // console.log(store.state);
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error(err)
+          this.error = err.response?.data
+        })
+      // try {
 
-          this.$toast.clear();
-          this.$toast.success(this.$t("successed_logged"));
-          router.push({
-            path: `/group/${response.data.group}`,
-            params: { groupId: response.data.group },
-          });
-      } catch (error) {
-        const statusCode = error.response.status;
-        switch (statusCode) {
-          case 401: {
-            this.$toast.error(this.$t("login_and_password_must_match"));
-            break;
-          }
-          case 500: {
-            this.$toast.error(this.$t("server_error"));
-            break;
-          }
-          default: {
-            this.$toast.error(this.$t("alternative_log_error"));
-          }
-        }
-      }
+      //   this.$toast.show(this.$t("logging_in_progress"));
+      //   await root.$accessor.checkLogData({
+      //     login: login.value,
+      //     password: password.value,
+      //   })
+      //   const response =  await this.$auth.loginWith('local', {
+      //     data: {
+      //       login: login.value,
+      //       password: password.value,
+      //     },
+      //   })
+      //   this.$auth.setUser({firstName: response.data.firstName, lastName: response.data.lastName,})
+      //   // this.$auth.setUserToken(response.data.user)
+      //   console.log(response);
+      //   console.log(this.$auth);
+      //   console.log(store.state);
+
+      //     this.$toast.clear();
+      //     this.$toast.success(this.$t("successed_logged"));
+      //     router.push({
+      //       path: `/group/${response.data.group}`,
+      //       params: { groupId: response.data.group },
+      //     });
+      // } catch (error) {
+      //   const statusCode = error.response.status;
+      //   switch (statusCode) {
+      //     case 401: {
+      //       this.$toast.error(this.$t("login_and_password_must_match"));
+      //       break;
+      //     }
+      //     case 500: {
+      //       this.$toast.error(this.$t("server_error"));
+      //       break;
+      //     }
+      //     default: {
+      //       this.$toast.error(this.$t("alternative_log_error"));
+      //     }
+      //   }
+      // }
     }
     return {
       login,

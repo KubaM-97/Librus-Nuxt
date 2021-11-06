@@ -1,4 +1,5 @@
 import { resolve } from 'path'
+console.log('nuxt config', this);
 export default {
   alias: {
     'images': resolve(__dirname, './assets/images'),
@@ -56,29 +57,30 @@ export default {
   },
   auth: {
     redirect: {
-        login: '/loggedOut',
-        logout: '/loggedOut2',
-        callback: '/a',
-        home: '/b'
-      },
+      login: '/loggedOut',
+      logout: '/loggedOut2',
+      callback: '/a',
+      home: '/b'
+    },
     strategies: {
       local: {
-          token: {
-            property: 'token',
-            global: true,
-            // required: true,
-            // type: 'Bearer'
-          },
-        user: {
-          property: false, // here should be `false`, as you defined in user endpoint `propertyName`
-          autoFetch: true
-        },
-        endpoints: {
-          login: { url: '/api/users/', method: 'post', propertyName: 'user' },
-          user: { url: 'me', method: 'get', propertyName: 'data' },
-          logout: false
+        token: {
+          property: 'token.accessToken'
         }
-      }
+      },
+      // localRefresh: {
+      //   scheme: 'refresh',
+      //   token: {
+      //     property: 'token.accessToken',
+      //     maxAge: 15
+      //   },
+      //   refreshToken: {
+      //     property: 'token.refreshToken',
+      //     data: 'refreshToken',
+      //     maxAge: false
+      //   }
+      // },
+    
     }
   },
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -131,9 +133,13 @@ export default {
   /*
   ** Server Middleware
   */
-  serverMiddleware: {
-    '/api': '~/api'
-  },
+  serverMiddleware: [
+    
+    '~/api/auth',
+  ],
+  // {
+    // '/api': '~/api',
+  // },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 

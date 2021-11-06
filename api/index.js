@@ -1,6 +1,19 @@
   
 const express = require('express')
+const cookieParser = require('cookie-parser')
+const jwt = require('express-jwt')
 const app = express()
+
+// JWT middleware
+app.use(
+  jwt({
+    secret: 'dummy',
+    algorithms: ['sha1', 'RS256', 'HS256']
+  }).unless({
+    path: ['/api/users']
+  })
+)
+app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true

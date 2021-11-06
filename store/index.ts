@@ -50,7 +50,9 @@ export const state = () => ({
 })
 
 type RootState = ReturnType<typeof state>
-
+type ExactlyOne<T, TKey = keyof T> = TKey extends keyof T
+  ? { [key in Exclude<keyof T, TKey>]?: never } & { [key in TKey]: T[key] }
+  : never;
 export const getters = getterTree(state, {
     isAuthenticated(state: RootState) {
       return state.auth.loggedIn
@@ -61,10 +63,10 @@ export const getters = getterTree(state, {
     }
 })
 export const mutations = mutationTree(state, {
-  updateStudentProperty(state: State, payload: any): void {
-    // state.student
-    if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
-    else state.student[payload.property] = payload.value;
+  updateStudentProperty(state: State, payload: keyof Student): void {
+    state.student[payload]
+    // if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
+    // // else state.student[payload.property] = payload.value;
   },
   resetStudent(state: State): void {
     state.student = getDefaultStudent
