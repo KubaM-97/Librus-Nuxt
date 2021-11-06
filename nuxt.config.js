@@ -1,5 +1,4 @@
 import { resolve } from 'path'
-console.log('nuxt config', this);
 export default {
   alias: {
     'images': resolve(__dirname, './assets/images'),
@@ -68,19 +67,6 @@ export default {
           property: 'token.accessToken'
         }
       },
-      // localRefresh: {
-      //   scheme: 'refresh',
-      //   token: {
-      //     property: 'token.accessToken',
-      //     maxAge: 15
-      //   },
-      //   refreshToken: {
-      //     property: 'token.refreshToken',
-      //     data: 'refreshToken',
-      //     maxAge: false
-      //   }
-      // },
-    
     }
   },
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -133,13 +119,16 @@ export default {
   /*
   ** Server Middleware
   */
+ 
+  // serverMiddleware: [
+  //   '~/api/auth',
+  // ],
   serverMiddleware: [
-    
-    '~/api/auth',
+    {
+      '/api': '~/api',
+    }
   ],
-  // {
-    // '/api': '~/api',
-  // },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 
