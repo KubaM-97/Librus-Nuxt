@@ -17,7 +17,7 @@
         <input
           name="#"
           type="text"
-          v-model.trim="login"
+          v-model.trim="username"
           autocomplete="off"
           id="login" class="text-left pl-2"
         />
@@ -57,65 +57,51 @@ export default defineComponent({
   setup(_props, {root}) {
     const router = useRouter();
     const store = useStore();
-    const login = ref("");
+    const username = ref("");
     const password = ref("");
     async function signIn() {
-      await this.$auth
-        .loginWith('local', {
+      try{
+        this.$toast.show(this.$t("logging_in_progress"));
+        await this.$auth.loginWith('local', {
           data: {
-            username: login.value,
+            username: username.value,
             password: password.value
           }
         })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.error(err)
-          this.error = err.response?.data
-        })
-      // try {
+        
+        this.$toast.clear();
+        this.$toast.success(this.$t("successed_logged"));
+      } catch (error) {
+          const statusCode = error.response.status;
+          switch (statusCode) {
+            case 401: {
+              this.$toast.error(this.$t("login_and_password_must_match"));
+              break;
+            }
+            case 500: {
+              this.$toast.error(this.$t("server_error"));
+              break;
+            }
+            default: {
+              this.$toast.error(this.$t("alternative_log_error"));
+            }
+          }
+        }
 
-      //   this.$toast.show(this.$t("logging_in_progress"));
       //   await root.$accessor.checkLogData({
       //     login: login.value,
       //     password: password.value,
       //   })
-      //   const response =  await this.$auth.loginWith('local', {
-      //     data: {
-      //       login: login.value,
-      //       password: password.value,
-      //     },
-      //   })
       //   this.$auth.setUser({firstName: response.data.firstName, lastName: response.data.lastName,})
       //   // this.$auth.setUserToken(response.data.user)
-      //   console.log(response);
-      //   console.log(this.$auth);
-      //   console.log(store.state);
 
-      //     this.$toast.clear();
-      //     this.$toast.success(this.$t("successed_logged"));
       //     router.push({
       //       path: `/group/${response.data.group}`,
       //       params: { groupId: response.data.group },
       //     });
-      // } catch (error) {
-      //   const statusCode = error.response.status;
-      //   switch (statusCode) {
-      //     case 401: {
-      //       this.$toast.error(this.$t("login_and_password_must_match"));
-      //       break;
-      //     }
-      //     case 500: {
-      //       this.$toast.error(this.$t("server_error"));
-      //       break;
-      //     }
-      //     default: {
-      //       this.$toast.error(this.$t("alternative_log_error"));
-      //     }
-      //   }
-      // }
     }
     return {
-      login,
+      username,
       password,
       signIn,
     };

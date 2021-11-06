@@ -1,8 +1,14 @@
-  
-const express = require('express')
-const cookieParser = require('cookie-parser')
-const jwt = require('express-jwt')
+
+import express from 'express'
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import jwt from 'express-jwt'
+const login = require('./routes/login')
+// const students = require('./routes/students')
 const app = express()
+ 
+app.use(cookieParser())
+app.use(bodyParser.json())
 
 // JWT middleware
 app.use(
@@ -10,25 +16,23 @@ app.use(
     secret: 'dummy',
     algorithms: ['sha1', 'RS256', 'HS256']
   }).unless({
-    path: ['/api/users']
+    path: ['/api/auth/login', '/api/auth/refresh']
   })
 )
-app.use(cookieParser())
-app.use(express.json());
-app.use(express.urlencoded({
-  extended: true
-}));
-const users = require('./routes/users')
-const students = require('./routes/students')
-app.use(users);
-app.use(students);
-module.exports = app
+app.use(login)
+// app.use(students);
+  
 
-// Start standalone server if directly running
-if (require.main === module) {
-  const port = process.env.PORT || 3001
-  app.listen(port, () => {
-    // eslint-disable-next-line no-console
-    console.log(`API server listening on port: ${port}`)
-  })
+// Error handler
+app.use((err, _req, res) => {
+  console.error(err) // eslint-disable-line no-console
+  res.status(401).send(err + '')
+})
+
+// -- export app --
+export default {
+  path: '/api/auth',
+  handler: app
 }
+
+// module.exports = app

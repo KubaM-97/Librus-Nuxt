@@ -59,7 +59,7 @@ export default {
       login: '/loggedOut',
       logout: '/loggedOut2',
       callback: '/a',
-      home: '/b'
+      home: '/group/3B'
     },
     strategies: {
       local: {
@@ -120,13 +120,8 @@ export default {
   ** Server Middleware
   */
  
-  // serverMiddleware: [
-  //   '~/api/auth',
-  // ],
   serverMiddleware: [
-    {
-      '/api': '~/api',
-    }
+    '~/api',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
