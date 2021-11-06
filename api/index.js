@@ -25,8 +25,10 @@ app.use(login)
 
 // Error handler
 app.use((err, _req, res) => {
-  console.error(err) // eslint-disable-line no-console
-  res.status(401).send(err + '')
+  console.log('error główny');
+  // console.error(err) // eslint-disable-line no-console
+  // console.log(err) // eslint-disable-line no-console
+  // res.status(401).send(err + '')
 })
 
 // -- export app --
