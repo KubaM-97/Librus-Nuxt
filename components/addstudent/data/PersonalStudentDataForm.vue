@@ -1,5 +1,6 @@
 <template>
   <form action="#" enctype="application/x-www-form-urlencoded" method="post">
+     {{fullName}}{{student}}
     <div class="form-group mb-4">
       <label for="name" class="mb-2">
         *{{ $t("firstName_and_lastName") }}:
@@ -74,6 +75,7 @@ export default defineComponent({
       // () => fullName.value,
       () => props.v.fullName.$model,
       (val) => {
+        console.log('podmineniono');
         getFirstAndLastName(val);
         root.$accessor.updateStudentProperty({
           property: "firstName",

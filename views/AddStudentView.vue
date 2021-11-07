@@ -15,8 +15,10 @@ import {
   defineComponent,
   ref,
   useRouter,
+  useContext,
   computed,
 } from "@nuxtjs/composition-api";
+import axios from 'axios'
 export default defineComponent({
   components: {
     FormActions,
@@ -35,8 +37,11 @@ export default defineComponent({
       root.$accessor.resetStudent()
       this.$refs.PersonalStudentData.$refs.PersonalStudentDataForm.showAdditionalDataForm = false 
     }
+    const { $http } = useContext();
     async function handleSubmit(v) {
       if(v.$invalid) {
+        console.log(v);
+        v.$touch()
         this.$toast.error(root.$t('failed_form_message'));
         return
       }
@@ -44,9 +49,16 @@ export default defineComponent({
       clonedStudent.grades = clonedStudent.grades.filter((grade) => grade.score && grade.weight)
       this.$toast.show(root.$t('adding_student_in_progress'));
       try {
-        await root.$accessor.addStudent(clonedStudent)
+        await $http.$post("/api/auth/students/new", {
+            student: clonedStudent,
+            group: root.$auth.user.group },{
+          headers:{
+            Authorization: root.$auth.strategy.token.get()
+
+          }})
+        // await root.$accessor.addStudent({student: clonedStudent, token: root.$auth.strategy.token.get()})
         this.$toast.success(root.$t('successfully_added_new_student'));
-        router.push({ path: "/group/3B" });
+        // router.push({ path: "/group/3B" });
       } catch (err) {
         console.error(err);
         this.$toast.error(root.$t('failed_to_add_new_student'));

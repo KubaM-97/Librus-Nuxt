@@ -19,7 +19,7 @@ app.use(
     secret: 'dummy',
     algorithms: ['sha1', 'RS256', 'HS256']
   }).unless({
-    path: ['/api/auth/login', '/api/auth/refresh', '/api/auth/students']
+    path: ['/api/auth/login', '/api/auth/refresh', '/api/auth/students', '/api/auth/students/new']
   })
 )
 // Refresh tokens

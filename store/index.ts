@@ -63,8 +63,9 @@ export const getters = getterTree(state, {
     }
 })
 export const mutations = mutationTree(state, {
-  updateStudentProperty(state: State, payload: keyof Student): void {
-    state.student[payload]
+  // updateStudentProperty(state: State, payload: keyof Student): void {
+  updateStudentProperty(state: State, payload: any): void {
+    // state.student[payload.property = payload.value
     // if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
     // // else state.student[payload.property] = payload.value;
   },
@@ -90,13 +91,15 @@ export const actions = actionTree(
         password: payload.password
       })
     },
-    async addStudent({ }, payload: Student): Promise<void> {
-      await axios.post("/api/students/new", {
-        student: payload
-      })
+    async addStudent({ }, payload: any): Promise<void> {
+      console.log("store", payload.student, payload.token);
+
+      await axios.post("/api/auth/students/new", {
+        student: payload.student
+      },{headers: payload.token})
     },
     async updateStudent({ }, payload: any): Promise<any> {
-      await axios.put(`/api/students/${payload._id}`, {
+      await axios.put(`/api/auth/students/${payload._id}`, {
         student: payload.student,
         group: payload.group
       })

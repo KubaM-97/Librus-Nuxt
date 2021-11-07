@@ -35,16 +35,18 @@ export default defineComponent({
 
     useFetch(async () => {
       try{
+        console.log('WYŚLIJ KURWA');
         students.value = await $http.$post(`/api/auth/students/`, 
         { group: root.$auth.user.group },{
         headers:{
-          // --header 'Accept: application/json' \
+          // Accept: application/json,
           Authorization: root.$auth.strategy.token.get()
 
         }}
       )
       } catch (error) {
-        const status = error.response.status;
+        console.log(error);
+        const status = error.response;
         switch (status) {
           case 404: {
             this.$toast.error(this.$t("failed_to_fetch_students_list"));
@@ -55,7 +57,7 @@ export default defineComponent({
             break;
           }
           default: {
-            this.$toast.error(this.$t("alternative_log_error"));
+            // this.$toast.error(this.$t("alternative_log_error"));
           }
         }
       }

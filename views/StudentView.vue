@@ -30,13 +30,19 @@ export default defineComponent({
   setup(_p, {root}) {
     const route = useRoute();
     const studentId = route.value.params.id;
+    console.log(root.$auth.user.group, root.$auth.strategy.token.get());
     const student = ref({});
     const { $http } = useContext();
     const { fetch } = useFetch(async () => {
       try{
 
-        //$post zamiast $get przy parametrach
-        student.value = await $http.$get(`/api/students/${studentId}`
+        student.value = await $http.$post(`/api/auth/students/${studentId}`, {
+          group: root.$auth.user.group },{
+        headers:{
+          // Accept: application/json,
+          Authorization: root.$auth.strategy.token.get()
+
+        }}
         // ,{ group: '3B' }
       )
       } catch (error) {

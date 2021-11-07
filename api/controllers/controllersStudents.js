@@ -2,7 +2,7 @@ import { mongo } from '../mongodb'
 const mongodb = require('mongodb')
 class StudentController {
   async getAllStudents(req, res) {
-    console.log('przesłąne:', req.body);
+    console.log('getallstudentes');
     const group = req.body.group;
     try {
 
@@ -23,13 +23,13 @@ class StudentController {
 
   }
   async getStudent(req, res) {
+    console.log('jakim prawem?');
     const id = req.params.id;
-    console.log(req.body);
     const group = req.body.group;
     
     try {
       const db = await mongo.connect('students');
-      const collection = db.collection(`group_${group||'3B'}`);
+      const collection = db.collection(`group_${group}`);
 
       await collection.findOne({
         _id: mongodb.ObjectId(id)
@@ -43,13 +43,18 @@ class StudentController {
     }
   }
   async createStudent(req, res) {
+    console.log('create2');
     const student = req.body.student;
     const group = req.body.group;
 
     try {
-      const db = await mongo.connect('students');
-      const collection = db.collection(`group_${group}`);
-      await collection.insertOne(student)
+    console.log('1111111111111111111111');
+    const db = await mongo.connect('students');
+    console.log('2222222222222222222222222');
+    const collection = db.collection(`group_${group}`);
+    console.log('333333333333333333333333333');
+    await collection.insertOne(student)
+    console.log('44444444444444444444444');
 
       res.sendStatus(201)
 
