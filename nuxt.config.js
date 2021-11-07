@@ -57,8 +57,8 @@ export default {
   auth: {
     redirect: {
       login: '/loggedOut',
-      logout: '/loggedOut2',
-      callback: '/a',
+      logout: '/loggedOut',
+      // callback: '/a',
       home: '/group/3B'
     },
     strategies: {
@@ -67,6 +67,12 @@ export default {
           property: 'token.accessToken'
         }
       },
+    }
+  },
+  vue: {
+    config: {
+      productionTip: false,
+      devtools: true
     }
   },
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -123,6 +129,11 @@ export default {
   serverMiddleware: [
     '~/api',
   ],
+  // serverMiddleware: [
+  //   {
+  //     '/api': '~/api',
+  //   }
+  // ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},

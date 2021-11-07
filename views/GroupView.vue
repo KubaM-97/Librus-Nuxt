@@ -23,8 +23,11 @@ export default defineComponent({
     TableHeader,
     Students,
   },
-  setup() {
+  setup(_p, {root}) {
     const route = useRoute()
+    // console.log('2222');
+    console.log(root.$auth);
+    // console.log('3333333');
     const groupId = route.value.params.groupId;
     const students = ref([]);
 
@@ -32,8 +35,13 @@ export default defineComponent({
 
     useFetch(async () => {
       try{
-        students.value = await $http.$post(`api/students/`, 
-        { group: groupId }
+        students.value = await $http.$post(`/api/auth/students/`, 
+        { group: root.$auth.user.group },{
+        headers:{
+          // --header 'Accept: application/json' \
+          Authorization: root.$auth.strategy.token.get()
+
+        }}
       )
       } catch (error) {
         const status = error.response.status;

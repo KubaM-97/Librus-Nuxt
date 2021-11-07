@@ -2,6 +2,7 @@ import { mongo } from '../mongodb'
 const mongodb = require('mongodb')
 class StudentController {
   async getAllStudents(req, res) {
+    console.log('przesłąne:', req.body);
     const group = req.body.group;
     try {
 
@@ -15,7 +16,7 @@ class StudentController {
       mongo.close();
 
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       res.sendStatus(500)
     }
 

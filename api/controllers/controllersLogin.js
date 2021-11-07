@@ -13,11 +13,9 @@ class LoginController {
         username,
         password
       } = req.body
-      console.log('5555555');
 
     const db = await mongo.connect('users');
-console.log('777777777777777777');
-const collection = await db.collection('registeredUsers')
+    const collection = await db.collection('registeredUsers')
     const results = await collection.findOne({
         login: username,
         password
@@ -37,7 +35,6 @@ const collection = await db.collection('registeredUsers')
             expiresIn
           }
         )
-console.log(accessToken);
         refreshTokens[refreshToken] = {
           accessToken,
           user: {
@@ -101,12 +98,10 @@ console.log(accessToken);
       res.sendStatus(401)
     }
   }
-  getUser(_req, res) {
-    console.log('zaczyna się user', req.user);
+  getUser(req, res) {
     res.json({ user: req.user })
   }
   logout(_req, res) {
-    console.log('logout');
     res.json({ status: 'OK' })
   }
 }

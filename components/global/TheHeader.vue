@@ -60,6 +60,10 @@ export default {
       return this.$store.state.user;
     }
   },
+  mounted(){
+    // console.log('Po:',this.$auth);
+    
+  },
   directives: {
     headerDirective(el, binding) {
         if((binding.value == 'italic')&&(binding.arg == 'class')){
