@@ -25,7 +25,7 @@
 
     <button
       class="btn btn-success btn-lg save mr-3 px-2 py-2"
-      @click="$emit('submit')"
+      @click="$emit('submit', clonedStudent)"
     >
       {{ $t("save_changes") }}
     </button>
@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import gradesService from "@/assets/mixins/gradesMixins.ts";
 import Grade from "@/components/global/Grade.vue";
 import StudentTable from "~/components/global/StudentTable";
 import { defineComponent, ref } from "@nuxtjs/composition-api";
@@ -54,7 +53,6 @@ export default defineComponent({
       required: true,
     }
   },
-  mixins: [gradesService],
   head() {
     return {
       title: this.$t("student_edit_page_title", {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="$fetchState.pending">Cierpliwości</div>
-    <StudentPanel :student="student" :fetch="fetch" v-else/>
+    <StudentPanel :student="student" @fetch="fetch" v-else/>
   </div>
 </template>
 
@@ -10,6 +10,7 @@ import StudentPanel from "@/components/student/StudentPanel";
 import {
   defineComponent,
   useRoute,
+  useRouter,
   ref,
   useFetch,
   useContext,
@@ -29,6 +30,7 @@ export default defineComponent({
   },
   setup(_p, {root}) {
     const route = useRoute();
+    const router = useRouter();
     const studentId = route.value.params.id;
     const student = ref({});
     const { $http } = useContext();
@@ -42,6 +44,9 @@ export default defineComponent({
       } catch (error) {
         console.log(error, this, root.$toast);
         this.$toast.error(this.$t('failed_to_fetch_student_data'));
+      }
+      finally{
+        if(route.value.query.edit) router.replace({ query: null });
       }
     })
     return {
