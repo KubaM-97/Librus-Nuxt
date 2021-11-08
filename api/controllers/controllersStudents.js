@@ -2,6 +2,8 @@ import { mongo } from '../mongodb'
 const mongodb = require('mongodb')
 class StudentController {
   async getAllStudents(req, res) {
+    console.log('getAllStudents');
+
     const group = req.body.group;
     try {
 
@@ -23,11 +25,12 @@ class StudentController {
 
   }
   async getStudent(req, res) {
+    console.log('getStudent');
     const name = decodeURIComponent(req.params.name)
     const lastName = name.split(' ')[0]
     const firstName = name.split(' ')[1]
     const group = req.body.group;
-    
+    console.log(lastName, firstName, group);
     try {
       const db = await mongo.connect('students');
       const collection = db.collection(`group_${group}`);
@@ -44,7 +47,7 @@ class StudentController {
     }
   }
   async createStudent(req, res) {
-    console.log('create2');
+    console.log('createStudent');
     const student = req.body.student;
     const group = req.body.group;
 
@@ -68,6 +71,8 @@ class StudentController {
 
   }
   async updateStudent(req, res) {
+    console.log('updateStudent');
+
     const student = req.body.student;
     console.log('oceny:', student.grades);
     const group = req.body.group;

@@ -32,7 +32,6 @@ export default defineComponent({
 
     const { fetch } = useFetch(async () => {
       try{
-        console.log('WYŚLIJ KURWA');
         students.value = await $http.$post(`/api/auth/students/`, 
         { group: root.$auth.user.group },{
         headers:{
