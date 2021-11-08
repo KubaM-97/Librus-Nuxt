@@ -57,7 +57,8 @@ export default defineComponent({
           }})
         // await root.$accessor.addStudent({student: clonedStudent, token: root.$auth.strategy.token.get()})
         this.$toast.success(root.$t('successfully_added_new_student'));
-        // router.push({ path: "/group/3B" });
+        router.push({ path: "/group/3B" });
+        root.$accessor.resetStudent()
       } catch (err) {
         console.error(err);
         this.$toast.error(root.$t('failed_to_add_new_student'));

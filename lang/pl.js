@@ -76,6 +76,7 @@ export default {
   fillname:'Uzupełnij imię i nazwisko',
   no_characters:'Bez cyfr i znaków specjalnych',
 
+  try_again:'spróbuj ponownie',
 
   // Close prompt
   close_warning: 'Na pewno? Dane zostaną utracone...',

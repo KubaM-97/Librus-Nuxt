@@ -1,9 +1,9 @@
 <template>
-  <div class="wrapper text-left pl-2">
+  <div class="text-left pl-2">
     <StudentTable :student="student" />
-    <div class="p-4 w-75">
+    <div class="px-5 py-3 w-100">
       <div
-        class="form-group w-100 d-flex justify-content-between"
+        class="form-group d-flex justify-content-between"
         v-for="property in orderedStudentProperties"
         :key="property"
       >

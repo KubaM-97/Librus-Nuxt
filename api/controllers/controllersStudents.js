@@ -2,7 +2,6 @@ import { mongo } from '../mongodb'
 const mongodb = require('mongodb')
 class StudentController {
   async getAllStudents(req, res) {
-    console.log('getallstudentes');
     const group = req.body.group;
     try {
 
@@ -17,14 +16,16 @@ class StudentController {
 
     } catch (err) {
       // console.error(err);
+      console.error(err);
       res.sendStatus(500)
     }
 
 
   }
   async getStudent(req, res) {
-    console.log('jakim prawem?');
-    const id = req.params.id;
+    const name = decodeURIComponent(req.params.name)
+    const lastName = name.split(' ')[0]
+    const firstName = name.split(' ')[1]
     const group = req.body.group;
     
     try {
@@ -32,7 +33,7 @@ class StudentController {
       const collection = db.collection(`group_${group}`);
 
       await collection.findOne({
-        _id: mongodb.ObjectId(id)
+        lastName, firstName  
       }).then(data => {
         data ? res.json(data) : res.sendStatus(404)
       });
@@ -48,13 +49,13 @@ class StudentController {
     const group = req.body.group;
 
     try {
-    console.log('1111111111111111111111');
-    const db = await mongo.connect('students');
-    console.log('2222222222222222222222222');
-    const collection = db.collection(`group_${group}`);
-    console.log('333333333333333333333333333');
-    await collection.insertOne(student)
-    console.log('44444444444444444444444');
+      const db = await mongo.connect('students');
+      const collection = db.collection(`group_${group}`);
+      const isStudentExists = await collection.findOne({
+        lastName: student.lastName, firstName: student.firstName 
+      })
+      
+      !isStudentExists ? await collection.insertOne(student) : res.sendStatus(422)
 
       res.sendStatus(201)
 

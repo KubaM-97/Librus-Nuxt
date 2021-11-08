@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div v-if="$fetchState.pending">Cierpliwości</div>
-    <StudentPanel :student="student" @fetch="fetch" v-else/>
+  <div class="wrapper">
+    <FetchingLoader :fetchState="$fetchState" @fetch="fetch"/>
+    <StudentPanel v-if="!$fetchState.pending && !$fetchState.error" :student="student" @fetch="fetch" />
   </div>
 </template>
 
@@ -31,14 +31,13 @@ export default defineComponent({
   setup(_p, {root}) {
     const route = useRoute();
     const router = useRouter();
-    const studentId = route.value.params.id;
-    console.log(root.$auth.user.group, root.$auth.strategy.token.get());
+    const studentName = route.value.params.name;
     const student = ref({});
     const { $http } = useContext();
     const { fetch } = useFetch(async () => {
       try{
 
-        student.value = await $http.$post(`/api/auth/students/${studentId}`, {
+        student.value = await $http.$post(`/api/auth/students/${studentName}`, {
           group: root.$auth.user.group },{
         headers:{
           // Accept: application/json,
@@ -48,8 +47,7 @@ export default defineComponent({
         // ,{ group: '3B' }
       )
       } catch (error) {
-        console.log(error, this, root.$toast);
-        this.$toast.error(this.$t('failed_to_fetch_student_data'));
+        root.$toast.error(root.$t('failed_to_fetch_student_data'));
       }
       finally{
         if(route.value.query.edit) router.replace({ query: null });
