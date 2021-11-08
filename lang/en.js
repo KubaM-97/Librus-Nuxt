@@ -39,6 +39,12 @@ export default {
   description: 'Description',
   date: 'Date',
   address: 'Address',
+  streetName: 'street',
+  streetNr: 'no.',
+  flatNr: 'f',
+  postCode: 'post code',
+  city: 'city',
+  full_address: 'St.{streetName} {streetNr} f.{flatNr} <br /> {postCode} {city}',
   pesel: 'Pesel',
   phone: 'Phone',
   email: 'Email',
@@ -48,13 +54,6 @@ export default {
   edit_grades: 'Edit grades',
   save_changes: 'Save changes',
   cancel: 'Cancel',
-
-  streetName: 'street',
-  streetNr: 'no',
-  flatNr: 'flat',
-  postCode: 'ZIP code',
-  city: 'city',
-  full_address: 'St.{streetName} {streetNr} m.{flatNr} <br /> {postCode} {city}',
 
   //Errors
   pesel_error: 'Excatly 11 numbers',
@@ -76,6 +75,8 @@ export default {
 
   fillname: 'Fill first and last name',
   no_characters: 'No numbers or special characters',
+
+  try_again:'try again',
 
   // Close prompt
   close_warning: 'Are you sure? Your data will be lost...',

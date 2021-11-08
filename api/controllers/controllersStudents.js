@@ -22,8 +22,9 @@ class StudentController {
 
   }
   async getStudent(req, res) {
-    const id = req.params.id;
-    console.log(req.body);
+    const name = decodeURIComponent(req.params.name)
+    const lastName = name.split(' ')[0]
+    const firstName = name.split(' ')[1]
     const group = req.body.group;
     
     try {
@@ -31,7 +32,7 @@ class StudentController {
       const collection = db.collection(`group_${group||'3B'}`);
 
       await collection.findOne({
-        _id: mongodb.ObjectId(id)
+        lastName, firstName  
       }).then(data => {
         data ? res.json(data) : res.sendStatus(404)
       });
@@ -48,7 +49,11 @@ class StudentController {
     try {
       const db = await mongo.connect('students');
       const collection = db.collection(`group_${group}`);
-      await collection.insertOne(student)
+      const isStudentExists = await collection.findOne({
+        lastName: student.lastName, firstName: student.firstName 
+      })
+      
+      !isStudentExists ? await collection.insertOne(student) : res.sendStatus(422)
 
       res.sendStatus(201)
 

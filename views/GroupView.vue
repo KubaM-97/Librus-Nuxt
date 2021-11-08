@@ -1,19 +1,15 @@
 <template>
   <div class="wrapper">
     <TableHeader />
-    <p v-if="$fetchState.error">
-       {{ $t('failed_to_fetch_students_list') }}
-    </p>
-    <div class="image" v-else-if="$fetchState.pending">
-        <img src="~images/loader.gif" alt="loading...">
-    </div>
-    <Students v-else :students="students"/>
+    <FetchingLoader :fetchState="$fetchState" @fetch="fetch"/>
+    <Students v-if="!$fetchState.pending && !$fetchState.error" :students="students"/>
   </div>
 </template>
 
 <script>
 import TableHeader from "@/components/group/TableHeader.vue";
 import Students from "@/components/group/Students.vue";
+import FetchingLoader from "@/components/global/FetchingLoader.vue";
 
 import { defineComponent, useRoute, ref, useContext, useFetch } from "@nuxtjs/composition-api";
 
@@ -22,6 +18,7 @@ export default defineComponent({
   components: {
     TableHeader,
     Students,
+    FetchingLoader,
   },
   setup() {
     const route = useRoute()
@@ -30,10 +27,10 @@ export default defineComponent({
 
     const { $http } = useContext();
 
-    useFetch(async () => {
+    const { fetch } = useFetch(async () => {
       try{
         students.value = await $http.$post(`api/students/`, 
-        { group: groupId }
+        { group: '3B' }
       )
       } catch (error) {
         const status = error.response.status;
@@ -53,7 +50,7 @@ export default defineComponent({
       }
     })
 
-    return { students }
+    return { students, fetch }
   },
 })
 </script>

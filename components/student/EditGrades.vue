@@ -28,10 +28,11 @@
     >
       {{ $t("save_changes") }}
     </button>
+    </div>
+    
     <button class="closeEditPanelBtn position-absolute" @click="$emit('close')">
       <img class="closeEditPanelImg w-100" src="@/assets/images/eXit.png" />
     </button>
-    </div>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div v-if="$fetchState.pending">Cierpliwości</div>
-    <StudentPanel :student="student" @fetch="fetch" v-else/>
+  <div class="wrapper">
+    <FetchingLoader :fetchState="$fetchState" @fetch="fetch"/>
+    <StudentPanel v-if="!$fetchState.pending && !$fetchState.error" :student="student" @fetch="fetch" />
   </div>
 </template>
 
@@ -31,19 +31,18 @@ export default defineComponent({
   setup(_p, {root}) {
     const route = useRoute();
     const router = useRouter();
-    const studentId = route.value.params.id;
+    const studentName = route.value.params.name;
     const student = ref({});
     const { $http } = useContext();
     const { fetch } = useFetch(async () => {
       try{
 
         //$post zamiast $get przy parametrach
-        student.value = await $http.$get(`/api/students/${studentId}`
+        student.value = await $http.$get(`/api/students/${studentName}`
         // ,{ group: '3B' }
       )
       } catch (error) {
-        console.log(error, this, root.$toast);
-        this.$toast.error(this.$t('failed_to_fetch_student_data'));
+        root.$toast.error(root.$t('failed_to_fetch_student_data'));
       }
       finally{
         if(route.value.query.edit) router.replace({ query: null });

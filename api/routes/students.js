@@ -5,8 +5,8 @@ const router = Router()
 import { StudentActions } from '../controllers/controllersStudents'
 
 router.post('/students', StudentActions.getAllStudents)
-router.get('/students/:id', StudentActions.getStudent)
+router.get('/students/:name', StudentActions.getStudent)
 router.post('/students/new', StudentActions.createStudent)
-router.put('/students/:id', StudentActions.updateStudent)
+router.put('/students/:name', StudentActions.updateStudent)
 
 module.exports = router

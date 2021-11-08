@@ -12,7 +12,7 @@
       <tbody>
         <StudentRow v-for="(student, index) in students" :key="student._id" 
         :student="student" :orderNo="index+1" 
-        @click.native="router.push({ path: `/group/3B/student/${student._id }`,
+        @click.native="router.push({ path: `/group/3B/student/${studentPathRoute(student)}`,
         params: { id: student._id }})"/>
       </tbody>
     </table>
@@ -37,7 +37,10 @@ export default defineComponent({
   mixins: [gradesService],
   setup(){
     const router = useRouter()
-    return {router}
+    function studentPathRoute(student) {
+      return encodeURIComponent(`${student.lastName} ${student.firstName}`)
+    } 
+    return {router, studentPathRoute}
   }
 });
 </script>
