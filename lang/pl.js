@@ -61,7 +61,7 @@ export default {
   email_error,
   address_streetName_error: 'Bez znaków specjalnych',
   address_streetNr_error: 'Nr, Nr/Nr, Nr Litera np. 11 11/13 11A 11A/13B',
-  address_streetFlat_error: 'Liczba + ew.litera np.116F',
+  address_flatNr_error: 'Liczba + ew.litera np.116F',
   address_postCode_error: '_ _ - _ _ _',
   address_city_error: 'Bez i znaków specjalnych',
   mother_firstName_error: 'Możliwe drugie imię np. Anna Maria',

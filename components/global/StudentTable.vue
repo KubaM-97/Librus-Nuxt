@@ -1,5 +1,5 @@
 <template>
-    <table>
+    <table class="mb-3">
         <tbody>
             <StudentRow :student="student"/>
         </tbody>

@@ -103,6 +103,7 @@ export default defineComponent({
       el.querySelector(".overlay").style.animation =
         "showEditStudentPanelOverlay .2s";
       el.querySelector(".overlay").style.animationFillMode = "forwards";
+      el.style.overflow = "scroll";
     }
     function enter(el, done) {
       el.addEventListener("animationend", function () {
@@ -110,6 +111,8 @@ export default defineComponent({
         done();
       });
       el.style.animation = "showEditStudentPanel .2s";
+      el.style.overflow = "hidden";
+
     }
     function beforeLeave(el) {
       el.addEventListener("animationend", function () {
@@ -119,6 +122,7 @@ export default defineComponent({
         "showEditStudentPanelOverlay .2s";
       el.querySelector(".overlay").style.animationDirection = "reverse";
       el.querySelector(".overlay").style.animationFillMode = "forwards";
+      el.style.overflow = "hidden";
     }
     function leave(el, done) {
       el.addEventListener("animationend", function () {
@@ -128,6 +132,8 @@ export default defineComponent({
       el.style.animation = "showEditStudentPanel .2s";
       el.style.animationDirection = "reverse";
       el.style.animationDelay = ".2s";
+      el.style.overflow = "scroll";
+
     }
 
     const orderedStudentProperties = ref([

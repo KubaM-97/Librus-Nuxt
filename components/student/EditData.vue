@@ -85,7 +85,7 @@
       {{ $t("save_changes") }}
     </button>
 
-    <button class="closeEditPanelBtn position-absolute" @click="$emit('close')">
+    <button class="closeEditPanelBtn position-absolute px-2 py-1" @click="$emit('close')">
       <img class="closeEditPanelImg w-100" src="@/assets/images/eXit.png" />
     </button>
   </div>
@@ -181,7 +181,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 div.editStudent {
   background-color: black;
-  overflow: hidden;
+  // overflow: hidden;
   .overlay {
     background-color: black;
     position: absolute;
@@ -192,8 +192,8 @@ div.editStudent {
     // z-index: 10;
   }
   font-size: 13px;
-  // top: 20%;
-  top: 40%;
+  top: 20%;
+  // top: 40%;
   left: 50%;
   transform: translateX(-50%);
   button {

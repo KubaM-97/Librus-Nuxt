@@ -37,6 +37,7 @@ export default defineComponent({
     }
     async function handleSubmit(v) {
       if(v.$invalid) {
+        v.$touch()
         this.$toast.error(root.$t('failed_form_message'));
         return
       }
