@@ -40,7 +40,6 @@ export default defineComponent({
     const { $http } = useContext();
     async function handleSubmit(v) {
       if(v.$invalid) {
-        console.log(v);
         v.$touch()
         this.$toast.error(root.$t('failed_form_message'));
         return

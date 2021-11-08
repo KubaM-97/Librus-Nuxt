@@ -1,8 +1,7 @@
 <template>
   <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute">
     <div class="overlay" />
-    {{student}}
-    {{student2}}
+
     <form
       action="#"
       enctype="application/x-www-form-urlencoded"
@@ -16,8 +15,7 @@
           :key="property"
         >
           <div class="col-6">
-            <!-- <template class="redLabel"> -->
-            <label :for="property">{{ $t(property) }}</label>
+            <label :for="property" :class="{'errorDataLabel': $v.student[property].$invalid}">{{ $t(property) }}</label>
             <input
               v-if="
                 typeof student[property] !== 'object' &&
@@ -28,35 +26,33 @@
               :name="property"
               :id="property"
               autocomplete="off"
-              v-model="student2[property]"
+              v-model="student[property]"
+              :class="{'errorDataInput': $v.student[property].$invalid}"
             />
             <template
               v-else
               v-for="(_subValue, subProperty) in student[property]"
             >
-              <span :key="subProperty" v-if="$v.student[property][subProperty].$invalid && $v.student[property][subProperty].$dirty" class='errorDataLabel'>
-                {{ $t(`${property}_${subProperty}_error`) }}
-              </span>
+              <label :key="`label_${subProperty}`" :class="{'errorDataLabel': $v.student[property][subProperty].$invalid}">
+                {{ $t(property[subProperty]) }}
+              </label>
+              
               <input
-                :key="subProperty"
+                :key="`input_${subProperty}`"
                 type="text"
                 :placeholder="$t(subProperty)"
                 :name="property[subProperty]"
                 :id="property[subProperty]"
                 v-model="student[property][subProperty]"
                 class="col-10"
-                :class="{
-                  errorDataInput:
-                    $v.student[property][subProperty].$invalid &&
-                    $v.student[property][subProperty].$dirty,
-                }"
+                :class="{'errorDataInput': $v.student[property][subProperty].$invalid}"
                 autocomplete="off"
               />
             </template>
           </div>
 
           <div class="col-6">
-            <span
+            <span :class="{'errorDataLabel': $v.student[property].$invalid}"
               v-html="
                 typeof student[property] !== 'object' &&
                 student[property] !== null
@@ -64,41 +60,46 @@
                   : nestedProperty(property)
               "
             ></span>
-            <span v-if="$v.student[property].$invalid">
+            <span v-if="typeof student[property] !== 'object' &&
+                student[property] !== null && $v.student[property].$invalid" :class="['d-block small', {'errorDataLabel': $v.student[property].$invalid}]"
+           >
               {{ $t(`${property}_error`) }}
             </span>
-            <!-- <span>{{ $t(`${property}_${subProperty}_error`) }}</span>
-
-            <div v-if="!Array.isArray(data.value) && $v.$invalid && $v.$dirty">{{data.errorMessage}}</div>
-              <span>{{ $t(`${property}_error`) }}</span>
-            <div v-else-if="Array.isArray(data.value)">{{student[data.property][subData].errorMessage]}}</div> -->
+            <span v-else-if="$v.student[property].$invalid">
+            <span v-for="(_subValue, subProperty) in student[property]" :key="subProperty">
+                <span v-if="$v.student[property][subProperty].$invalid"
+                :class="['d-block small', {'errorDataLabel': $v.student[property][subProperty].$invalid}]">
+                  {{ $t(`${property}_${subProperty}_error`) }}
+                </span>
+              </span>
+            </span>
           </div>
         </div>
       </div>
     </form>
     <button
       class="btn btn-success btn-lg save mr-3"
-      :disabled="$v.student.$invalid && $v.student.$anyDirty"
+      :disabled="$v.student.$invalid"
       @click="$emit('submit')"
     >
       {{ $t("save_changes") }}
     </button>
 
-    <button class="closeEditPanelBtn position-absolute" @click="$emit('close')">
+    <button class="closeEditPanelBtn position-absolute px-2 py-1" @click="$emit('close')">
       <img class="closeEditPanelImg w-100" src="@/assets/images/eXit.png" />
     </button>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from "@nuxtjs/composition-api";
+import { defineComponent, ref, watch,onUpdated,watchEffect } from "@nuxtjs/composition-api";
 import validations from "@/assets/mixins/validations";
 
 export default defineComponent({
   name: "EditData",
   mixins: [validations],
   props: {
-    student: {
+    basedStudent: {
       type: Object,
       required: false,
       default: () => {},
@@ -107,14 +108,25 @@ export default defineComponent({
   head() {
     return {
       title: this.$t("student_edit_page_title", {
-        student: `${this.student.lastName} ${this.student.firstName}`,
+        student: `${this.basedStudent.lastName} ${this.basedStudent.firstName}`,
       }),
     };
   },
   emit: ["close", "refresh"],
   setup(props, { root, emit }) {
-    const student = ref(JSON.parse(JSON.stringify(props.student)));
-    const student2 = ref(JSON.parse(JSON.stringify(props.student2)));
+    console.log(props.basedStudent);
+    const student = ref(JSON.parse(JSON.stringify(props.basedStudent)));
+    // const student = props.student;
+    // const student2 = ref(JSON.parse(JSON.stringify(props.student)));
+    console.log(root.$v);
+    watchEffect(()=>{
+      console.log('pozmieniano');
+    })
+    onUpdated(()=>{
+      // console.log('pozmieniano2');
+      // student.value = student2.value
+      // console.log(root.$v.student.pesel)
+    })
     function nestedProperty(property) {
       switch (property) {
         case "address": {
@@ -159,7 +171,8 @@ export default defineComponent({
       orderedStudentProperties,
       nestedProperty,
       setStudentState,
-      student2,
+      student,
+      // student2,
     };
   },
 });
@@ -168,7 +181,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 div.editStudent {
   background-color: black;
-  overflow: hidden;
+  // overflow: hidden;
   .overlay {
     background-color: black;
     position: absolute;
@@ -179,8 +192,8 @@ div.editStudent {
     // z-index: 10;
   }
   font-size: 13px;
-  // top: 20%;
-  top: 40%;
+  top: 20%;
+  // top: 40%;
   left: 50%;
   transform: translateX(-50%);
   button {

@@ -12,7 +12,7 @@ const lastName = helpers.regex(
   "lastName",
   /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*(-[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*)?$/
 );
-const pesel = helpers.regex("pesel", /^[0-9]{11}$/);
+const pesel = helpers.regex("pesel", /^[0-9]{2}$/);
 const phone = helpers.regex("phone", /^([0-9]{7}|[0-9]{9})$/);
 const email = helpers.regex(
   "email",

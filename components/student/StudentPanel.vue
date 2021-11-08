@@ -54,7 +54,7 @@
           @refresh="handleRefresh"
           @submit="handleSubmit"
           :is="chosenComponent"
-          :student="student"
+          :basedStudent="student"
         /> 
       </transition>
     </div>
@@ -89,13 +89,10 @@ export default defineComponent({
           required: false,
           default: () => {}
       },
-      fetch: {
-          type: Function,
-          required: true
-      }
   },
   mixins: [validations],
-  setup(props, { root }) {
+  emits: ['fetch'],
+  setup(props, { root, emit }) {
     const fetch = props.fetch
     const route = useRoute();
     const router = useRouter();
@@ -106,6 +103,7 @@ export default defineComponent({
       el.querySelector(".overlay").style.animation =
         "showEditStudentPanelOverlay .2s";
       el.querySelector(".overlay").style.animationFillMode = "forwards";
+      el.style.overflow = "scroll";
     }
     function enter(el, done) {
       el.addEventListener("animationend", function () {
@@ -113,6 +111,8 @@ export default defineComponent({
         done();
       });
       el.style.animation = "showEditStudentPanel .2s";
+      el.style.overflow = "hidden";
+
     }
     function beforeLeave(el) {
       el.addEventListener("animationend", function () {
@@ -122,6 +122,7 @@ export default defineComponent({
         "showEditStudentPanelOverlay .2s";
       el.querySelector(".overlay").style.animationDirection = "reverse";
       el.querySelector(".overlay").style.animationFillMode = "forwards";
+      el.style.overflow = "hidden";
     }
     function leave(el, done) {
       el.addEventListener("animationend", function () {
@@ -131,6 +132,8 @@ export default defineComponent({
       el.style.animation = "showEditStudentPanel .2s";
       el.style.animationDirection = "reverse";
       el.style.animationDelay = ".2s";
+      el.style.overflow = "scroll";
+
     }
 
     const orderedStudentProperties = ref([
@@ -168,12 +171,12 @@ export default defineComponent({
         }
       }
     );
- async function handleSubmit() {
+ async function handleSubmit(clonedStudent) {
       try {
         this.$toast.show(this.$t("updating_student_data_in_progress"));
-        await root.$accessor.updateStudent({student: basedGrades.value, group: '3B'})
+        await root.$accessor.updateStudent({student: clonedStudent, group: '3B'})
 
-        await emit('refresh')
+        await emit('fetch')
         this.$toast.success(this.$t("successfully_updated_student_data"));
       } catch (err) {
         console.error(err);
@@ -186,8 +189,6 @@ export default defineComponent({
     }
     async function handleRefresh() {
       fetch()
-      chosenComponent.value = null;
-      router.replace({ query: null });
     }
     return {
       afterEnter,

@@ -2,9 +2,9 @@
   <form action="#" enctype="application/x-www-form-urlencoded" method="post">
      {{fullName}}{{student}}
     <div class="form-group mb-4">
-      <label for="name" class="mb-2">
+      <label for="name" :class="['mb-2', {'errorDataLabel': v.fullName.$invalid && v.fullName.$dirty }]">
         *{{ $t("firstName_and_lastName") }}:
-        <span class="fullNameTooltip d-block">
+        <span :class="['fullNameTooltip d-block', {'errorDataLabel': v.fullName.$invalid && v.fullName.$dirty }]">
           {{ $t("double_lastNames_hint") }}
         </span>
       </label>
@@ -15,14 +15,12 @@
         v-model.trim="v.fullName.$model"
         maxlength="30"
         autocomplete="off"
-        class="text-center"
+        :class="['text-center', {'errorDataInput': v.fullName.$invalid && v.fullName.$dirty }]"
         @change="showError"
       />
-        <!-- @change="v.form.fullName.$touch()" -->
       <transition name="shake">
         <div class="errorFullName d-block text-light" v-if="v.fullName.$invalid && v.fullName.$dirty">
-            <!-- {{ v.form.fullName.fullName ? $t("no_characters") : $t("fillname")}}  -->
-            Błąd
+            {{ !v.fullName.required ? $t("fillname") : $t("no_characters")}} 
         </div>
       </transition>
     </div>

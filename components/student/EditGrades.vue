@@ -1,14 +1,13 @@
 <template>
   <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute"
   >
-  {{clonedStudent.grades}}
     <div class="overlay" />
     <div class="container">
       <span class="d-block mb-3">{{ $t("edit_grade") }}:</span>
       <div class="row">
         <Grade
           class="col-12 col-md-11"
-          v-for="(grade, index) in clonedStudent.grades"
+          v-for="(grade, index) in student.grades"
           :key="index"
           :index="index"
           :grade="grade"
@@ -21,11 +20,11 @@
           <button name="moreGradesEditGrades" @click="handleInitGrade">+</button>
         </div>
       </div>
-    <StudentTable :student="clonedStudent" />
+    <StudentTable :student="student" />
 
     <button
-      class="btn btn-success btn-lg save mr-3 px-2 py-2"
-      @click="$emit('submit')"
+      class="btn btn-success btn-lg save mr-3 px-2 py-1"
+      @click="$emit('submit', student)"
     >
       {{ $t("save_changes") }}
     </button>
@@ -37,7 +36,6 @@
 </template>
 
 <script>
-import gradesService from "@/assets/mixins/gradesMixins.ts";
 import Grade from "@/components/global/Grade.vue";
 import StudentTable from "~/components/global/StudentTable";
 import { defineComponent, ref } from "@nuxtjs/composition-api";
@@ -49,35 +47,34 @@ export default defineComponent({
     StudentTable,
   },
   props: {
-    student: {
+    basedStudent: {
       type: Object,
       required: true,
     }
   },
-  mixins: [gradesService],
   head() {
     return {
       title: this.$t("student_edit_page_title", {
-        student: `${this.student.lastName} ${this.student.firstName}`,
+        student: `${this.student.lastName} ${this.basedStudent.firstName}`,
       }),
     };
   },
   setup(props) {
     const gradesLength = ref(0);
-    const clonedStudent = ref(JSON.parse(JSON.stringify(props.student)));
+    const student = ref(JSON.parse(JSON.stringify(props.basedStudent)));
 
     
     // onActivated(()=>{
-    //   clonedStudent.value = {...student}
+    //   student.value = {...student}
     // })
     function handleInitGrade(){
       gradesLength.value++
-      clonedStudent.value.grades.push({score: null, weigth: null, description: '', date: ''})
+      student.value.grades.push({score: null, weigth: null, description: '', date: ''})
     }
 
     function handleUpdateGrade(grade, index) {
       console.log('update:', grade, index);
-      // clonedStudent.value.grades[index] = grade
+      // student.value.grades[index] = grade
       // clonedGrades = [...grades.value];
       // clonedGrades[index] = { ...grade };
       
@@ -88,16 +85,16 @@ export default defineComponent({
     }
 
     function handleRemoveGrade(index) {
-      const clonedClonedStudent = [...clonedStudent.value.grades]
+      const clonedClonedStudent = [...student.value.grades]
       console.log(clonedClonedStudent)
       clonedClonedStudent.splice(index, 1)
       console.log(clonedClonedStudent)
-      clonedStudent.value.grades = clonedClonedStudent
-      // clonedStudent.value.grades[index] = {score: null, weigth: null, description: '', date: ''}
+      student.value.grades = clonedClonedStudent
+      // student.value.grades[index] = {score: null, weigth: null, description: '', date: ''}
     }
     return {
       gradesLength,
-      clonedStudent,
+      student,
       handleInitGrade,
       handleUpdateGrade,
       handleRemoveGrade,
@@ -108,7 +105,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 div.editStudent {
   background-color: black;
-  overflow: hidden;
+  // overflow: hidden;
   .overlay {
     background-color: black;
     position: absolute;
@@ -119,8 +116,8 @@ div.editStudent {
     // z-index: 10;
   }
   font-size: 13px;
-  // top: 20%;
-  top: 40%;
+  top: 20%;
+  // top: 40%;
   left: 50%;
   transform: translateX(-50%);
   button {
