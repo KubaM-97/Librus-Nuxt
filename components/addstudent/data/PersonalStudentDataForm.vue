@@ -1,6 +1,5 @@
 <template>
   <form action="#" enctype="application/x-www-form-urlencoded" method="post">
-     {{fullName}}{{student}}
     <div class="form-group mb-4">
       <label for="name" :class="['mb-2', {'errorDataLabel': v.fullName.$invalid && v.fullName.$dirty }]">
         *{{ $t("firstName_and_lastName") }}:

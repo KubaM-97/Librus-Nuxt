@@ -70,6 +70,7 @@ import {
   defineComponent,
   useRoute,
   useRouter,
+  useContext,
   ref,
   shallowRef,
   watch,
@@ -171,10 +172,17 @@ export default defineComponent({
         }
       }
     );
+    const {$http} = useContext()
  async function handleSubmit(clonedStudent) {
       try {
         this.$toast.show(this.$t("updating_student_data_in_progress"));
-        await root.$accessor.updateStudent({student: clonedStudent, group: '3B'})
+        await $http.$put("/api/auth/students/id", {
+            student: clonedStudent,
+            group: root.$auth.user.group },{
+          headers:{
+            Authorization: root.$auth.strategy.token.get()
+          }})
+        // await root.$accessor.updateStudent({student: clonedStudent, group: '3B'})
 
         await emit('fetch')
         this.$toast.success(this.$t("successfully_updated_student_data"));
