@@ -1,7 +1,6 @@
-import { getAccessorType, getterTree, mutationTree, actionTree } from 'typed-vuex'
+import { getAccessorType, getterTree, mutationTree } from 'typed-vuex'
 
-import { SignInData, State, Mutations, Actions, Student } from '@/store/models';
-import axios from 'axios';
+import { State, Mutations, Student } from '@/store/models';
 
 const getDefaultGrade = {
   score: null,
@@ -37,11 +36,6 @@ const getDefaultStudent = {
   }
 }
 export const state = () => ({
-  user: {
-    lastName: '',
-    firstName: '',
-    group: ''
-  },
   student: getDefaultStudent,
   auth:{
     loggedIn: false,
@@ -82,34 +76,9 @@ export const mutations = mutationTree(state, {
     state.student.grades[payload] = getDefaultGrade;
   },
 })
-export const actions = actionTree(
-  { state },
-  {
-    async checkLogData({ }, payload: SignInData): Promise<any> {
-      return await axios.post('/api/users/', {
-        login: payload.login,
-        password: payload.password
-      })
-    },
-    async addStudent({ }, payload: any): Promise<void> {
-      console.log("store", payload.student, payload.token);
-
-      await axios.post("/api/auth/students/new", {
-        student: payload.student
-      },{headers: payload.token})
-    },
-    async updateStudent({ }, payload: any): Promise<any> {
-      await axios.put(`/api/auth/students/${payload._id}`, {
-        student: payload.student,
-        group: payload.group
-      })
-    }
-  }
-)
 
 export const accessorType = getAccessorType({
   state,
   getters,
   mutations,
-  actions,
 })

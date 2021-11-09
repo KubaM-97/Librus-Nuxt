@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <StudentRow v-for="(student, index) in students" :key="student._id" 
+        <StudentRow v-for="(student, index) in students" :key="`group_student_${student._id}`" 
         :student="student" :orderNo="index+1" 
         @click.native="router.push({ path: `/group/${$auth.$state.user.group}/student/${studentPathRoute(student)}`,
         params: { id: student._id }})"/>

@@ -5,7 +5,7 @@
       <div
         class="form-group d-flex justify-content-between"
         v-for="property in orderedStudentProperties"
-        :key="property"
+        :key="`edit_student_main_panel_property_${property}`"
       >
         <span class="title biggerfont">{{ $t(property) }}:</span>
 
@@ -21,7 +21,7 @@
         <span class="data" v-else>
           <span
             v-for="(_subValue, subProperty) in student[property]"
-            :key="subProperty"
+            :key="`edit_student_main_panel_subProperty_${subProperty}`"
           >
             {{ student[property][subProperty] }}
           </span>
@@ -170,11 +170,12 @@ export default defineComponent({
       }
     );
     const { $http } = useContext();
+    const studentName = route.value.params.name;
     async function handleSubmit(clonedStudent) {
       try {
         this.$toast.show(this.$t("updating_student_data_in_progress"));
         await $http.$put(
-          "/api/auth/students/id",
+          `/api/auth/students/${studentName}`,
           {
             student: clonedStudent,
             group: root.$auth.user.group,

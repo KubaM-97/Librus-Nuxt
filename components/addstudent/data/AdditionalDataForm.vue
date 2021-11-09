@@ -3,7 +3,7 @@
     <div
       class="row mt-2 mb-3"
       v-for="property in orderedStudentProperties"
-      :key="property"
+      :key="`new_student_property_${property}`"
     >
       <label
         :class="[
@@ -45,14 +45,14 @@
         v-for="(_subValue, subProperty) in student[property]"
       >
       <span
-          :key="`error_${subProperty}`"
+          :key="`new_student_property_error_${subProperty}`"
           v-if="v.student[property][subProperty].$invalid && v.student[property][subProperty].$dirty"
           class="col-12 d-block small errorDataLabel"
         >
           {{ $t(`${property}_${subProperty}_error`) }}
         </span>
       <input
-        :key="`input_${subProperty}`"
+        :key="`new_student_property_input_${subProperty}`"
         type="text"
         :placeholder="$t(`${subProperty}`)"
         :name="property[subProperty]"

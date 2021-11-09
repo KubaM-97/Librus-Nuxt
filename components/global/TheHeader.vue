@@ -22,7 +22,7 @@
     </header>
 
     <nav>
-      <NuxtLink :to="`/group/${$route.params.groupId || '3B'}`">
+      <NuxtLink :to="`/group/${$auth.$state.user.group}`">
         <button active-class="active" class="btn btn-primary btn-lg">
           {{ $t("class") }}
         </button>
@@ -39,7 +39,7 @@
         @click="$auth.logout()"
       >
         <img src="~images/logout.png" alt="logout icon" height="20" />
-        {{ $t("sign_out") }}
+        <span class="align-bottom">{{ $t("sign_out") }}</span>
       </button>
     </nav>
   </header>

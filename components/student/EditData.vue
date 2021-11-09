@@ -13,7 +13,7 @@
         <div
           class="row mb-3 d-flex align-items-center"
           v-for="property in orderedStudentProperties"
-          :key="property"
+          :key="`edit_student_property_${property}`"
         >
           <div class="col-6">
             <label
@@ -39,7 +39,7 @@
               v-for="(_subValue, subProperty) in student[property]"
             >
               <label
-                :key="`label_${subProperty}`"
+                :key="`edit_student_property_label_${subProperty}`"
                 :class="{
                   errorDataLabel: $v.student[property][subProperty].$invalid,
                 }"
@@ -48,7 +48,7 @@
               </label>
 
               <input
-                :key="`input_${subProperty}`"
+                :key="`edit_student_property_input_${subProperty}`"
                 type="text"
                 :placeholder="$t(subProperty)"
                 :name="property[subProperty]"
@@ -89,7 +89,7 @@
             <span v-else-if="$v.student[property].$invalid">
               <span
                 v-for="(_subValue, subProperty) in student[property]"
-                :key="subProperty"
+                :key="`edit_student_subProperty_${subProperty}`"
               >
                 <span
                   v-if="$v.student[property][subProperty].$invalid"

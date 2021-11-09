@@ -10,7 +10,7 @@
       :index="n - 1"
       class="addStudentPanelGradesContent"
       v-for="n in gradesLength"
-      :key="n"
+      :key="`new_student_grades_${n}`"
       @initGrade="handleInitGrade"
       @updateGrade="handleUpdateGrade"
       @removeGrade="handleRemoveGrade"

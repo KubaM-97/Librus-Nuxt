@@ -8,7 +8,7 @@
         <Grade
           class="col-12 col-md-11"
           v-for="(grade, index) in student.grades"
-          :key="index"
+          :key="`edit_student_grade_${index}`"
           :index="index"
           :grade="grade"
           @initGrade="handleInitGrade"
