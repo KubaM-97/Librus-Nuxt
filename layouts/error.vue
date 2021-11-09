@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="Error404">
-      <img src="../assets/images/Error404.png" alt="Error404">
+      <img src="~images/error404.png" alt="Error404">
     </div>
   </div>
 </template>
@@ -9,7 +9,7 @@
 <script>
 import { defineComponent } from '@nuxtjs/composition-api'
 export default defineComponent({
-  name: "errorPage",
+  name: "Error",
   head() {
     return{
       title: this.$t('error_page_title'),

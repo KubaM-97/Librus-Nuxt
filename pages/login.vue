@@ -6,10 +6,9 @@
 import LoggedOutView from '@/views/LoggedOutView.vue';
 import { defineComponent } from '@nuxtjs/composition-api'
 export default defineComponent({
-  name: 'LoggedOut',
+  name: 'Login',
   components: {
     LoggedOutView,
   },
-  // layout: 'loggedOut',
 });
 </script>

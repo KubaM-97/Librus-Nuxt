@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch , onUpdated} from "@nuxtjs/composition-api";
+import { defineComponent, ref, watch} from "@nuxtjs/composition-api";
 import AdditionalDataForm from "@/components/addstudent/data/AdditionalDataForm.vue";
 export default defineComponent({
   name: "PersonalStudentDataForm",
@@ -65,11 +65,9 @@ export default defineComponent({
         fullNameArray.length > 1 ? capitalize(fullNameArray[1]) : "";
     }
     function showError(){
-      // props.form.fullName = fullName.value
       props.v.fullName.$touch()
     }
     watch(
-      // () => fullName.value,
       () => props.v.fullName.$model,
       (val) => {
         console.log('podmineniono');

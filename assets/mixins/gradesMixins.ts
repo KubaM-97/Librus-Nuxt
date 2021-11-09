@@ -4,7 +4,7 @@ import { SingleGrade } from '@/store/models/grade'
 export default defineComponent({
   setup(_props, { root }) {
 
-    //colors
+    //colors grade
     function gradeColor(weight: number): string {
       switch (weight) {
         case 1:
@@ -95,18 +95,17 @@ export default defineComponent({
 
     }
 
-
     // returns current Date in an Array
     function getCurrentDate(): string {
 
-      const today: Date = new Date();
-      const currentYear: number = today.getFullYear();
+      const now: Date = new Date();
+      const currentYear: number = now.getFullYear();
 
-      let currentMonth: number | string = today.getMonth() + 1;
-      let currentDay: number | string = today.getDate();
-      let currentHours: number | string = today.getHours();
-      let currentMinutes: number | string = today.getMinutes();
-      let currentSeconds: number | string = today.getSeconds();
+      let currentMonth: number | string = now.getMonth() + 1;
+      let currentDay: number | string = now.getDate();
+      let currentHours: number | string = now.getHours();
+      let currentMinutes: number | string = now.getMinutes();
+      let currentSeconds: number | string = now.getSeconds();
 
       if (currentMonth < 10) {
         currentMonth = `0${currentMonth}`;
@@ -142,11 +141,11 @@ export default defineComponent({
     }
 
     return {
+      gradeColor,
       showGradeDetails,
       hideGradeDetails,
       calculateAvgGrade,
       getCurrentDate,
-      gradeColor
     }
   }
 })

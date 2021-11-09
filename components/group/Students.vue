@@ -12,7 +12,7 @@
       <tbody>
         <StudentRow v-for="(student, index) in students" :key="student._id" 
         :student="student" :orderNo="index+1" 
-        @click.native="router.push({ path: `/group/3B/student/${studentPathRoute(student)}`,
+        @click.native="router.push({ path: `/group/${$auth.$state.user.group}/student/${studentPathRoute(student)}`,
         params: { id: student._id }})"/>
       </tbody>
     </table>
@@ -21,7 +21,6 @@
 <script>
 import { defineComponent, useRouter } from "@nuxtjs/composition-api";
 import StudentRow from '@/components/global/StudentRow'
-import gradesService from "@/assets/mixins/gradesMixins.ts";
 export default defineComponent({
   name: "Students",
   components: {
@@ -34,7 +33,6 @@ export default defineComponent({
       default: () => [],
     }
   },
-  mixins: [gradesService],
   setup(){
     const router = useRouter()
     function studentPathRoute(student) {

@@ -55,7 +55,7 @@
           @submit="handleSubmit"
           :is="chosenComponent"
           :basedStudent="student"
-        /> 
+        />
       </transition>
     </div>
   </div>
@@ -85,16 +85,16 @@ export default defineComponent({
     EditGrades,
   },
   props: {
-      student: {
-          type: Object,
-          required: false,
-          default: () => {}
-      },
+    student: {
+      type: Object,
+      required: false,
+      default: () => {},
+    },
   },
   mixins: [validations],
-  emits: ['fetch'],
+  emits: ["fetch"],
   setup(props, { root, emit }) {
-    const fetch = props.fetch
+    const fetch = props.fetch;
     const route = useRoute();
     const router = useRouter();
     function afterEnter(el) {
@@ -113,7 +113,6 @@ export default defineComponent({
       });
       el.style.animation = "showEditStudentPanel .2s";
       el.style.overflow = "hidden";
-
     }
     function beforeLeave(el) {
       el.addEventListener("animationend", function () {
@@ -134,7 +133,6 @@ export default defineComponent({
       el.style.animationDirection = "reverse";
       el.style.animationDelay = ".2s";
       el.style.overflow = "scroll";
-
     }
 
     const orderedStudentProperties = ref([
@@ -146,14 +144,13 @@ export default defineComponent({
       "father",
     ]);
     const chosenComponent = shallowRef(null);
-    onMounted(()=>{
-
-        if (route.value.query.edit === "data") {
-            chosenComponent.value = EditData;
-    } else if (route.value.query.edit === "grades") {
+    onMounted(() => {
+      if (route.value.query.edit === "data") {
+        chosenComponent.value = EditData;
+      } else if (route.value.query.edit === "grades") {
         chosenComponent.value = EditGrades;
-    }
-        })
+      }
+    });
     watch(
       () => route.value.query,
       () => {
@@ -172,19 +169,23 @@ export default defineComponent({
         }
       }
     );
-    const {$http} = useContext()
- async function handleSubmit(clonedStudent) {
+    const { $http } = useContext();
+    async function handleSubmit(clonedStudent) {
       try {
         this.$toast.show(this.$t("updating_student_data_in_progress"));
-        await $http.$put("/api/auth/students/id", {
+        await $http.$put(
+          "/api/auth/students/id",
+          {
             student: clonedStudent,
-            group: root.$auth.user.group },{
-          headers:{
-            Authorization: root.$auth.strategy.token.get()
-          }})
-        // await root.$accessor.updateStudent({student: clonedStudent, group: '3B'})
-
-        await emit('fetch')
+            group: root.$auth.user.group,
+          },
+          {
+            headers: {
+              Authorization: root.$auth.strategy.token.get(),
+            },
+          }
+        );
+        await emit("fetch");
         this.$toast.success(this.$t("successfully_updated_student_data"));
       } catch (err) {
         console.error(err);
@@ -196,7 +197,7 @@ export default defineComponent({
       router.replace({ query: null });
     }
     async function handleRefresh() {
-      fetch()
+      fetch();
     }
     return {
       afterEnter,

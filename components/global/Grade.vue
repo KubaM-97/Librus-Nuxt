@@ -6,8 +6,7 @@
           <div class="addStudentPanelGradesContentSingleGrade">
             <div class="select">
               <label for="score">{{ $t("grade_score") }}:</label>
-              <select v-model.number="grade.score"
-              >
+              <select v-model.number="grade.score">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -24,9 +23,7 @@
             <label for="weight">{{ $t("grade_weight") }}:</label>
 
             <div class="select">
-              <select 
-              v-model.number="grade.weight" 
-              >
+              <select v-model.number="grade.weight">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -69,9 +66,6 @@ import {
   ref,
   watch,
   onBeforeUpdate,
-  onMounted,
-  // useStore,
-  computed,
 } from "@nuxtjs/composition-api";
 
 export default defineComponent({
@@ -99,19 +93,14 @@ export default defineComponent({
       },
     },
   },
-  emits: ['initGrade', 'updateGrade', 'removeGrade'],
+  emits: ["initGrade", "updateGrade", "removeGrade"],
   setup(props, { root, emit }) {
     const index = props.index;
-    // const store = useStore();
-    const grades = computed(()=>root.$accessor.student.grades)
     const characters = props.characters;
     const grade = props.grade || ref();
     const leftCharactersMessage = ref(
       root.$t("characters_left_many", { characters })
     );
-    onMounted(()=>{
-      // emit('initGrade')
-    })
     watch(
       () => [...grade.description],
       () => {
@@ -139,29 +128,17 @@ export default defineComponent({
         }
       }
     );
-    let clonedGrades = [...grades.value];
 
     onBeforeUpdate(() => {
       grade.date = root.getCurrentDate();
-      emit('updateGrade', grade, index)
-      // clonedGrades = [...grades.value];
-
-      // clonedGrades[index] = { ...grade };
-      // console.log(clonedGrades)
-      // root.$accessor.updateStudentProperty({
-      //   property: "grades",
-      //   value: clonedGrades,
-      // });
+      emit("updateGrade", grade, index);
     });
-    function remove(index){
-      emit('removeGrade', index)
-
-      //   const refEl = this.$refs[`grade_${index}`];
-      // refEl.parentNode.removeChild(refEl);
+    function remove(index) {
+      emit("removeGrade", index);
     }
     return {
       leftCharactersMessage,
-      remove
+      remove,
     };
   },
 });
@@ -174,11 +151,10 @@ export default defineComponent({
     align-items: flex-end;
     input:focus,
     select:focus {
-        border: 2px solid #a5cda5;
-        -webkit-box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
-        -moz-box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
-        box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
-    
+      border: 2px solid #a5cda5;
+      -webkit-box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
+      -moz-box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
+      box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
     }
   }
 }

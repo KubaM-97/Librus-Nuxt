@@ -2,19 +2,19 @@
   <header class="main-header">
     <header>
       <div class="logo">
-        <img src="@/assets/images/Logo.png" />
+        <img src="~images/logo.png" />
       </div>
 
       <div class="logo">
         <div class="logo_info">
-           {{ $t('teacher') }}:
-         <span v-header-directive:class="'italic'">
-           {{ user.firstName }} {{ user.lastName }}
-         </span>
+          {{ $t("teacher") }}:
+          <span v-header-directive="'italic'">
+            {{ user.firstName }} {{ user.lastName }}
+          </span>
         </div>
         <div class="logo_info">
-           {{ $t('group') }}:
-          <span v-header-directive:class="'italic'">
+          {{ $t("group") }}:
+          <span v-header-directive="'italic'">
             {{ user.group }}
           </span>
         </div>
@@ -24,19 +24,22 @@
     <nav>
       <NuxtLink :to="`/group/${$route.params.groupId || '3B'}`">
         <button active-class="active" class="btn btn-primary btn-lg">
-          {{ $t('class') }}
+          {{ $t("class") }}
         </button>
       </NuxtLink>
 
       <NuxtLink to="/addStudent">
         <button active-class="active" class="btn btn-primary btn-lg">
-          {{ $t('add_student') }}
+          {{ $t("add_student") }}
         </button>
       </NuxtLink>
 
-      <button class="btn btn-primary btn-lg with-logout-icon" @click="$auth.logout()">
-        <img src="@/assets/images/logout.png" alt="logout icon" height="20" />
-        {{ $t('sign_out') }}
+      <button
+        class="btn btn-primary btn-lg with-logout-icon"
+        @click="$auth.logout()"
+      >
+        <img src="~images/logout.png" alt="logout icon" height="20" />
+        {{ $t("sign_out") }}
       </button>
     </nav>
   </header>
@@ -47,25 +50,15 @@ export default {
   name: "TheHeader",
   computed: {
     user() {
-      return this.$store.state.user;
-    }
-  },
-  mounted(){
-    // console.log('Po:',this.$auth);
-    
+      return this.$auth.$state.user;
+    },
   },
   directives: {
     headerDirective(el, binding) {
-        if((binding.value == 'italic')&&(binding.arg == 'class')){
-            el.style.fontStyle = "italic"
-        }
-        else{
-            el.style.fontStyle = "normal"
-        }
-    }
+      el.style.fontStyle = binding.value;
+    },
   },
 };
-
 </script>
 
 <style>

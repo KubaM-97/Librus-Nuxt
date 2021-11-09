@@ -6,10 +6,9 @@ import jwt from 'express-jwt'
 import jsonwebtoken from 'jsonwebtoken'
 const login = require('./routes/login')
 const students = require('./routes/students')
-// Create app
+
 const app = express()
 
-// Install middleware
 app.use(cookieParser())
 app.use(bodyParser.json())
 
@@ -25,52 +24,7 @@ app.use(
 // Refresh tokens
 const refreshTokens = {}
 app.use(login)
-// console.log('2222222',login);
-// console.log('2222222',students);
 app.use(students)
-// -- Routes --
-
-// [POST] /login
-// app.post('/login', (req, res) => {
-//   const { username, password } = req.body
-//   const valid = username.length && password === '123'
-//   const expiresIn = 15
-//   const refreshToken =
-//     Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1
-
-//   if (!valid) {
-//     throw new Error('Invalid username or password')
-//   }
-
-//   const accessToken = jsonwebtoken.sign(
-//     {
-//       username,
-//       picture: 'https://github.com/nuxt.png',
-//       name: 'User ' + username,
-//       scope: ['test', 'user']
-//     },
-//     'dummy',
-//     {
-//       expiresIn
-//     }
-//   )
-
-//   refreshTokens[refreshToken] = {
-//     accessToken,
-//     user: {
-//       username,
-//       picture: 'https://github.com/nuxt.png',
-//       name: 'User ' + username
-//     }
-//   }
-
-//   res.json({
-//     token: {
-//       accessToken,
-//       refreshToken
-//     }
-//   })
-// })
 
 app.post('/refresh', (req, res) => {
   const { refreshToken } = req.body

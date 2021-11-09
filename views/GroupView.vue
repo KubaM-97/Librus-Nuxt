@@ -21,39 +21,29 @@ export default defineComponent({
     FetchingLoader,
   },
   setup(_p, {root}) {
-    const route = useRoute()
-    // console.log('2222');
-    console.log(root.$auth);
-    // console.log('3333333');
-    const groupId = route.value.params.groupId;
     const students = ref([]);
-
     const { $http } = useContext();
-
     const { fetch } = useFetch(async () => {
       try{
         students.value = await $http.$post(`/api/auth/students/`, 
         { group: root.$auth.user.group },{
         headers:{
-          // Accept: application/json,
           Authorization: root.$auth.strategy.token.get()
-
         }}
       )
       } catch (error) {
-        console.log(error);
-        const status = error.response;
+        const status = error.response.status;
         switch (status) {
           case 404: {
-            this.$toast.error(this.$t("failed_to_fetch_students_list"));
+            root.$toast.error(root.$t("failed_to_fetch_students_list"));
             break;
           }
           case 500: {
-            this.$toast.error(this.$t("server_error"));
+            root.$toast.error(root.$t("server_error"));
             break;
           }
           default: {
-            // this.$toast.error(this.$t("alternative_log_error"));
+            root.$toast.error(root.$t("alternative_log_error"));
           }
         }
       }

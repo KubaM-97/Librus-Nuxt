@@ -17,9 +17,7 @@
     />
 
     <div class="showAnotherGrade">
-      <button name="moreGradesAddStudent" @click="handleInitGrade">
-        +
-      </button>
+      <button name="moreGradesAddStudent" @click="handleInitGrade">+</button>
     </div>
   </div>
 </template>
@@ -37,16 +35,16 @@ export default defineComponent({
     grades: {
       type: Array,
       required: false,
-      default: () => []
+      default: () => [],
     },
   },
   setup(_props, { root }) {
     const gradesLength = ref(1);
-      const grades = computed(()=>root.$accessor.student.grades)
-      let clonedGrades = [...grades.value];
-      
-    function handleInitGrade(){
-      gradesLength.value++
+    const grades = computed(() => root.$accessor.student.grades);
+    let clonedGrades = [...grades.value];
+
+    function handleInitGrade() {
+      gradesLength.value++;
       root.$accessor.initGrade();
     }
 

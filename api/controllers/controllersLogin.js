@@ -3,7 +3,6 @@ import {
 } from '../mongodb'
 import jsonwebtoken from 'jsonwebtoken'
 
-// Refresh tokens
 const refreshTokens = {}
 class LoginController {
   async login(req, res) {

@@ -1,7 +1,11 @@
 <template>
   <div class="wrapper">
-    <FetchingLoader :fetchState="$fetchState" @fetch="fetch"/>
-    <StudentPanel v-if="!$fetchState.pending && !$fetchState.error" :student="student" @fetch="fetch" />
+    <FetchingLoader :fetchState="$fetchState" @fetch="fetch" />
+    <StudentPanel
+      v-if="!$fetchState.pending && !$fetchState.error"
+      :student="student"
+      @fetch="fetch"
+    />
   </div>
 </template>
 
@@ -28,31 +32,31 @@ export default defineComponent({
       }),
     };
   },
-  setup(_p, {root}) {
+  setup(_p, { root }) {
     const route = useRoute();
     const router = useRouter();
     const studentName = route.value.params.name;
     const student = ref({});
     const { $http } = useContext();
     const { fetch } = useFetch(async () => {
-      try{
-
-        student.value = await $http.$post(`/api/auth/students/${studentName}`, {
-          group: root.$auth.user.group },{
-        headers:{
-          // Accept: application/json,
-          Authorization: root.$auth.strategy.token.get()
-
-        }}
-        // ,{ group: '3B' }
-      )
+      try {
+        student.value = await $http.$post(
+          `/api/auth/students/${studentName}`,
+          {
+            group: root.$auth.user.group,
+          },
+          {
+            headers: {
+              Authorization: root.$auth.strategy.token.get(),
+            },
+          }
+        );
       } catch (error) {
-        root.$toast.error(root.$t('failed_to_fetch_student_data'));
+        root.$toast.error(root.$t("failed_to_fetch_student_data"));
+      } finally {
+        if (route.value.query.edit) router.replace({ query: null });
       }
-      finally{
-        if(route.value.query.edit) router.replace({ query: null });
-      }
-    })
+    });
     return {
       student,
       fetch,

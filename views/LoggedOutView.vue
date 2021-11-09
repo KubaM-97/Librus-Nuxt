@@ -60,14 +60,7 @@ import {
 
 export default defineComponent({
   name: "LoggedOutView",
-  mounted() {
-    console.log(this.$auth);
-    console.log(this.$store.state);
-    // this.$auth.refreshTokens()
-  },
   setup(_props, { root }) {
-    const router = useRouter();
-    const store = useStore();
     const login = ref("");
     const password = ref("");
     async function signIn() {
@@ -101,15 +94,7 @@ export default defineComponent({
       }
 
       // this.$auth.setUserToken(token, refreshToken)
-      // try {
-
-      //   this.$auth.setUser({firstName: response.data.firstName, lastName: response.data.lastName,})
-      //   // this.$auth.setUserToken(response.data.user)
-      //     router.push({
-      //       path: `/group/${response.data.group}`,
-      //       params: { groupId: response.data.group },
-      //     });
-      // }
+     
     }
     return {
       login,
@@ -125,7 +110,7 @@ export default defineComponent({
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-image: url(@/assets/images/Logo.png);
+  background-image: url(@/assets/images/logo.png);
   background-position: center;
   background-size: cover;
   width: 340px;

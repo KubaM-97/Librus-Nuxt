@@ -2,12 +2,12 @@
   <div class="wrapper">
     <PersonalStudentData ref="PersonalStudentData" @getNewStudentName="getNewStudentNameHandler" :v="$v" :fullName="fullName" :student="student" :gradesLength="gradesLength"/>
     <StudentTable :student="student" />
-    <FormActions @cancel="handleCancel" @submit="handleSubmit($v, ...arguments)" />
+    <FormActions @cancel="handleCancel" @submit="handleSubmit($v)" />
   </div>
 </template>
 
 <script>
-import FormActions from "@/components/global/FormActions";
+import FormActions from "@/components/addstudent/FormActions";
 import StudentTable from "@/components/global/StudentTable";
 import PersonalStudentData from "@/components/addstudent/data/PersonalStudentData";
 import validations from "@/assets/mixins/validations";
@@ -18,7 +18,6 @@ import {
   useContext,
   computed,
 } from "@nuxtjs/composition-api";
-import axios from 'axios'
 export default defineComponent({
   components: {
     FormActions,
@@ -31,7 +30,8 @@ export default defineComponent({
     const gradesLength = ref(1);
     const student = computed(()=>root.$accessor.student)
     const fullName = ref('')
-    const PersonalStudentData = ref(null)
+    const PersonalStudentData = ref(null);
+    const group = computed(()=>root.$auth.user.group)
     function handleCancel() {
       fullName.value = ''
       root.$accessor.resetStudent()
@@ -50,14 +50,12 @@ export default defineComponent({
       try {
         await $http.$post("/api/auth/students/new", {
             student: clonedStudent,
-            group: root.$auth.user.group },{
+            group },{
           headers:{
             Authorization: root.$auth.strategy.token.get()
-
           }})
-        // await root.$accessor.addStudent({student: clonedStudent, token: root.$auth.strategy.token.get()})
         this.$toast.success(root.$t('successfully_added_new_student'));
-        router.push({ path: "/group/3B" });
+        router.push({ path: `/group/${group}` });
         root.$accessor.resetStudent()
       } catch (err) {
         console.error(err);
@@ -68,7 +66,6 @@ export default defineComponent({
       const formattedFullname = fullName.split(" ").reverse().join();
       student.value.name = formattedFullname;
     }
-
 
     return {
       handleCancel,

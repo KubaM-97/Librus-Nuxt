@@ -1,10 +1,13 @@
 <template>
   <tr>
     <td v-if="orderNo">{{ orderNo }}.</td>
-    <td> {{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
+    <td>{{ student.lastName.toUpperCase() }} {{ student.firstName }}</td>
     <td>
       <div
-        :class="[{'gradeWeightColor': grade.score || grade.weight}, gradeColor(grade.weight)]"
+        :class="[
+          { gradeWeightColor: grade.score || grade.weight },
+          gradeColor(grade.weight),
+        ]"
         v-for="(grade, index) in student.grades"
         :key="`new_student_grade-${index}`"
         @mouseenter="showGradeDetails($event, grade)"
@@ -30,20 +33,20 @@ export default defineComponent({
   name: "StudentRow",
   props: {
     student: {
-        type: Object,
-        required: false,
-        default: () => {}
+      type: Object,
+      required: false,
+      default: () => {},
     },
     orderNo: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
   },
   computed: {
-    avg(){
-      return this.calculateAvgGrade(this.student.grades)
-    }
-  }
-})
+    avg() {
+      return this.calculateAvgGrade(this.student.grades);
+    },
+  },
+});
 </script>

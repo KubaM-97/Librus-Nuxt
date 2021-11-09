@@ -1,5 +1,4 @@
 import { mongo } from '../mongodb'
-const mongodb = require('mongodb')
 class StudentController {
   async getAllStudents(req, res) {
     console.log('getAllStudents');
@@ -17,7 +16,6 @@ class StudentController {
       mongo.close();
 
     } catch (err) {
-      // console.error(err);
       console.error(err);
       res.sendStatus(500)
     }
@@ -60,6 +58,11 @@ class StudentController {
       
       !isStudentExists ? await collection.insertOne(student) : res.sendStatus(422)
 
+      const x = await collection.find({}).sort({lastName: -1})
+      console.log(x);
+      // await collection.find({}).sort({id:-1})
+
+
       res.sendStatus(201)
 
       mongo.close();
@@ -72,16 +75,16 @@ class StudentController {
   }
   async updateStudent(req, res) {
     console.log('updateStudent');
-
     const student = req.body.student;
-    console.log('oceny:', student.grades);
     const group = req.body.group;
-    console.log(group);
+
     try {
       const db = await mongo.connect('students');
       const collection = db.collection(`group_${group}`);
 
-      await collection.updateOne(  {_id: mongodb.ObjectId(student._id)},
+      await collection.updateOne(  {
+        lastName: student.lastName, firstName: student.firstName 
+      },
       {
         $set: {
           firstName: student.firstName,
@@ -107,4 +110,3 @@ class StudentController {
   }
 }
 export const StudentActions = new StudentController()
-// module.exports = new UserController()

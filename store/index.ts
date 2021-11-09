@@ -66,8 +66,8 @@ export const mutations = mutationTree(state, {
   // updateStudentProperty(state: State, payload: keyof Student): void {
   updateStudentProperty(state: State, payload: any): void {
     // state.student[payload.property = payload.value
-    // if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
-    // // else state.student[payload.property] = payload.value;
+    if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
+    else state.student[payload.property] = payload.value;
   },
   resetStudent(state: State): void {
     state.student = getDefaultStudent
