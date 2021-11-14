@@ -1,13 +1,13 @@
 <template>
   <div class="text-left pl-2">
     <StudentTable :student="student" />
-    <div class="px-5 py-3 w-100">
+    <div class="px-md-5 py-md-3 w-100 panel">
       <div
         class="form-group d-flex justify-content-between"
         v-for="property in orderedStudentProperties"
         :key="`edit_student_main_panel_property_${property}`"
       >
-        <span class="title biggerfont">{{ $t(property) }}:</span>
+        <span class="title">{{ $t(property) }}:</span>
 
         <span
           class="data"
@@ -102,7 +102,7 @@ export default defineComponent({
         el.style = "";
       });
       el.querySelector(".overlay").style.animation =
-        "showEditStudentPanelOverlay .2s";
+        "showEditStudentPanelOverlay .7s";
       el.querySelector(".overlay").style.animationFillMode = "forwards";
       el.style.overflow = "scroll";
     }
@@ -111,7 +111,7 @@ export default defineComponent({
         el.style = "";
         done();
       });
-      el.style.animation = "showEditStudentPanel .2s";
+      el.style.animation = "showEditStudentPanel .7s";
       el.style.overflow = "hidden";
     }
     function beforeLeave(el) {
@@ -119,7 +119,7 @@ export default defineComponent({
         el.style = "";
       });
       el.querySelector(".overlay").style.animation =
-        "showEditStudentPanelOverlay .2s";
+        "showEditStudentPanelOverlay .7s";
       el.querySelector(".overlay").style.animationDirection = "reverse";
       el.querySelector(".overlay").style.animationFillMode = "forwards";
       el.style.overflow = "hidden";
@@ -129,9 +129,9 @@ export default defineComponent({
         el.style = "";
         done();
       });
-      el.style.animation = "showEditStudentPanel .2s";
+      el.style.animation = "showEditStudentPanel .7s";
       el.style.animationDirection = "reverse";
-      el.style.animationDelay = ".2s";
+      el.style.animationDelay = ".7s";
       el.style.overflow = "scroll";
     }
 
@@ -174,6 +174,8 @@ export default defineComponent({
     async function handleSubmit(clonedStudent) {
       try {
         this.$toast.show(this.$t("updating_student_data_in_progress"));
+        clonedStudent.grades = clonedStudent.grades.filter((grade) => grade.score && grade.weight)
+
         await $http.$put(
           `/api/auth/students/${studentName}`,
           {
@@ -228,6 +230,10 @@ button {
   margin: 0 15px;
 }
 @media (max-width: 768px) {
+  .panel{
+    font-size: 9px;
+    padding-right: 2px;
+  }
   button {
     font-size: 9px;
     padding: 5px;

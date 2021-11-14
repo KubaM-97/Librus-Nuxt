@@ -23,13 +23,11 @@ export default defineComponent({
   },
   beforeRouteLeave(to, from, next) {
     const student = this.$store.state.student;
-    const lastName = student.lastName;
     const grades = student.grades;
     
     const noScoreOrNoWeight = grades.some(grade => grade.score ^ grade.weight);
     const onlyDescription = grades.some(grade => (!grade.score && !grade.weight) && grade.description);
-    const invalidGradesConditions = noScoreOrNoWeight || onlyDescription;
-    const invalidFormConditions = lastName || invalidGradesConditions;
+    const invalidFormConditions = noScoreOrNoWeight || onlyDescription;
     const ClosePrompt = this.$refs.ClosePrompt;
     (!ClosePrompt.showPrompt && invalidFormConditions) ? ClosePrompt.preventLeaving(to) : next()
   },

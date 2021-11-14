@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <div class="col-7 col-md-5">
+        <div class="col-6 col-md-5">
           <div class="addStudentPanelGradesContentSingleDescription">
             <span class="descriptionCount">{{ leftCharactersMessage }}.</span>
 

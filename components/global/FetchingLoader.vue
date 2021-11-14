@@ -3,7 +3,7 @@
     {{ $t("failed_to_fetch_students_list") }}
     <button
       class="ml-3 px-1 py-1 btn btn-small refreshBtn"
-      @click="emit('fetch')"
+      @click="$emit('fetch')"
     >
       {{ $t("try_again") }}
     </button>

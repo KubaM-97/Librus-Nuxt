@@ -20,7 +20,7 @@
           v-model.trim="login"
           autocomplete="off"
           id="login"
-          class="text-left pl-2"
+          class="text-center text-md-left pl-md-2"
         />
       </div>
 
@@ -37,7 +37,7 @@
           type="password"
           v-model.trim="password"
           id="password"
-          class="text-left pl-2"
+          class="text-center text-md-left pl-md-2"
         />
       </div>
 

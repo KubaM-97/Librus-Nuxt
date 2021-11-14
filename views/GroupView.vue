@@ -25,7 +25,7 @@ export default defineComponent({
     const { $http } = useContext();
     const { fetch } = useFetch(async () => {
       try{
-        students.value = await $http.$post(`/api/auth/students/`, 
+        students.value = await $http.$post(`/api/students/`, 
         { group: root.$auth.user.group },{
         headers:{
           Authorization: root.$auth.strategy.token.get()
@@ -49,7 +49,10 @@ export default defineComponent({
       }
     })
 
-    return { students, fetch }
+    return { 
+      students, 
+      fetch
+    }
   },
 })
 </script>

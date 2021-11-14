@@ -1,7 +1,7 @@
 import { mongo } from '../mongodb'
 class StudentController {
   async getAllStudents(req, res) {
-    console.log('getAllStudents');
+    console.log('getAllStudents22', req.body.group);
 
     const group = req.body.group;
     try {
@@ -9,7 +9,7 @@ class StudentController {
       const db = await mongo.connect('students');
       const collection = db.collection(`group_${group}`);
 
-      const results = await collection.find().toArray()
+      const results = await collection.find().sort({lastName: 1}).toArray()
 
       results.length ? res.json(results) : res.sendStatus(404)
 
@@ -28,7 +28,6 @@ class StudentController {
     const lastName = name.split(' ')[0]
     const firstName = name.split(' ')[1]
     const group = req.body.group;
-    console.log(lastName, firstName, group);
     try {
       const db = await mongo.connect('students');
       const collection = db.collection(`group_${group}`);
@@ -52,16 +51,12 @@ class StudentController {
     try {
       const db = await mongo.connect('students');
       const collection = db.collection(`group_${group}`);
+
       const isStudentExists = await collection.findOne({
         lastName: student.lastName, firstName: student.firstName 
       })
       
-      !isStudentExists ? await collection.insertOne(student) : res.sendStatus(422)
-
-      const x = await collection.find({}).sort({lastName: -1})
-      console.log(x);
-      // await collection.find({}).sort({id:-1})
-
+      !isStudentExists ? await collection.insertOne(student) : res.sendStatus(422);
 
       res.sendStatus(201)
 
@@ -82,7 +77,7 @@ class StudentController {
       const db = await mongo.connect('students');
       const collection = db.collection(`group_${group}`);
 
-      await collection.updateOne(  {
+      await collection.updateOne({
         lastName: student.lastName, firstName: student.firstName 
       },
       {

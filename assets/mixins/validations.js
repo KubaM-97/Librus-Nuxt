@@ -2,7 +2,7 @@ import { defineComponent } from "@nuxtjs/composition-api";
 import { helpers, required } from "vuelidate/lib/validators";
 const fullName = helpers.regex(
   "fullName",
-  /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*( [A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]+)(-[A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]+)?$/
+  /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*( [A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+)(-[A-ZĄĆĘŁŃÓŚŹŻ]?[a-ząćęłńóśźż]+)?$/
 );
 const firstName = helpers.regex(
   "firstName",
@@ -36,6 +36,12 @@ export default defineComponent({
       fullName,
     },
     student: {
+      firstName: {
+        firstName
+      },
+      lastName: {
+        lastName
+      },
       pesel: {
         pesel
       },

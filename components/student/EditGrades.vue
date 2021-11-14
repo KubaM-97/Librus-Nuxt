@@ -12,7 +12,6 @@
           :index="index"
           :grade="grade"
           @initGrade="handleInitGrade"
-          @updateGrade="handleUpdateGrade"
           @removeGrade="handleRemoveGrade"
         />
 
@@ -64,40 +63,20 @@ export default defineComponent({
     const gradesLength = ref(0);
     const student = ref(JSON.parse(JSON.stringify(props.basedStudent)));
 
-    
-    // onActivated(()=>{
-    //   student.value = {...student}
-    // })
     function handleInitGrade(){
       gradesLength.value++
       student.value.grades.push({score: null, weigth: null, description: '', date: ''})
     }
 
-    function handleUpdateGrade(grade, index) {
-      console.log('update:', grade, index);
-      // student.value.grades[index] = grade
-      // clonedGrades = [...grades.value];
-      // clonedGrades[index] = { ...grade };
-      
-      // root.$accessor.updateStudentProperty({
-      //   property: "grades",
-      //   value: clonedGrades,
-      // });
-    }
-
     function handleRemoveGrade(index) {
       const clonedClonedStudent = [...student.value.grades]
-      console.log(clonedClonedStudent)
       clonedClonedStudent.splice(index, 1)
-      console.log(clonedClonedStudent)
       student.value.grades = clonedClonedStudent
-      // student.value.grades[index] = {score: null, weigth: null, description: '', date: ''}
     }
     return {
       gradesLength,
       student,
       handleInitGrade,
-      handleUpdateGrade,
       handleRemoveGrade,
     };
   },
@@ -106,7 +85,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 div.editStudent {
   background-color: black;
-  // overflow: hidden;
   .overlay {
     background-color: black;
     position: absolute;
@@ -114,11 +92,9 @@ div.editStudent {
     left: 0;
     width: 100%;
     height: 100%;
-    // z-index: 10;
   }
   font-size: 13px;
   top: 20%;
-  // top: 40%;
   left: 50%;
   transform: translateX(-50%);
   button {

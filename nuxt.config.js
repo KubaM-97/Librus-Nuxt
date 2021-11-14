@@ -1,10 +1,12 @@
 import {
   resolve
 } from 'path'
+import { NuxtConfig } from '@nuxt/types'
 export default {
   alias: {
     'images': resolve(__dirname, './assets/images'),
   },
+  
   head: {
     title: 'Librus',
     htmlAttrs: {
@@ -33,9 +35,6 @@ export default {
       href: '/favicon.ico'
     }]
   },
-  router: {
-    middleware: ['auth']
-  },
   css: [
     '@/assets/scss/main.scss',
   ],
@@ -47,11 +46,9 @@ export default {
   components: true,
   buildModules: [
     'nuxt-typed-vuex',
+    // '@nuxt/typescript-build',
     '@nuxtjs/composition-api/module'
   ],
-  cli: {
-    bannerColor: 'yellow'
-  },
   pageTransition: {
     name: 'page',
     mode: 'out-in'
@@ -60,21 +57,72 @@ export default {
     name: 'layout',
     mode: 'out-in'
   },
+  router: {
+    middleware: ['auth']
+  },
+  // auth: {
+  //   login: {
+  //     endpoint: 'api/auth/login',
+  //     propertyName: 'token',
+  //   },
+  //   logout: {
+  //     endpoint: 'api/logout',
+  //     method: 'GET',
+  //     paramTokenName: '',
+  //     appendToken: false
+  //   },
+  //   user: {
+  //     endpoint: 'api/user',
+  //     propertyName: 'user',
+  //     paramTokenName: '',
+  //     appendToken: false
+  //   },
+  //   storageTokenName: 'nuxt-auth-token',
+  //   tokenType: 'Bearer',
+  //   notLoggedInRedirectTo: '/login',
+  //   loggedInRedirectTo: '/'
+  // },
+ 
   auth: {
     redirect: {
-      login: '/loggedOut',
       logout: '/loggedOut',
-      // callback: '/a',
-      home: '/group/3B'
+      login: '/loggedOut',
+      home: '/'
     },
     strategies: {
       local: {
         token: {
-          property: 'token.accessToken'
+          property: 'token.accessToken',
+          global: true,
+          // required: true,
+          // type: 'Bearer'
+        },
+        user: {
+          property: 'user',
+          autoFetch: true
+        },
+        endpoints: {
+          login: { url: '/api/login', method: 'post' },
+          logout: { url: '/api/logout', method: 'post' },
+          user: { url: '/api/user', method: 'get', propertyName: 'token.accessToken' },
+          students: { url: '/api/students', method: 'post' }
+        }
+      
+      },
+      localRefresh: {
+        scheme: 'refresh',
+        token: {
+          property: 'token.accessToken',
+          maxAge: 15
+        },
+        refreshToken: {
+          property: 'token.refreshToken',
+          data: 'refreshToken',
+          maxAge: false
         }
       },
-    }
-  },
+      },
+      },
   vue: {
     config: {
       productionTip: false,
@@ -84,7 +132,7 @@ export default {
   modules: [
     '@nuxtjs/axios',
     'bootstrap-vue/nuxt',
-    '@nuxt/typescript-build',
+    // '@nuxt/typescript-build',
     '@nuxtjs/toast',
     '@nuxtjs/auth-next',
     ['@nuxtjs/i18n', {

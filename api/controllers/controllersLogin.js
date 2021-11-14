@@ -6,7 +6,7 @@ import jsonwebtoken from 'jsonwebtoken'
 const refreshTokens = {}
 class LoginController {
   async login(req, res) {
-
+    console.log('TU JEST POLSKI LOGIN');
     try {
       const {
         username,
@@ -20,15 +20,16 @@ class LoginController {
         password
       })
     if (results) {
-        const expiresIn = 900
+      const { lastName, firstName, group } = results
+        const expiresIn = 2700
         
         const refreshToken =
           Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1
 
         const accessToken = jsonwebtoken.sign({
-            lastName: results.lastName,
-            firstName: results.firstName,
-            group: results.group,
+            lastName,
+            firstName,
+            group,
           },
           'dummy', {
             expiresIn
@@ -65,16 +66,13 @@ class LoginController {
   
     if (refreshToken in refreshTokens) {
       const user = refreshTokens[refreshToken].user
-      const expiresIn = 15
+      const expiresIn = 21600
       const newRefreshToken =
         Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1
       delete refreshTokens[refreshToken]
       const accessToken = jsonwebtoken.sign(
         {
           user: user.username,
-          picture: 'https://github.com/nuxt.png',
-          name: 'User ' + user.username,
-          scope: ['test', 'user']
         },
         'dummy',
         {

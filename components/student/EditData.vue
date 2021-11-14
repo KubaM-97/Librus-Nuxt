@@ -15,7 +15,7 @@
           v-for="property in orderedStudentProperties"
           :key="`edit_student_property_${property}`"
         >
-          <div class="col-6">
+          <div class="col-12 col-md-6">
             <label
               :for="property"
               :class="{ errorDataLabel: $v.student[property].$invalid }"
@@ -63,7 +63,7 @@
             </template>
           </div>
 
-          <div class="col-6">
+          <div class="col-12 col-md-6">
             <span
               :class="{ errorDataLabel: $v.student[property].$invalid }"
               v-html="
@@ -172,8 +172,8 @@ export default defineComponent({
       }
     }
     const orderedStudentProperties = ref([
-      "firstName",
       "lastName",
+      "firstName",
       "pesel",
       "phone",
       "email",
@@ -202,6 +202,7 @@ div.editStudent {
     left: 0;
     width: 100%;
     height: 100%;
+    font-size: 10px;
   }
   font-size: 13px;
   top: 20%;

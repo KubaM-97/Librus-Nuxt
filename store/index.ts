@@ -1,6 +1,6 @@
 import { getAccessorType, getterTree, mutationTree } from 'typed-vuex'
 
-import { State, Mutations, Student } from '@/store/models';
+import { State, Getters, Mutations, Student, Parent, Address, SingleGrade } from '@/store/models';
 
 const getDefaultGrade = {
   score: null,
@@ -36,6 +36,7 @@ const getDefaultStudent = {
   }
 }
 export const state = () => ({
+  test: 'test',
   student: getDefaultStudent,
   auth:{
     loggedIn: false,
@@ -56,15 +57,19 @@ export const getters = getterTree(state, {
       return state.auth.user
     }
 })
+type UpdateStudent = {
+  property: keyof Omit<Student, "_id"|"grades"|"address"|"mother"|"father">,
+  value: string,
+  subProperty?: keyof Student["address"|"mother"|"father"]
+}
+
 export const mutations = mutationTree(state, {
-  // updateStudentProperty(state: State, payload: keyof Student): void {
-  updateStudentProperty(state: State, payload: any): void {
-    // state.student[payload.property = payload.value
-    if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
-    else state.student[payload.property] = payload.value;
+  updateStudentProperty(state: State, payload: UpdateStudent): void {
+    // if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
+    // else state.student[payload.property] = payload.value;
   },
   resetStudent(state: State): void {
-    state.student = getDefaultStudent
+    state.student = {...getDefaultStudent}
   },
   initGrade(state: State): void {
     state.student.grades.push(getDefaultGrade)

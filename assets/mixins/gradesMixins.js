@@ -1,11 +1,11 @@
 import { defineComponent } from "@nuxtjs/composition-api";
-import { SingleGrade } from '@/store/models/grade'
+// import { SingleGrade } from '@/store/models/grade.ts'
 
 export default defineComponent({
   setup(_props, { root }) {
 
     //colors grade
-    function gradeColor(weight: number): string {
+    function gradeColor(weight) {
       switch (weight) {
         case 1:
           return 'gradeWeightGreen'
@@ -19,15 +19,15 @@ export default defineComponent({
     }
 
     // draws grade detail info
-    function showGradeDetails(e: { target: HTMLDivElement; }, grade: SingleGrade) {
+    function showGradeDetails(e, grade) {
 
       if (grade.score && grade.weight) {
 
         const canvas = document.createElement("CANVAS");
-        e.target!.appendChild(canvas);
+        e.target.appendChild(canvas);
 
-        const canv = document.querySelector("canvas") as HTMLCanvasElement;
-        const ctx = canv.getContext("2d") as CanvasRenderingContext2D;
+        const canv = document.querySelector("canvas");
+        const ctx = canv.getContext("2d");
 
         canvas.style.zIndex = '2';
         canvas.style.position = 'absolute';
@@ -68,13 +68,13 @@ export default defineComponent({
     }
 
     // hides grade detail info
-    function hideGradeDetails(e: { target: HTMLDivElement; }) {
+    function hideGradeDetails(e) {
       const canvas = e.target.querySelector('canvas')
       canvas?.parentNode?.removeChild(canvas);
     }
 
     //returns grades' average
-    function calculateAvgGrade(grades: SingleGrade[]): number | string {
+    function calculateAvgGrade(grades)  {
 
       let gradesSuperValue = 0;
       let weightSum = 0;
@@ -89,23 +89,23 @@ export default defineComponent({
       const avgValue = gradesSuperValue / weightSum;
 
       const roundedAvgValue = (Math.round(avgValue * 100) / 100).toFixed(2)
-      let finalAvgValue: string = isNaN(+roundedAvgValue) ? '' : roundedAvgValue;
+      let finalAvgValue = isNaN(+roundedAvgValue) ? '' : roundedAvgValue;
 
       return finalAvgValue;
 
     }
 
     // returns current Date in an Array
-    function getCurrentDate(): string {
+    function getCurrentDate() {
 
-      const now: Date = new Date();
-      const currentYear: number = now.getFullYear();
+      const now = new Date();
+      const currentYear = now.getFullYear();
 
-      let currentMonth: number | string = now.getMonth() + 1;
-      let currentDay: number | string = now.getDate();
-      let currentHours: number | string = now.getHours();
-      let currentMinutes: number | string = now.getMinutes();
-      let currentSeconds: number | string = now.getSeconds();
+      let currentMonth  = now.getMonth() + 1;
+      let currentDay = now.getDate();
+      let currentHours  = now.getHours();
+      let currentMinutes  = now.getMinutes();
+      let currentSeconds  = now.getSeconds();
 
       if (currentMonth < 10) {
         currentMonth = `0${currentMonth}`;

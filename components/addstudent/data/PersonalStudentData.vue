@@ -17,7 +17,6 @@ import { defineComponent, ref } from "@nuxtjs/composition-api";
 import NewStudentGrades from "@/components/addstudent/grades/NewStudentGrades";
 import PersonalStudentDataForm from "@/components/addstudent/data/PersonalStudentDataForm";
 
-
 export default defineComponent({
   name: "PersonalStudentData",
   components: {
@@ -40,10 +39,6 @@ export default defineComponent({
       required: false,
       default: () => {},
     },
-  },
-  setup() {
-    const PersonalStudentDataForm = ref(null)
-    return {PersonalStudentDataForm}
   },
 });
 </script>

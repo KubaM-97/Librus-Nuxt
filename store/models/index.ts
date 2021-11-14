@@ -1,4 +1,5 @@
 import type { State, Getters, Mutations } from './store';
-import type { Student } from './student';
+import type { Student, Parent, Address } from './student';
+import type { SingleGrade } from './grade'
 
-export { State, Getters, Mutations, Student }
+export { State, Getters, Mutations, Student, Parent, Address, SingleGrade }

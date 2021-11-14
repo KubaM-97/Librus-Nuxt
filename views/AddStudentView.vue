@@ -19,6 +19,7 @@ import {
   computed,
 } from "@nuxtjs/composition-api";
 export default defineComponent({
+  name: 'AddStudentView',
   components: {
     FormActions,
     StudentTable,
@@ -31,7 +32,7 @@ export default defineComponent({
     const student = computed(()=>root.$accessor.student)
     const fullName = ref('')
     const PersonalStudentData = ref(null);
-    const group = computed(()=>root.$auth.user.group)
+    const group = computed(()=>root.$auth.user.group).value
     function handleCancel() {
       fullName.value = ''
       root.$accessor.resetStudent()
@@ -55,8 +56,8 @@ export default defineComponent({
             Authorization: root.$auth.strategy.token.get()
           }})
         this.$toast.success(root.$t('successfully_added_new_student'));
-        router.push({ path: `/group/${group}` });
         root.$accessor.resetStudent()
+        router.push({ path: `/group/${group}` });
       } catch (err) {
         console.error(err);
         this.$toast.error(root.$t('failed_to_add_new_student'));

@@ -31,19 +31,15 @@ export default {
 <style lang="scss">
 
 .legendTable {
-
   .legendTitle {
     font-size: 13.5px;
   }
-  
   .legendGrades {
     font-size: 12px;
-
     .gradeWeightColorLegend{
       padding: 6px 13px
     }
   }
-
 }
 
 </style>

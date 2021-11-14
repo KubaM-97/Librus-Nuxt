@@ -70,7 +70,6 @@ export default defineComponent({
     watch(
       () => props.v.fullName.$model,
       (val) => {
-        console.log('podmineniono');
         getFirstAndLastName(val);
         root.$accessor.updateStudentProperty({
           property: "firstName",

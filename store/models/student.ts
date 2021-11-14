@@ -1,11 +1,11 @@
 import { SingleGrade } from './grade'
-type Parent = {
+export type Parent = {
     firstName: string,
     lastName: string,
     phone: string,
     email: string,
 }
-type Address = {
+export type Address = {
     streetName: string,
     streetNr: string,
     flatNr: string,
