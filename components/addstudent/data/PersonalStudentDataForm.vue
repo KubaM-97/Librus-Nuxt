@@ -1,9 +1,20 @@
 <template>
   <form action="#" enctype="application/x-www-form-urlencoded" method="post">
     <div class="form-group mb-4">
-      <label for="name" :class="['mb-2', {'errorDataLabel': v.fullName.$invalid && v.fullName.$dirty }]">
+      <label
+        for="name"
+        :class="[
+          'mb-2',
+          { errorDataLabel: v.fullName.$invalid && v.fullName.$dirty },
+        ]"
+      >
         *{{ $t("firstName_and_lastName") }}:
-        <span :class="['fullNameTooltip d-block', {'errorDataLabel': v.fullName.$invalid && v.fullName.$dirty }]">
+        <span
+          :class="[
+            'fullNameTooltip d-block',
+            { errorDataLabel: v.fullName.$invalid && v.fullName.$dirty },
+          ]"
+        >
           {{ $t("double_lastNames_hint") }}
         </span>
       </label>
@@ -14,12 +25,18 @@
         v-model.trim="v.fullName.$model"
         maxlength="30"
         autocomplete="off"
-        :class="['text-center', {'errorDataInput': v.fullName.$invalid && v.fullName.$dirty }]"
+        :class="[
+          'text-center',
+          { errorDataInput: v.fullName.$invalid && v.fullName.$dirty },
+        ]"
         @change="showError"
       />
       <transition name="shake">
-        <div class="errorFullName d-block text-light" v-if="v.fullName.$invalid && v.fullName.$dirty">
-            {{ !v.fullName.required ? $t("fillname") : $t("no_characters")}} 
+        <div
+          class="errorFullName d-block text-light"
+          v-if="v.fullName.$invalid && v.fullName.$dirty"
+        >
+          {{ !v.fullName.required ? $t("fillname") : $t("no_characters") }}
         </div>
       </transition>
     </div>
@@ -35,22 +52,45 @@
       </button>
 
       <transition name="showDetailData" mode="out-in">
-        <AdditionalDataForm v-if="showAdditionalDataForm" :v="v" :fullName="fullName" :student="student"/>
+        <AdditionalDataForm
+          v-if="showAdditionalDataForm"
+          :v="v"
+          :fullName="fullName"
+          :student="student"
+        />
       </transition>
     </div>
   </form>
 </template>
 
 <script>
-import { defineComponent, ref, watch} from "@nuxtjs/composition-api";
+import { defineComponent, ref, watch, useStore } from "@nuxtjs/composition-api";
 import AdditionalDataForm from "@/components/addstudent/data/AdditionalDataForm.vue";
 export default defineComponent({
   name: "PersonalStudentDataForm",
   components: {
     AdditionalDataForm,
   },
-  props: ['v', 'student', 'fullName'],
+  //objects
+  props: {
+    v: {
+      type: Object,
+      required: false,
+      default: () => {}
+    },
+    student: {
+      type: Object,
+      required: false,
+      default: () => {}
+    },
+    fullName: {
+      type: String,
+      required: false,
+      default: ''
+    },
+  },
   setup(props, { root }) {
+    const store = useStore();
     const showAdditionalDataForm = ref(false);
     const firstName = ref("");
     const lastName = ref("");
@@ -64,18 +104,18 @@ export default defineComponent({
       lastName.value =
         fullNameArray.length > 1 ? capitalize(fullNameArray[1]) : "";
     }
-    function showError(){
-      props.v.fullName.$touch()
+    function showError() {
+      props.v.fullName.$touch();
     }
     watch(
       () => props.v.fullName.$model,
       (val) => {
         getFirstAndLastName(val);
-        root.$accessor.updateStudentProperty({
+        store.commit("updateStudentProperty", {
           property: "firstName",
           value: firstName.value,
         });
-        root.$accessor.updateStudentProperty({
+        store.commit("updateStudentProperty", {
           property: "lastName",
           value: lastName.value,
         });

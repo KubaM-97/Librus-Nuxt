@@ -40,28 +40,29 @@ export default defineComponent({
   },
   setup(_props, { root }) {
     const gradesLength = ref(1);
-    const grades = computed(() => root.$accessor.student.grades);
+    const store = useStore();
+    const grades = computed(() => store.state.student.grades);
     let clonedGrades = [...grades.value];
 
     function handleInitGrade() {
       gradesLength.value++;
-      root.$accessor.initGrade();
+      store.commit('initGrade');
     }
 
     function handleUpdateGrade(grade, index) {
       clonedGrades = [...grades.value];
       clonedGrades[index] = { ...grade };
 
-      root.$accessor.updateStudentProperty({
+      store.commit('updateStudentProperty', {
         property: "grades",
         value: clonedGrades,
-      });
+      })
     }
 
     function handleRemoveGrade(index) {
       const refEl = this.$refs[`grade_${index}`][0].$el;
       refEl.parentNode.removeChild(refEl);
-      root.$accessor.removeGrade(index);
+      store.commit('removeGrade', index)
     }
     return {
       gradesLength,

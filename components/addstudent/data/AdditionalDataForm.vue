@@ -105,11 +105,11 @@ export default defineComponent({
     ]);
     function setStudentState(value, property, subProperty) {
       v.student.$touch();
-      root.$accessor.updateStudentProperty({
+       store.commit('updateStudentProperty', {
         property,
         value: value.trim(),
-        subProperty,
-      });
+        subProperty
+      })
     }
     return {
       orderedStudentProperties,

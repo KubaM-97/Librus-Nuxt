@@ -2,7 +2,7 @@
   <div class="wrapper">
     <PersonalStudentData ref="PersonalStudentData" @getNewStudentName="getNewStudentNameHandler" :v="$v" :fullName="fullName" :student="student" :gradesLength="gradesLength"/>
     <StudentTable :student="student" />
-    <FormActions @cancel="handleCancel" @submit="handleSubmit($v)" />
+    <FormActions @cancel="handleCancel($v)" @submit="handleSubmit($v)" />
   </div>
 </template>
 
@@ -16,6 +16,7 @@ import {
   ref,
   useRouter,
   useContext,
+  useStore,
   computed,
 } from "@nuxtjs/composition-api";
 export default defineComponent({
@@ -28,14 +29,17 @@ export default defineComponent({
   mixins: [validations],
   setup(_, {root}) {
     const router = useRouter();
+    const store = useStore();
     const gradesLength = ref(1);
-    const student = computed(()=>root.$accessor.student)
+    const student = computed(()=>store.state.student)
+    // console.log(store);
     const fullName = ref('')
     const PersonalStudentData = ref(null);
     const group = computed(()=>root.$auth.user.group).value
-    function handleCancel() {
+    function handleCancel(v) {
       fullName.value = ''
-      root.$accessor.resetStudent()
+      store.commit('resetStudent')
+      v.$reset()
       this.$refs.PersonalStudentData.$refs.PersonalStudentDataForm.showAdditionalDataForm = false 
     }
     const { $http } = useContext();
@@ -49,17 +53,18 @@ export default defineComponent({
       clonedStudent.grades = clonedStudent.grades.filter((grade) => grade.score && grade.weight)
       this.$toast.show(root.$t('adding_student_in_progress'));
       try {
-        await $http.$post("/api/auth/students/new", {
+        await $http.$post("/api/students/new", {
             student: clonedStudent,
             group },{
           headers:{
             Authorization: root.$auth.strategy.token.get()
           }})
         this.$toast.success(root.$t('successfully_added_new_student'));
-        root.$accessor.resetStudent()
+        store.commit('resetStudent')
         router.push({ path: `/group/${group}` });
       } catch (err) {
-        console.error(err);
+        console.error('błąd7');
+        // console.error(err);
         this.$toast.error(root.$t('failed_to_add_new_student'));
       }
     };

@@ -90,6 +90,30 @@ export default {
       home: '/'
     },
     strategies: {
+      customStrategy: {
+        scheme: '~/schemes/customScheme',
+        /* ... */
+      },
+      custom: { scheme: '~/schemes/customScheme',
+      token: {
+        property: 'token.accessToken',
+        global: true,
+        // required: true,
+        // type: 'Bearer'
+      },
+      user: {
+        property: 'user',
+        autoFetch: true
+      },
+      endpoints: {
+        login: { url: '/api/login', method: 'post' },
+        logout: { url: '/api/logout', method: 'post' },
+        user: { url: '/api/user', method: 'get', propertyName: 'token.accessToken' },
+        students:  { url: '/api/students/:name', method: 'post', propertyName: 'token.accessToken' }, 
+        // xxx: { url: '/api/students/:name', method: 'post' }, 
+        
+        // students: { url: '/api/students/students/:name', method: 'post' }
+      }},
       local: {
         token: {
           property: 'token.accessToken',
@@ -105,10 +129,11 @@ export default {
           login: { url: '/api/login', method: 'post' },
           logout: { url: '/api/logout', method: 'post' },
           user: { url: '/api/user', method: 'get', propertyName: 'token.accessToken' },
-          students: [
-            { url: '/api/students', method: 'post' }, 
-            { url: '/api/students/:namea', method: 'post' }, 
-          ]
+          students:  { url: '/api/students', method: 'post', propertyName: 'token.accessToken' }, 
+          // get:  { url: `/api/students/:name`, method: 'post', propertyName: 'token.accessToken' }, 
+          add:  { url: '/api/students/new', method: 'post', propertyName: 'token.accessToken' }, 
+          // xxx: { url: '/api/students/:name', method: 'post' }, 
+          
           // students: { url: '/api/students/students/:name', method: 'post' }
         }
       

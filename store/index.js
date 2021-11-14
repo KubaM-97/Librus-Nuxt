@@ -1,7 +1,5 @@
 import { getAccessorType, getterTree, mutationTree } from 'typed-vuex'
 
-import { State, Getters, Mutations, Student, Parent, Address, SingleGrade } from '@/store/models';
-
 const getDefaultGrade = {
   score: null,
   weight: null, 
@@ -36,7 +34,7 @@ const getDefaultStudent = {
   }
 }
 export const state = () => ({
-  test: 'test',
+  test: 'teścik',
   student: getDefaultStudent,
   auth:{
     loggedIn: false,
@@ -44,40 +42,31 @@ export const state = () => ({
   }
 })
 
-type RootState = ReturnType<typeof state>
-type ExactlyOne<T, TKey = keyof T> = TKey extends keyof T
-  ? { [key in Exclude<keyof T, TKey>]?: never } & { [key in TKey]: T[key] }
-  : never;
 export const getters = getterTree(state, {
-    isAuthenticated(state: RootState) {
+    isAuthenticated(state) {
       return state.auth.loggedIn
     },
   
-    loggedInUser(state: RootState) {
+    loggedInUser(state) {
       return state.auth.user
     }
 })
-type UpdateStudent = {
-  property: keyof Omit<Student, "_id"|"grades"|"address"|"mother"|"father">,
-  value: string,
-  subProperty?: keyof Student["address"|"mother"|"father"]
-}
 
 export const mutations = mutationTree(state, {
-  updateStudentProperty(state: State, payload: UpdateStudent): void {
-    // if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
-    // else state.student[payload.property] = payload.value;
+  updateStudentProperty(state, payload) {
+    if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
+    else state.student[payload.property] = payload.value;
   },
-  resetStudent(state: State): void {
+  resetStudent(state) {
     state.student = {...getDefaultStudent}
   },
-  initGrade(state: State): void {
+  initGrade(state) {
     state.student.grades.push(getDefaultGrade)
   },
-  updateGrade(state: State, payload): void {
+  updateGrade(state, payload) {
     state.student.grades[payload.index] = payload.grade;
   },
-  removeGrade(state: State, payload: any): void {
+  removeGrade(state, payload) {
     state.student.grades[payload] = getDefaultGrade;
   },
 })

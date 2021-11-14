@@ -41,7 +41,7 @@ export default defineComponent({
     const { fetch } = useFetch(async () => {
       try {
         student.value = await $http.$post(
-          `/api/auth/students/${studentName}`,
+          `/api/students/${studentName}`,
           {
             group: root.$auth.user.group,
           },

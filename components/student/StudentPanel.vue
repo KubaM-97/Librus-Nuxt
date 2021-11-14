@@ -177,7 +177,7 @@ export default defineComponent({
         clonedStudent.grades = clonedStudent.grades.filter((grade) => grade.score && grade.weight)
 
         await $http.$put(
-          `/api/auth/students/${studentName}`,
+          `/api/students/${studentName}`,
           {
             student: clonedStudent,
             group: root.$auth.user.group,
