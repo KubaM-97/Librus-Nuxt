@@ -105,7 +105,11 @@ export default {
           login: { url: '/api/login', method: 'post' },
           logout: { url: '/api/logout', method: 'post' },
           user: { url: '/api/user', method: 'get', propertyName: 'token.accessToken' },
-          students: { url: '/api/students', method: 'post' }
+          students: [
+            { url: '/api/students', method: 'post' }, 
+            { url: '/api/students/:namea', method: 'post' }, 
+          ]
+          // students: { url: '/api/students/students/:name', method: 'post' }
         }
       
       },

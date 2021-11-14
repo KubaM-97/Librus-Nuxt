@@ -68,7 +68,7 @@ export default defineComponent({
         this.$toast.show(this.$t("logging_in_progress"));
         await this.$auth.loginWith("local", {
           data: {
-            username: login.value,
+            login: login.value,
             password: password.value,
           },
         });

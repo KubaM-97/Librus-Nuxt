@@ -5,24 +5,28 @@ import jsonwebtoken from 'jsonwebtoken'
 
 const refreshTokens = {}
 class LoginController {
+
   async login(req, res) {
-    console.log('TU JEST POLSKI LOGIN');
     try {
+
       const {
-        username,
+        login,
         password
       } = req.body
-
-    const db = await mongo.connect('users');
-    const collection = await db.collection('registeredUsers')
-    const results = await collection.findOne({
-        login: username,
+      const db = await mongo.connect('users');
+      const collection = await db.collection('registeredUsers')
+      const results = await collection.findOne({
+        login,
         password
       })
-    if (results) {
-      const { lastName, firstName, group } = results
-        const expiresIn = 2700
-        
+      if (results) {
+        const {
+          lastName,
+          firstName,
+          group
+        } = results;
+
+        const expiresIn = 900
         const refreshToken =
           Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1
 
@@ -38,53 +42,57 @@ class LoginController {
         refreshTokens[refreshToken] = {
           accessToken,
           user: {
-            username,
-            picture: 'https://github.com/nuxt.png',
-            name: 'User ' + username
+            lastName,
+            firstName,
+            group,
           }
         }
-
         res.json({
           token: {
             accessToken,
             refreshToken
           }
         })
-      } 
-      else {
+      } else {
         res.sendStatus(401)
       }
       await mongo.close()
-
     } catch (err) {
       console.error(err)
       res.sendStatus(500)
     }
+
   }
   async refresh(req, res) {
-    const { refreshToken } = req.body
-  
+    const {
+      refreshToken
+    } = req.body
+
     if (refreshToken in refreshTokens) {
-      const user = refreshTokens[refreshToken].user
-      const expiresIn = 21600
+      const {
+        lastName,
+        firstName,
+        group,
+      } = refreshTokens[refreshToken].user
+      const expiresIn = 3600
       const newRefreshToken =
         Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1
       delete refreshTokens[refreshToken]
-      const accessToken = jsonwebtoken.sign(
-        {
-          user: user.username,
+      const accessToken = jsonwebtoken.sign({
+          lastName,
+          firstName,
+          group,
         },
-        'dummy',
-        {
+        'dummy', {
           expiresIn
         }
       )
-  
+
       refreshTokens[newRefreshToken] = {
         accessToken,
         user
       }
-  
+
       res.json({
         token: {
           accessToken,
@@ -96,10 +104,17 @@ class LoginController {
     }
   }
   getUser(req, res) {
-    res.json({ user: req.user })
+    console.log('user', req.user);
+    res.json({
+      user: req.user
+    })
   }
   logout(_req, res) {
-    res.json({ status: 'OK' })
+
+    console.log('logout');
+    res.json({
+      status: 'OK'
+    })
   }
 }
 export const LoginActions = new LoginController()
