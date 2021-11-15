@@ -51,16 +51,11 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  ref,
-  useRouter,
-  useStore,
-} from "@nuxtjs/composition-api";
+import { defineComponent, ref } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   name: "LoggedOutView",
-  setup(_props, { root }) {
+  setup() {
     const login = ref("");
     const password = ref("");
     async function signIn() {
@@ -83,6 +78,10 @@ export default defineComponent({
             this.$toast.error(this.$t("login_and_password_must_match"));
             break;
           }
+          case 404: {
+            this.$toast.error(this.$t("user_not_found"));
+            break;
+          }
           case 500: {
             this.$toast.error(this.$t("server_error"));
             break;
@@ -92,9 +91,6 @@ export default defineComponent({
           }
         }
       }
-
-      // this.$auth.setUserToken(token, refreshToken)
-     
     }
     return {
       login,

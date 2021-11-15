@@ -2,60 +2,65 @@ import {
   mongo
 } from '../mongodb'
 import jsonwebtoken from 'jsonwebtoken'
-
+const bcrypt = require("bcrypt");
 const refreshTokens = {}
 class LoginController {
 
   async login(req, res) {
-    try {
 
+    try {
       const {
         login,
         password
       } = req.body
+
       const db = await mongo.connect('users');
       const collection = await db.collection('registeredUsers')
+
       const results = await collection.findOne({
-        login,
-        password
+        login
       })
-      if (results) {
-        const {
+      if (!results) return res.sendStatus(404)
+
+      bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null);
+
+      const isCorrectPassword = bcrypt.compareSync(password, results.password);
+
+      if (!isCorrectPassword) return res.sendStatus(401)
+
+      const {
+        lastName,
+        firstName,
+        group
+      } = results;
+
+      const expiresIn = 2700
+      const refreshToken =
+        Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1
+
+      const accessToken = jsonwebtoken.sign({
           lastName,
           firstName,
-          group
-        } = results;
-
-        const expiresIn = 900
-        const refreshToken =
-          Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1
-
-        const accessToken = jsonwebtoken.sign({
-            lastName,
-            firstName,
-            group,
-          },
-          'dummy', {
-            expiresIn
-          }
-        )
-        refreshTokens[refreshToken] = {
-          accessToken,
-          user: {
-            lastName,
-            firstName,
-            group,
-          }
+          group,
+        },
+        'dummy', {
+          expiresIn
         }
-        res.json({
-          token: {
-            accessToken,
-            refreshToken
-          }
-        })
-      } else {
-        res.sendStatus(401)
+      )
+      refreshTokens[refreshToken] = {
+        accessToken,
+        user: {
+          lastName,
+          firstName,
+          group,
+        }
       }
+      res.json({
+        token: {
+          accessToken,
+          refreshToken
+        }
+      })
       await mongo.close()
     } catch (err) {
       console.error(err)
@@ -74,7 +79,7 @@ class LoginController {
         firstName,
         group,
       } = refreshTokens[refreshToken].user
-      const expiresIn = 3600
+      const expiresIn = 21600
       const newRefreshToken =
         Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1
       delete refreshTokens[refreshToken]
@@ -104,14 +109,11 @@ class LoginController {
     }
   }
   getUser(req, res) {
-    console.log('user', req.user);
     res.json({
       user: req.user
     })
   }
   logout(_req, res) {
-
-    console.log('logout');
     res.json({
       status: 'OK'
     })

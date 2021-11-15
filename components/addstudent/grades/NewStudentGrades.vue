@@ -38,7 +38,7 @@ export default defineComponent({
       default: () => [],
     },
   },
-  setup(_props, { root }) {
+  setup() {
     const gradesLength = ref(1);
     const store = useStore();
     const grades = computed(() => store.state.student.grades);
@@ -46,23 +46,23 @@ export default defineComponent({
 
     function handleInitGrade() {
       gradesLength.value++;
-      store.commit('initGrade');
+      store.commit("initGrade");
     }
 
     function handleUpdateGrade(grade, index) {
       clonedGrades = [...grades.value];
       clonedGrades[index] = { ...grade };
 
-      store.commit('updateStudentProperty', {
+      store.commit("updateStudentProperty", {
         property: "grades",
         value: clonedGrades,
-      })
+      });
     }
 
     function handleRemoveGrade(index) {
       const refEl = this.$refs[`grade_${index}`][0].$el;
       refEl.parentNode.removeChild(refEl);
-      store.commit('removeGrade', index)
+      store.commit("removeGrade", index);
     }
     return {
       gradesLength,
@@ -94,11 +94,11 @@ export default defineComponent({
   .showAnotherGrade {
     top: 35px;
     right: 10px;
-  }
-  .showAnotherGrade button {
-    font-size: 19px;
-    padding: 1px 9px;
-    font-weight: 300;
+    button {
+      font-size: 19px;
+      padding: 1px 9px;
+      font-weight: 300;
+    }
   }
 }
 </style>

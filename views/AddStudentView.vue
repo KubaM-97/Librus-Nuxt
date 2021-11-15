@@ -32,7 +32,6 @@ export default defineComponent({
     const store = useStore();
     const gradesLength = ref(1);
     const student = computed(()=>store.state.student)
-    // console.log(store);
     const fullName = ref('')
     const PersonalStudentData = ref(null);
     const group = computed(()=>root.$auth.user.group).value
@@ -63,8 +62,7 @@ export default defineComponent({
         store.commit('resetStudent')
         router.push({ path: `/group/${group}` });
       } catch (err) {
-        console.error('błąd7');
-        // console.error(err);
+        console.error(err);
         this.$toast.error(root.$t('failed_to_add_new_student'));
       }
     };

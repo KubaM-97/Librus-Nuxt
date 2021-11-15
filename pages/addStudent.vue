@@ -9,7 +9,7 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 import AddStudentView from '@/views/AddStudentView.vue';
-import ClosePrompt from "@/components/global/ClosePrompt";
+import ClosePrompt from "@/components/addstudent/ClosePrompt";
 export default defineComponent({
   name: 'AddStudent',
   components: {

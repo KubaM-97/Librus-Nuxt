@@ -1,5 +1,4 @@
 import { defineComponent } from "@nuxtjs/composition-api";
-// import { SingleGrade } from '@/store/models/grade.ts'
 
 export default defineComponent({
   setup(_props, { root }) {

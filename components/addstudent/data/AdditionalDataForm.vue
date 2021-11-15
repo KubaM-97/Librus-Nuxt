@@ -92,7 +92,7 @@ export default defineComponent({
       default: () => {},
     },
   },
-  setup(props, { root }) {
+  setup(props) {
     const v = props.v;
 
     const orderedStudentProperties = ref([
@@ -135,18 +135,4 @@ input:focus {
   -moz-box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
   box-shadow: 0px 0px 3px 2px rgba(204, 204, 204, 0.9);
 }
-// ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-//     font-size: 80%;
-//     text-shadow: 5px 0px 20px  #f0351d, -5px 0px 20px  #f0351d, 0px 5px 20px  #f0351d, 0px -5px 20px  #f0351d;
-// }
-
-// :-ms-input-placeholder { /* Internet Explorer 10-11 */
-//     font-size: 80%;
-//     text-shadow: 5px 0px 20px  #f0351d, -5px 0px 20px  #f0351d, 0px 5px 20px  #f0351d, 0px -5px 20px  #f0351d;
-// }
-
-// ::-ms-input-placeholder { /* Microsoft Edge */
-//       font-size: 80%;
-//     text-shadow: 5px 0px 20px  #f0351d, -5px 0px 20px  #f0351d, 0px 5px 20px  #f0351d, 0px -5px 20px  #f0351d;
-// }
 </style>

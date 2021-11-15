@@ -1,12 +1,7 @@
 import {
   resolve
 } from 'path'
-import { NuxtConfig } from '@nuxt/types'
 export default {
-  alias: {
-    'images': resolve(__dirname, './assets/images'),
-  },
-  
   head: {
     title: 'Librus',
     htmlAttrs: {
@@ -35,6 +30,9 @@ export default {
       href: '/favicon.ico'
     }]
   },
+  alias: {
+    'images': resolve(__dirname, './assets/images'),
+  },
   css: [
     '@/assets/scss/main.scss',
   ],
@@ -45,8 +43,6 @@ export default {
   ],
   components: true,
   buildModules: [
-    'nuxt-typed-vuex',
-    // '@nuxt/typescript-build',
     '@nuxtjs/composition-api/module'
   ],
   pageTransition: {
@@ -60,83 +56,39 @@ export default {
   router: {
     middleware: ['auth']
   },
-  // auth: {
-  //   login: {
-  //     endpoint: 'api/auth/login',
-  //     propertyName: 'token',
-  //   },
-  //   logout: {
-  //     endpoint: 'api/logout',
-  //     method: 'GET',
-  //     paramTokenName: '',
-  //     appendToken: false
-  //   },
-  //   user: {
-  //     endpoint: 'api/user',
-  //     propertyName: 'user',
-  //     paramTokenName: '',
-  //     appendToken: false
-  //   },
-  //   storageTokenName: 'nuxt-auth-token',
-  //   tokenType: 'Bearer',
-  //   notLoggedInRedirectTo: '/login',
-  //   loggedInRedirectTo: '/'
-  // },
- 
   auth: {
     redirect: {
+      callback: '/callback',
       logout: '/loggedOut',
       login: '/loggedOut',
       home: '/'
     },
     strategies: {
-      customStrategy: {
-        scheme: '~/schemes/customScheme',
-        /* ... */
-      },
-      custom: { scheme: '~/schemes/customScheme',
-      token: {
-        property: 'token.accessToken',
-        global: true,
-        // required: true,
-        // type: 'Bearer'
-      },
-      user: {
-        property: 'user',
-        autoFetch: true
-      },
-      endpoints: {
-        login: { url: '/api/login', method: 'post' },
-        logout: { url: '/api/logout', method: 'post' },
-        user: { url: '/api/user', method: 'get', propertyName: 'token.accessToken' },
-        students:  { url: '/api/students/:name', method: 'post', propertyName: 'token.accessToken' }, 
-        // xxx: { url: '/api/students/:name', method: 'post' }, 
-        
-        // students: { url: '/api/students/students/:name', method: 'post' }
-      }},
       local: {
         token: {
           property: 'token.accessToken',
           global: true,
-          // required: true,
-          // type: 'Bearer'
         },
         user: {
           property: 'user',
           autoFetch: true
         },
         endpoints: {
-          login: { url: '/api/login', method: 'post' },
-          logout: { url: '/api/logout', method: 'post' },
-          user: { url: '/api/user', method: 'get', propertyName: 'token.accessToken' },
-          students:  { url: '/api/students', method: 'post', propertyName: 'token.accessToken' }, 
-          // get:  { url: `/api/students/:name`, method: 'post', propertyName: 'token.accessToken' }, 
-          add:  { url: '/api/students/new', method: 'post', propertyName: 'token.accessToken' }, 
-          // xxx: { url: '/api/students/:name', method: 'post' }, 
-          
-          // students: { url: '/api/students/students/:name', method: 'post' }
+          login: {
+            url: '/api/login',
+            method: 'post'
+          },
+          logout: {
+            url: '/api/logout',
+            method: 'post'
+          },
+          user: {
+            url: '/api/user',
+            method: 'get',
+            propertyName: 'token.accessToken'
+          },
         }
-      
+
       },
       localRefresh: {
         scheme: 'refresh',
@@ -150,8 +102,8 @@ export default {
           maxAge: false
         }
       },
-      },
-      },
+    },
+  },
   vue: {
     config: {
       productionTip: false,
@@ -161,7 +113,6 @@ export default {
   modules: [
     '@nuxtjs/axios',
     'bootstrap-vue/nuxt',
-    // '@nuxt/typescript-build',
     '@nuxtjs/toast',
     '@nuxtjs/auth-next',
     ['@nuxtjs/i18n', {
@@ -187,12 +138,10 @@ export default {
     duration: 3500,
   },
   module: {
-    rules: [
-      {
-        test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      }
-    ],
+    rules: [{
+      test: /\.s[ac]ss$/i,
+      use: ['style-loader', 'css-loader', 'sass-loader'],
+    }],
   },
   bootstrapVue: {
     bootstrapCSS: false,
@@ -201,14 +150,6 @@ export default {
   serverMiddleware: [
     '~/api',
   ],
-  // serverMiddleware: [
-  //   {
-  //     '/api': '~/api',
-  //   }
-  // ],
-
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
   build: {
     splitChunks: {
       layouts: false,

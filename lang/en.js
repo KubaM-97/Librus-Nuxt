@@ -111,6 +111,7 @@ export default {
   failed_to_update_student_data: 'Failed to update student\'s data',
   failed_form_message: 'Operation has been stopped. An error occured in the form',
 
+  user_not_found: 'Not found user with such login',
   login_and_password_must_match: 'Login and password must match!',
   alternative_log_error: 'Log error',
   server_error: 'Occured an error on server side',

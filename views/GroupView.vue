@@ -11,7 +11,7 @@ import TableHeader from "@/components/group/TableHeader.vue";
 import Students from "@/components/group/Students.vue";
 import FetchingLoader from "@/components/global/FetchingLoader.vue";
 
-import { defineComponent, useRoute, ref, useContext, useFetch } from "@nuxtjs/composition-api";
+import { defineComponent, ref, useContext, useFetch } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   name: "GroupView",
@@ -32,6 +32,7 @@ export default defineComponent({
         }}
       )
       } catch (error) {
+        console.log('e',error);
         const status = error.response.status;
         switch (status) {
           case 404: {

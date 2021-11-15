@@ -71,7 +71,6 @@ export default defineComponent({
   components: {
     AdditionalDataForm,
   },
-  //objects
   props: {
     v: {
       type: Object,

@@ -2,7 +2,8 @@
   background-color: $backgroundColor;
   color: $fontColor;
 }
-.gradeWeightColorLegend{
+
+.gradeWeightColorLegend {
   padding: 6px 15px;
   margin: 3px;
   display: inline-block;
@@ -10,6 +11,7 @@
   margin-right: 10px;
   position: relative;
 }
+
 table {
   width: 90%;
   margin: auto;
@@ -19,7 +21,8 @@ table {
     cursor: pointer;
   }
 
-  thead th, td {
+  thead th,
+  td {
     border: 1px solid white;
     text-align: center;
     padding: 7px;
@@ -31,75 +34,64 @@ table {
     height: 50px;
   }
 
-  table.summary td{
+  table.summary td {
     width: 25%;
     height: 50px;
   }
-  
- 
-  
 
-span.fire {
-  padding: 10px 35px;
-  text-shadow: none;
-  background-image: url(@/assets/images/fire.gif);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -webkit-animation: fire 5s linear infinite;
-  -webkit-backface-visibility: hidden;
+  span.fire {
+    padding: 10px 35px;
+    text-shadow: none;
+    background-image: url(@/assets/images/fire.gif);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: fire 5s linear infinite;
+    -webkit-backface-visibility: hidden;
+  }
 }
-}
-.gradeWeightColor{
+
+.gradeWeightColor {
   width: 30px;
   height: 35px;
 }
-.gradeWeightColor, .gradeWeightColorLegend{
-    font-size: 15px;
-    font-weight: 700;
-    padding: 5px 8px;
-    margin: 3px;
-    display: inline-block;
-    border: 2px solid white;
-    margin-right: 10px;
-    vertical-align: middle;
 
-    &.gradeWeightGreen {
-      @include gradeWeightSpecificColor(#3be029, #000001);
-    }
-    
-    &.gradeWeightYellow {
-      @include gradeWeightSpecificColor(#ffc800, #000001);
-    }
-    
-    &.gradeWeightRed {
-      @include gradeWeightSpecificColor(#ff001e, #fffffe);
-    }
+.gradeWeightColor,
+.gradeWeightColorLegend {
+  font-size: 15px;
+  font-weight: 700;
+  padding: 5px 8px;
+  margin: 3px;
+  display: inline-block;
+  border: 2px solid white;
+  margin-right: 10px;
+  vertical-align: middle;
+
+  &.gradeWeightGreen {
+    @include gradeWeightSpecificColor(#3be029, #000001);
+  }
+
+  &.gradeWeightYellow {
+    @include gradeWeightSpecificColor(#ffc800, #000001);
+  }
+
+  &.gradeWeightRed {
+    @include gradeWeightSpecificColor(#ff001e, #fffffe);
+  }
 }
 
+@media (max-width: 768px) {
 
-
-@keyframes fire {
-    0% {
-        background-position: 90% 95%
-    }
-    50% {
-        background-position: center;
-    }
-    100% {
-        background-position: 90% 95%
-    }
-}
-
-@media (max-width: 768px){
-  table td, table thead th{
+  table td,
+  table thead th {
     font-size: 9px;
     padding: 3px 1px;
   }
-  table thead th{
+
+  table thead th {
     font-size: 12px !important;
   }
 
-  .gradeWeightColor{
+  .gradeWeightColor {
     font-size: 8px;
     margin: 2px 3px;
     max-width: 15px;
@@ -107,7 +99,8 @@ span.fire {
     padding: 2px 4.5px !important;
     border: .5px solid white;
   }
-  span.fire{
+
+  span.fire {
     font-size: 7px;
     padding: 5px 3px !important;
   }

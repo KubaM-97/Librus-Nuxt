@@ -111,6 +111,7 @@ export default {
   failed_to_update_student_data: 'Nie udało się zaktualizować danych ucznia',
   failed_form_message: 'Operacja przerwana. W formularzu wystąpił błąd',
   
+  user_not_found: 'Nie znaleziono użytkownika z takim loginem',
   login_and_password_must_match: 'Login i hasło muszą się zgadzać!',
   alternative_log_error: 'Błąd logowania',
   server_error: 'Błąd po stronie serwera',

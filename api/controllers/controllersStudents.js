@@ -1,7 +1,6 @@
 import { mongo } from '../mongodb'
 class StudentController {
   async getAllStudents(req, res) {
-    console.log('getAllStudents22', req.body.group);
 
     const group = req.body.group;
     try {
@@ -23,7 +22,6 @@ class StudentController {
 
   }
   async getStudent(req, res) {
-    console.log('getStudent');
     const name = decodeURIComponent(req.params.name)
     const lastName = name.split(' ')[0]
     const firstName = name.split(' ')[1]
@@ -44,7 +42,6 @@ class StudentController {
     }
   }
   async createStudent(req, res) {
-    console.log('createStudent');
     const student = req.body.student;
     const group = req.body.group;
 
@@ -69,7 +66,6 @@ class StudentController {
 
   }
   async updateStudent(req, res) {
-    console.log('updateStudent');
     const student = req.body.student;
     const group = req.body.group;
 

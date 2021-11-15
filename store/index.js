@@ -1,5 +1,3 @@
-import { getAccessorType, getterTree, mutationTree } from 'typed-vuex'
-
 const getDefaultGrade = {
   score: null,
   weight: null, 
@@ -34,7 +32,6 @@ const getDefaultStudent = {
   }
 }
 export const state = () => ({
-  test: 'teścik',
   student: getDefaultStudent,
   auth:{
     loggedIn: false,
@@ -42,17 +39,21 @@ export const state = () => ({
   }
 })
 
-export const getters = getterTree(state, {
+export const getters = {
     isAuthenticated(state) {
       return state.auth.loggedIn
     },
   
     loggedInUser(state) {
       return state.auth.user
-    }
-})
+    },
 
-export const mutations = mutationTree(state, {
+    loggedOutPath(state) {
+      return state.auth.options.redirect.logout
+    }
+}
+
+export const mutations = () => ({
   updateStudentProperty(state, payload) {
     if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
     else state.student[payload.property] = payload.value;
@@ -71,8 +72,8 @@ export const mutations = mutationTree(state, {
   },
 })
 
-export const accessorType = getAccessorType({
-  state,
-  getters,
-  mutations,
-})
+// export default {
+//   state,
+//   getters,
+//   mutations,
+// }
