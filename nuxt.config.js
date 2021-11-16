@@ -140,6 +140,7 @@ export default {
     rules: [{
       test: /\.s[ac]ss$/i,
       use: ['style-loader', 'css-loader', 'sass-loader'],
+      query: {compact: false}
     }],
   },
   bootstrapVue: {
@@ -163,5 +164,5 @@ export default {
       }
     }
   },
-  target: 'server',
+  target: 'static',
 }
