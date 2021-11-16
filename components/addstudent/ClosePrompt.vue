@@ -1,13 +1,15 @@
 <template>
   <!-- <teleport to="body"> -->
-  <div class="confirm pt-4 text-center" v-show="showPrompt">
+  <div class="confirm py-4 text-center" v-show="showPrompt">
     <p class="mb-4">{{ $t("close_warning") }}</p>
-    <button class="p-1 my-3" name="showConfirmQuit" @click="quit">
-      {{ $t("close_quit") }}!
-    </button>
-    <button class="p-1 my-3" name="showConfirmStay" @click="stay">
-      {{ $t("close_stay") }}!
-    </button>
+    <div class="d-flex justify-content-around">
+      <button class="px-3 py-1" name="showConfirmStay" @click="stay">
+        {{ $t("close_stay") }}!
+      </button>
+      <button class="px-3 py-1" name="showConfirmQuit" @click="quit">
+        {{ $t("close_quit") }}!
+      </button>
+    </div>
   </div>
   <!-- </teleport> -->
 </template>
@@ -56,7 +58,7 @@ export default defineComponent({
     color: #faf5f5;
     border-radius: 10px;
     &:first-of-type {
-      background-color: rgb(241, 12, 12);
+      background-color: rgb(255, 49, 49);
     }
     &:last-of-type {
       background-color: rgb(5, 161, 5);

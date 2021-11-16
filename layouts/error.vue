@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div id="Error404">
-      <img src="~images/error404.png" alt="Error404" />
+    <div id="error404">
+      <img src="~images/error404.png" alt="error404" />
     </div>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-div#Error404 {
+div#error404 {
   position: absolute;
   left: 40%;
   transform: translateX(-50%);
@@ -29,7 +29,7 @@ div#Error404 {
   }
 }
 @media (max-width: 768px) {
-  div#Error404 {
+  div#error404 {
     left: 50%;
     img {
       width: 100vw;

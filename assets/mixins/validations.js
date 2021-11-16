@@ -18,7 +18,7 @@ const email = helpers.regex(
   "email",
   /^[a-zA-Z0-9-_\.]+@[a-zA-Z0-9-]+\.[a-z]+$/
 );
-const streetName = helpers.regex("streetName", /^[0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]*$/);
+const streetName = helpers.regex("streetName", /^[0-9A-ZĄĆĘŁŃÓŚŹŻ][0-9a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]*$/);
 const streetNr = helpers.regex(
   "streetNr",
   /^[0-9]+[a-zA-Z]?(\/?[0-9]*[a-zA-Z]?)?$/

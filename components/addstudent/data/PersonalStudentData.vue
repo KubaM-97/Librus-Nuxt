@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12 col-lg-4 mt-4">
-        <PersonalStudentDataForm ref="PersonalStudentDataForm" :v="v" :fullName="fullName" :student="student" />
+        <PersonalStudentDataForm ref="PersonalStudentDataForm" :v="v" :student="student" />
       </div>
       <div class="col-12 col-lg-8">
         <NewStudentGrades :grades="student.grades"/>
@@ -23,16 +23,10 @@ export default defineComponent({
     PersonalStudentDataForm,
     NewStudentGrades,
   },
-  
   props: {
     v: {
       type: Object,
       required: true,
-    },
-    fullName: {
-      type: String,
-      required: false,
-      default: '',
     },
     student: {
       type: Object,
@@ -44,11 +38,11 @@ export default defineComponent({
 </script>
 
 <style>
-.addStudentPanelMain {
+.newStudentPanelMain {
   padding: 40px 5px;
 }
 @media (max-width: 768px) {
-  .addStudentPanelMain {
+  .newStudentPanelMain {
     padding: 40px 10px;
   }
 }

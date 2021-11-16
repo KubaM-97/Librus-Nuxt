@@ -1,9 +1,9 @@
 <template>
-  <div class="addStudentPanelGradesContentSingle mb-3" :ref="`grade_${index}`">
+  <div class="newStudentPanelGradesContentSingle mb-3" :ref="`grade_${index}`">
     <div class="container">
       <div class="row singleGrade">
         <div class="col-2 col-md-3">
-          <div class="addStudentPanelGradesContentSingleGrade">
+          <div class="newStudentPanelGradesContentSingleGrade">
             <div class="select">
               <label for="score">{{ $t("grade_score") }}:</label>
               <select v-model.number="grade.score">
@@ -19,7 +19,7 @@
         </div>
 
         <div class="col-2 col-md-3">
-          <div class="addStudentPanelGradesContentSingleWeight">
+          <div class="newStudentPanelGradesContentSingleWeight">
             <label for="weight">{{ $t("grade_weight") }}:</label>
 
             <div class="select">
@@ -33,7 +33,7 @@
         </div>
 
         <div class="col-6 col-md-5">
-          <div class="addStudentPanelGradesContentSingleDescription">
+          <div class="newStudentPanelGradesContentSingleDescription">
             <span class="descriptionCount">{{ leftCharactersMessage }}.</span>
 
             <label class="description"
@@ -75,11 +75,6 @@ export default defineComponent({
       type: Number,
       required: true,
     },
-    characters: {
-      type: Number,
-      required: false,
-      default: 30,
-    },
     grade: {
       type: Object,
       required: false,
@@ -93,18 +88,18 @@ export default defineComponent({
       },
     },
   },
-  emits: ["initGrade", "updateGrade", "removeGrade"],
+  emits: ["updateGrade", "removeGrade"],
   setup(props, { root, emit }) {
     const index = props.index;
-    const characters = props.characters;
     const grade = props.grade || ref();
+    const characters = ref(30);
     const leftCharactersMessage = ref(
-      root.$t("characters_left_many", { characters })
+      root.$t("characters_left_many", { characters: characters.value - grade.description.length })
     );
     watch(
       () => [...grade.description],
       () => {
-        const counter = characters - grade.description.length;
+        const counter = characters.value - grade.description.length;
         switch (counter) {
           case 2:
           case 3:
@@ -145,7 +140,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.addStudentPanelGradesContentSingle {
+.newStudentPanelGradesContentSingle {
   .singleGrade {
     display: flex;
     align-items: flex-end;

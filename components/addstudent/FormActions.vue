@@ -1,5 +1,5 @@
 <template>
-  <div class="addStudentPanelButtons mt-4 text-right">
+  <div class="newStudentPanelButtons mt-4 text-right">
     <button
       type="button"
       name="addStudentCancel"
@@ -28,7 +28,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.addStudentPanelButtons {
+.newStudentPanelButtons {
   width: 90%;
   button {
     font-size: 14px;

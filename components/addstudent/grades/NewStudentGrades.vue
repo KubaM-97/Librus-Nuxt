@@ -1,6 +1,6 @@
 <template>
-  <div class="addStudentPanelGrades">
-    <div class="addStudentPanelGradesTitle mb-2">
+  <div class="newStudentPanelGrades">
+    <div class="newStudentPanelGradesTitle mb-2">
       <span class="addStudentGradeSubpanelTitle"
         >{{ $t("accumulated_grades") }}:</span
       >
@@ -8,10 +8,9 @@
     <Grade
       :ref="`grade_${n - 1}`"
       :index="n - 1"
-      class="addStudentPanelGradesContent"
+      class="newStudentPanelGradesContent"
       v-for="n in gradesLength"
       :key="`new_student_grades_${n}`"
-      @initGrade="handleInitGrade"
       @updateGrade="handleUpdateGrade"
       @removeGrade="handleRemoveGrade"
     />
@@ -23,9 +22,10 @@
 </template>
 
 <script>
-import { defineComponent, ref, computed } from "@nuxtjs/composition-api";
+import { defineComponent, ref, computed, useStore } from "@nuxtjs/composition-api";
 
 import Grade from "@/components/global/Grade.vue";
+import { getDefaultGrade } from "@/store";
 export default defineComponent({
   name: "NewStudentGrades",
   components: {
@@ -42,7 +42,6 @@ export default defineComponent({
     const gradesLength = ref(1);
     const store = useStore();
     const grades = computed(() => store.state.student.grades);
-    let clonedGrades = [...grades.value];
 
     function handleInitGrade() {
       gradesLength.value++;
@@ -50,7 +49,7 @@ export default defineComponent({
     }
 
     function handleUpdateGrade(grade, index) {
-      clonedGrades = [...grades.value];
+      const clonedGrades = [...grades.value];
       clonedGrades[index] = { ...grade };
 
       store.commit("updateStudentProperty", {
@@ -62,7 +61,15 @@ export default defineComponent({
     function handleRemoveGrade(index) {
       const refEl = this.$refs[`grade_${index}`][0].$el;
       refEl.parentNode.removeChild(refEl);
-      store.commit("removeGrade", index);
+
+      const clonedGrades = [...grades.value];
+      clonedGrades[index] = getDefaultGrade;
+
+      store.commit("updateStudentProperty", {
+        property: "grades",
+        value: clonedGrades,
+      });
+
     }
     return {
       gradesLength,
@@ -75,20 +82,20 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.addStudentPanelGrades {
+.newStudentPanelGrades {
   position: relative;
-  .addStudentPanelGradesTitle {
+  .newStudentPanelGradesTitle {
     padding-top: 10px;
     margin-bottom: 50px;
     font-size: 11px;
-    .addStudentPanelGradesContent {
+    .newStudentPanelGradesContent {
       width: 90%;
     }
   }
 }
 
 @media (max-width: 768px) {
-  .addStudentPanelGradesTitle {
+  .newStudentPanelGradesTitle {
     padding-top: 70px;
   }
   .showAnotherGrade {

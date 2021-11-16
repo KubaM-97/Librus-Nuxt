@@ -29,18 +29,16 @@
       </div>
     </div>
     <div class="pr-3 d-flex justify-content-end">
-      <NuxtLink
-        tag="button"
-        class="btn btn-lg"
-        :to="{ query: { edit: 'data' } }"
-        >{{ $t("edit_data") }}</NuxtLink
-      >
-      <NuxtLink
-        tag="button"
-        class="btn btn-lg"
-        :to="{ query: { edit: 'grades' } }"
-        >{{ $t("edit_grades") }}</NuxtLink
-      >
+      <NuxtLink :to="{ query: { edit: 'data' } }">
+        <button class="btn btn-lg">
+          {{ $t("edit_data") }}
+        </button>
+      </NuxtLink>
+      <NuxtLink :to="{ query: { edit: 'grades' } }">
+        <button class="btn btn-lg">
+          {{ $t("edit_grades") }}
+        </button>
+      </NuxtLink>
       <transition
         @enter="enter"
         @after-enter="afterEnter"
@@ -51,7 +49,6 @@
         <component
           ref="editStudentPanel"
           @close="handleClose"
-          @refresh="handleRefresh"
           @submit="handleSubmit"
           :is="chosenComponent"
           :basedStudent="student"
@@ -68,6 +65,7 @@ import EditGrades from "@/components/student/EditGrades";
 import validations from "@/assets/mixins/validations";
 import {
   defineComponent,
+  useStore,
   useRoute,
   useRouter,
   useContext,
@@ -94,7 +92,7 @@ export default defineComponent({
   mixins: [validations],
   emits: ["fetch"],
   setup(props, { root, emit }) {
-    const fetch = props.fetch;
+    const store = useStore();
     const route = useRoute();
     const router = useRouter();
     function afterEnter(el) {
@@ -104,7 +102,7 @@ export default defineComponent({
       el.querySelector(".overlay").style.animation =
         "showEditStudentPanelOverlay .7s";
       el.querySelector(".overlay").style.animationFillMode = "forwards";
-      el.style.overflow = "scroll";
+      el.style.overflow = "visible";
     }
     function enter(el, done) {
       el.addEventListener("animationend", function () {
@@ -132,7 +130,7 @@ export default defineComponent({
       el.style.animation = "showEditStudentPanel .7s";
       el.style.animationDirection = "reverse";
       el.style.animationDelay = ".7s";
-      el.style.overflow = "scroll";
+      el.style.overflow = "visible";
     }
 
     const orderedStudentProperties = ref([
@@ -174,13 +172,12 @@ export default defineComponent({
     async function handleSubmit(clonedStudent) {
       try {
         this.$toast.show(this.$t("updating_student_data_in_progress"));
-        clonedStudent.grades = clonedStudent.grades.filter((grade) => grade.score && grade.weight)
 
         await $http.$put(
           `/api/students/${studentName}`,
           {
             student: clonedStudent,
-            group: root.$auth.user.group,
+            group: store.getters.loggedInUser.group,
           },
           {
             headers: {
@@ -188,6 +185,7 @@ export default defineComponent({
             },
           }
         );
+
         await emit("fetch");
         this.$toast.success(this.$t("successfully_updated_student_data"));
       } catch (err) {
@@ -199,9 +197,6 @@ export default defineComponent({
       chosenComponent.value = null;
       router.replace({ query: null });
     }
-    async function handleRefresh() {
-      fetch();
-    }
     return {
       afterEnter,
       enter,
@@ -210,7 +205,6 @@ export default defineComponent({
       chosenComponent,
       orderedStudentProperties,
       handleClose,
-      handleRefresh,
       handleSubmit,
     };
   },
@@ -230,7 +224,7 @@ button {
   margin: 0 15px;
 }
 @media (max-width: 768px) {
-  .panel{
+  .panel {
     font-size: 9px;
     padding-right: 2px;
   }

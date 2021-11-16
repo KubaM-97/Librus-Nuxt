@@ -1,6 +1,5 @@
 <template>
-  <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute"
-  >
+  <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute">
     <div class="overlay" />
     <div class="container">
       <span class="d-block mb-3">{{ $t("edit_grade") }}:</span>
@@ -11,24 +10,25 @@
           :key="`edit_student_grade_${index}`"
           :index="index"
           :grade="grade"
-          @initGrade="handleInitGrade"
           @removeGrade="handleRemoveGrade"
         />
 
         <div class="showAnotherGrade">
-          <button name="moreGradesEditGrades" @click="handleInitGrade">+</button>
+          <button name="moreGradesEditGrades" @click="handleInitGrade">
+            +
+          </button>
         </div>
       </div>
-    <StudentTable :student="student" />
+      <StudentTable :student="student" />
 
-    <button
-      class="btn btn-success btn-lg save mr-3 px-2 py-1"
-      @click="$emit('submit', student)"
-    >
-      {{ $t("save_changes") }}
-    </button>
+      <button
+        class="btn btn-success btn-lg save mr-3 px-2 py-1"
+        @click="submit"
+      >
+        {{ $t("save_changes") }}
+      </button>
     </div>
-    
+
     <button class="closeEditPanelBtn position-absolute" @click="$emit('close')">
       <img class="closeEditPanelImg w-100" src="~images/eXit.png" />
     </button>
@@ -41,7 +41,6 @@ import StudentTable from "~/components/global/StudentTable";
 import { defineComponent, ref } from "@nuxtjs/composition-api";
 export default defineComponent({
   name: "EditGrades",
-  emit: ["close", "refresh"],
   components: {
     Grade,
     StudentTable,
@@ -50,7 +49,7 @@ export default defineComponent({
     basedStudent: {
       type: Object,
       required: true,
-    }
+    },
   },
   head() {
     return {
@@ -59,25 +58,39 @@ export default defineComponent({
       }),
     };
   },
-  setup(props) {
+  setup(props, { emit }) {
     const gradesLength = ref(0);
     const student = ref(JSON.parse(JSON.stringify(props.basedStudent)));
 
-    function handleInitGrade(){
-      gradesLength.value++
-      student.value.grades.push({score: null, weigth: null, description: '', date: ''})
+    function handleInitGrade() {
+      gradesLength.value++;
+      student.value.grades.push({
+        score: null,
+        weigth: null,
+        description: "",
+        date: "",
+      });
     }
 
     function handleRemoveGrade(index) {
-      const clonedClonedStudent = [...student.value.grades]
-      clonedClonedStudent.splice(index, 1)
-      student.value.grades = clonedClonedStudent
+      const clonedClonedStudent = [...student.value.grades];
+      clonedClonedStudent.splice(index, 1);
+      student.value.grades = clonedClonedStudent;
     }
+
+    function submit() {
+      student.value.grades = student.value.grades.filter(
+        (grade) => grade.score && grade.weight
+      );
+      emit("submit", student.value);
+    }
+
     return {
       gradesLength,
       student,
       handleInitGrade,
       handleRemoveGrade,
+      submit,
     };
   },
 });
@@ -113,6 +126,7 @@ div.editStudent {
       height: 40px;
       border-radius: 50px;
       outline: none;
+      z-index: 100;
       img.closeEditPanelImg {
         -webkit-box-shadow: 2px 2px 10px 2px #d54545;
         -moz-box-shadow: 2px 2px 10px 2px #d54545;

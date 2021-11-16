@@ -1,6 +1,5 @@
 <template>
   <div class="editStudent wrapper mb-3 pt-4 pb-3 position-absolute">
-
     <div class="overlay" />
 
     <form
@@ -69,7 +68,7 @@
               v-html="
                 typeof student[property] !== 'object' &&
                 student[property] !== null
-                  ? $t(student[property])
+                  ? student[property]
                   : nestedProperty(property)
               "
             ></span>
@@ -110,9 +109,9 @@
       </div>
     </form>
     <button
-      class="btn btn-success btn-lg save mr-3"
+      class="btn btn-success btn-lg save mr-3 px-2 py-1"
       :disabled="$v.student.$invalid"
-      @click="$emit('submit')"
+      @click="submit()"
     >
       {{ $t("save_changes") }}
     </button>
@@ -124,7 +123,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "@nuxtjs/composition-api";
+import { defineComponent, ref, useRoute, useRouter } from "@nuxtjs/composition-api";
 import validations from "@/assets/mixins/validations";
 
 export default defineComponent({
@@ -144,9 +143,11 @@ export default defineComponent({
       }),
     };
   },
-  emit: ["close", "refresh"],
-  setup(props, { root }) {
-    const student = ref(JSON.parse(JSON.stringify(props.basedStudent)));
+  setup(props, { root, emit }) {
+    const route = useRoute();
+    const router = useRouter();
+    const basedStudent = props.basedStudent;
+    const student = ref(JSON.parse(JSON.stringify(basedStudent)));
     function nestedProperty(property) {
       switch (property) {
         case "address": {
@@ -182,11 +183,23 @@ export default defineComponent({
       "father",
     ]);
 
+    function submit() {
+      const { lastName, firstName } = basedStudent;
+      if(lastName !== student.value.lastName || firstName !== student.value.firstName){
 
+        const fullPath = route.value.fullPath;
+        const originalUrl = fullPath.substring(0, fullPath.lastIndexOf("/"));
+        router.push({
+          path: `${originalUrl}/${encodeURIComponent(`${student.value.lastName} ${student.value.firstName}`)}`,
+        });
+      }
+      emit('submit', student.value)
+    }
     return {
       orderedStudentProperties,
       nestedProperty,
       student,
+      submit,
     };
   },
 });
@@ -224,6 +237,7 @@ div.editStudent {
       height: 40px;
       border-radius: 50px;
       outline: none;
+      z-index: 100;
       img.closeEditPanelImg {
         -webkit-box-shadow: 2px 2px 10px 2px #d54545;
         -moz-box-shadow: 2px 2px 10px 2px #d54545;

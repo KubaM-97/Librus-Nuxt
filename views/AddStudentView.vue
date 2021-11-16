@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-    <PersonalStudentData ref="PersonalStudentData" @getNewStudentName="getNewStudentNameHandler" :v="$v" :fullName="fullName" :student="student" :gradesLength="gradesLength"/>
-    <StudentTable :student="student" />
+    <PersonalStudentData ref="PersonalStudentData" @getNewStudentName="getNewStudentNameHandler" :v="$v" :student="student" :gradesLength="gradesLength"/>
+    <StudentTable :student="student" class="mt-4"/>
     <FormActions @cancel="handleCancel($v)" @submit="handleSubmit($v)" />
   </div>
 </template>
@@ -27,14 +27,14 @@ export default defineComponent({
     PersonalStudentData,
   },
   mixins: [validations],
-  setup(_, {root}) {
-    const router = useRouter();
+  setup(_, { root }) {
     const store = useStore();
+    const router = useRouter();
     const gradesLength = ref(1);
     const student = computed(()=>store.state.student)
     const fullName = ref('')
     const PersonalStudentData = ref(null);
-    const group = computed(()=>root.$auth.user.group).value
+    const group = computed(()=>store.getters.loggedInUser.group).value
     function handleCancel(v) {
       fullName.value = ''
       store.commit('resetStudent')

@@ -13,6 +13,7 @@
 import StudentPanel from "@/components/student/StudentPanel";
 import {
   defineComponent,
+  useStore,
   useRoute,
   useRouter,
   ref,
@@ -33,6 +34,7 @@ export default defineComponent({
     };
   },
   setup(_p, { root }) {
+    const store = useStore();
     const route = useRoute();
     const router = useRouter();
     const studentName = route.value.params.name;
@@ -43,7 +45,7 @@ export default defineComponent({
         student.value = await $http.$post(
           `/api/students/${studentName}`,
           {
-            group: root.$auth.user.group,
+            group: store.getters.loggedInUser.group,
           },
           {
             headers: {

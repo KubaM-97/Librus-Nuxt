@@ -12,14 +12,13 @@
       <tbody>
         <StudentRow v-for="(student, index) in students" :key="`group_student_${student._id}`" 
         :student="student" :orderNo="index+1" 
-        @click.native="router.push({ path: `/group/${$auth.$state.user.group}/student/${studentPathRoute(student)}`,
-        params: { id: student._id }})"/>
+        @click.native="router.push({ path: studentUrl(student), params: { id: student._id }})"/>
       </tbody>
     </table>
 </template>
 
 <script>
-import { defineComponent, useRouter } from "@nuxtjs/composition-api";
+import { defineComponent, useRouter, useStore } from "@nuxtjs/composition-api";
 import StudentRow from '@/components/global/StudentRow'
 export default defineComponent({
   name: "Students",
@@ -34,11 +33,15 @@ export default defineComponent({
     }
   },
   setup(){
+    const store = useStore()
     const router = useRouter()
-    function studentPathRoute(student) {
+    function studentUrlEndpoint(student) {
       return encodeURIComponent(`${student.lastName} ${student.firstName}`)
     } 
-    return {router, studentPathRoute}
+    function studentUrl(student) {
+      return `/group/${store.getters.loggedInUser.group}/student/${studentUrlEndpoint(student)}`
+    } 
+    return {router, studentUrl}
   }
 });
 </script>

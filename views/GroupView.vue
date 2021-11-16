@@ -20,7 +20,7 @@ export default defineComponent({
     Students,
     FetchingLoader,
   },
-  setup(_p, {root}) {
+  setup(_p, { root }) {
     const students = ref([]);
     const { $http } = useContext();
     const { fetch } = useFetch(async () => {
@@ -32,7 +32,6 @@ export default defineComponent({
         }}
       )
       } catch (error) {
-        console.log('e',error);
         const status = error.response.status;
         switch (status) {
           case 404: {

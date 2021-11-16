@@ -29,7 +29,11 @@ export default defineComponent({
     const onlyDescription = grades.some(grade => (!grade.score && !grade.weight) && grade.description);
     const invalidFormConditions = noScoreOrNoWeight || onlyDescription;
     const ClosePrompt = this.$refs.ClosePrompt;
-    (!ClosePrompt.showPrompt && invalidFormConditions) ? ClosePrompt.preventLeaving(to) : next()
+    if(!ClosePrompt.showPrompt && invalidFormConditions) ClosePrompt.preventLeaving(to)
+    else {
+      this.$store.commit('resetStudent')
+      next()
+    } 
   },
 });
 </script>

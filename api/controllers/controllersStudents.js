@@ -1,4 +1,5 @@
 import { mongo } from '../mongodb'
+const mongodb = require('mongodb') 
 class StudentController {
   async getAllStudents(req, res) {
 
@@ -72,10 +73,7 @@ class StudentController {
     try {
       const db = await mongo.connect('students');
       const collection = db.collection(`group_${group}`);
-
-      await collection.updateOne({
-        lastName: student.lastName, firstName: student.firstName 
-      },
+      await collection.updateOne({_id: mongodb.ObjectId(student._id)},
       {
         $set: {
           firstName: student.firstName,
@@ -88,9 +86,7 @@ class StudentController {
           father: student.father,
           grades: student.grades,
         }
-      }
-      
-      )
+      })
       res.sendStatus(201)
 
     } catch (err) {

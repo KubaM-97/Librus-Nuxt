@@ -56,6 +56,8 @@ export default {
   cancel: 'Anuluj',
 
   //Errors
+  firstName_error: 'Możliwe drugie imię np. Jan Maria',
+  lastName_error: 'Brak cyfr i znaków specjalnych. Możliwe drugie nazwisko po myślniku np. Ćwierć-Parzącha',
   pesel_error: 'Dokładnie 11 cyfr',
   phone_error,
   email_error,

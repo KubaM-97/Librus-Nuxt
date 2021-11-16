@@ -56,6 +56,8 @@ export default {
   cancel: 'Cancel',
 
   //Errors
+  firstName_error: 'Possibly a second name eg. Natalie Annie',
+  lastName_error: 'No numbers or special characters. Possibly a second name after dash eg. Ćwierć-Parzącha',
   pesel_error: 'Excatly 11 numbers',
   phone_error,
   email_error,
@@ -64,7 +66,7 @@ export default {
   address_streetFlat_error: 'Number + possibly a letter eg.116F',
   address_postCode_error: '_ _ - _ _ _',
   address_city_error: 'No numbers or special characters',
-  mother_firstName_error: 'Possibly a second name eg. Natalie Portman',
+  mother_firstName_error: 'Possibly a second name eg. Natalie Annie',
   mother_lastName_error: 'No numbers or special characters. Possibly a second name after dash eg. Ćwierć-Parzącha',
   mother_phone_error: phone_error,
   mother_email_error: email_error,

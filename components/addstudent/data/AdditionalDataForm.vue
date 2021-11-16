@@ -20,12 +20,6 @@
           typeof student[property] !== 'object' && student[property] !== null
         "
       >
-        <span
-          v-if="v.student[property].$invalid && v.student[property].$dirty"
-          class="col-12 d-block small errorDataLabel"
-        >
-          {{ $t(`${property}_error`) }}
-        </span>
         <input
           type="text"
           :placeholder="$t(property)"
@@ -35,56 +29,58 @@
           @change="setStudentState($event.target.value, property)"
           class="col-10"
           :class="{
-            'errorDataInput':
+            errorDataInput:
               v.student[property].$invalid && v.student[property].$dirty,
           }"
           autocomplete="off"
         />
+        <span
+          v-if="v.student[property].$invalid && v.student[property].$dirty"
+          class="col-12 d-block small errorDataLabel mt-1"
+        >
+          {{ $t(`${property}_error`) }}
+        </span>
       </template>
-      <template v-else
-        v-for="(_subValue, subProperty) in student[property]"
-      >
-      <span
+      <template v-else v-for="(_subValue, subProperty) in student[property]">
+        <input
+          :key="`new_student_property_input_${subProperty}`"
+          type="text"
+          :placeholder="$t(`${subProperty}`)"
+          :name="property[subProperty]"
+          :id="property[subProperty]"
+          :value="student[property][subProperty]"
+          @change="setStudentState($event.target.value, property, subProperty)"
+          class="col-10"
+          :class="{
+            errorDataInput:
+              v.student[property][subProperty].$invalid &&
+              v.student[property][subProperty].$dirty,
+          }"
+          autocomplete="off"
+        />
+        <span
           :key="`new_student_property_error_${subProperty}`"
-          v-if="v.student[property][subProperty].$invalid && v.student[property][subProperty].$dirty"
-          class="col-12 d-block small errorDataLabel"
+          v-if="
+            v.student[property][subProperty].$invalid &&
+            v.student[property][subProperty].$dirty
+          "
+          class="col-12 d-block small errorDataLabel mt-1"
         >
           {{ $t(`${property}_${subProperty}_error`) }}
         </span>
-      <input
-        :key="`new_student_property_input_${subProperty}`"
-        type="text"
-        :placeholder="$t(`${subProperty}`)"
-        :name="property[subProperty]"
-        :id="property[subProperty]"
-        :value="student[property][subProperty]"
-        @change="setStudentState($event.target.value, property, subProperty)"
-        class="col-10"
-        :class="{
-          'errorDataInput':
-            v.student[property][subProperty].$invalid &&
-            v.student[property][subProperty].$dirty,
-        }"
-        autocomplete="off"
-      />
       </template>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from "@nuxtjs/composition-api";
+import { defineComponent, ref, useStore } from "@nuxtjs/composition-api";
 export default defineComponent({
   props: {
     v: {
       type: Object,
       required: false,
       default: () => {},
-    },
-    fullName: {
-      type: String,
-      required: false,
-      default: "",
     },
     student: {
       type: Object,
@@ -94,7 +90,7 @@ export default defineComponent({
   },
   setup(props) {
     const v = props.v;
-
+    const store = useStore();
     const orderedStudentProperties = ref([
       "pesel",
       "phone",
@@ -105,11 +101,11 @@ export default defineComponent({
     ]);
     function setStudentState(value, property, subProperty) {
       v.student.$touch();
-       store.commit('updateStudentProperty', {
+      store.commit("updateStudentProperty", {
         property,
         value: value.trim(),
-        subProperty
-      })
+        subProperty,
+      });
     }
     return {
       orderedStudentProperties,

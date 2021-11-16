@@ -1,6 +1,6 @@
-const getDefaultGrade = {
-  score: null,
-  weight: null, 
+export const getDefaultGrade = {
+  score: '',
+  weight: '',
   description: '',
   date: ''
 }
@@ -33,47 +33,29 @@ const getDefaultStudent = {
 }
 export const state = () => ({
   student: getDefaultStudent,
-  auth:{
-    loggedIn: false,
-    user: {}
-  }
 })
 
 export const getters = {
-    isAuthenticated(state) {
-      return state.auth.loggedIn
-    },
-  
-    loggedInUser(state) {
-      return state.auth.user
-    },
+  isAuthenticated(state) {
+    return state.auth.loggedIn
+  },
 
-    loggedOutPath(state) {
-      return state.auth.options.redirect.logout
-    }
+  loggedInUser(state) {
+    return state.auth.user
+  },
 }
 
-export const mutations = () => ({
+export const mutations = {
   updateStudentProperty(state, payload) {
-    if(payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
+    if (payload.subProperty) state.student[payload.property][payload.subProperty] = payload.value;
     else state.student[payload.property] = payload.value;
   },
   resetStudent(state) {
-    state.student = {...getDefaultStudent}
+    state.student = {
+      ...getDefaultStudent
+    }
   },
   initGrade(state) {
     state.student.grades.push(getDefaultGrade)
   },
-  updateGrade(state, payload) {
-    state.student.grades[payload.index] = payload.grade;
-  },
-  removeGrade(state, payload) {
-    state.student.grades[payload] = getDefaultGrade;
-  },
-})
-
-// export default {
-//   state,
-//   getters,
-//   mutations,
-// }
+}

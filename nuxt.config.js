@@ -58,10 +58,9 @@ export default {
   },
   auth: {
     redirect: {
-      callback: '/callback',
       logout: '/loggedOut',
       login: '/loggedOut',
-      home: '/'
+      home: '/',
     },
     strategies: {
       local: {
@@ -94,7 +93,7 @@ export default {
         scheme: 'refresh',
         token: {
           property: 'token.accessToken',
-          maxAge: 15
+          maxAge: 21600
         },
         refreshToken: {
           property: 'token.refreshToken',
