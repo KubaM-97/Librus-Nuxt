@@ -27,7 +27,7 @@ export default {
     link: [{
       rel: 'icon',
       type: 'image/x-icon',
-      href: '../assets/images/logo.png'
+      href: '../assets/images/Logo.png'
     }]
   },
   alias: {
@@ -164,4 +164,7 @@ export default {
     }
   },
   target: 'static',
+  axios: {
+    baseURL: 'https://localhost:3003'
+  }
 }
