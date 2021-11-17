@@ -74,7 +74,7 @@ export default {
         },
         endpoints: {
           login: {
-            url: '/login',
+            url: '/api/login',
             method: 'post'
           },
           logout: {
@@ -165,7 +165,7 @@ export default {
   },
   target: 'static',
   axios: {
-    baseURL: 'https://kubam97-librus2/api',
+    baseURL: 'https://kubam97-librus2',
     proxy: true,
   },
   // or provide a runtime config
