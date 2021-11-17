@@ -165,22 +165,22 @@ export default {
   },
   target: 'static',
   axios: {
-    baseURL: 'https://kubam97-librus23',
+    baseURL: 'https://kubam97-librus2',
     proxy: true,
   },
   // or provide a runtime config
 // server and clientside
-publicRuntimeConfig: {
-  axios: {
-    browserBaseURL: 'https://kubam97-librus2',
-    proxy: true,
-  }
-},
+// publicRuntimeConfig: {
+//   axios: {
+//     browserBaseURL: 'https://kubam97-librus2',
+//     proxy: true,
+//   }
+// },
 
-// serverside only
-privateRuntimeConfig: {
-  axios: {
-    baseURL: 'https://kubam97-librus4'
-  }
-},
+// // serverside only
+// privateRuntimeConfig: {
+//   axios: {
+//     baseURL: 'https://kubam97-librus4'
+//   }
+// },
 }
