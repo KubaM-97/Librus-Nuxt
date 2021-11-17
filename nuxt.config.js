@@ -165,6 +165,6 @@ export default {
   },
   target: 'static',
   axios: {
-    baseURL: 'https://kubam97-librus2'
+    baseURL: 'http://kubam97-librus2'
   }
 }
