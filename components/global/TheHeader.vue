@@ -38,12 +38,12 @@
         class="btn btn-primary btn-lg with-logout-icon"
         @click="$auth.logout()"
       >
-        <img
+        <!-- <img
           class="pl-1 pl-md-0"
           src="~images/logout.png"
           alt="logout icon"
           height="20"
-        />
+        /> -->
         <span class="align-bottom">{{ $t("sign_out") }}</span>
       </button>
     </nav>
