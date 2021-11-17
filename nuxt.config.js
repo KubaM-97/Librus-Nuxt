@@ -167,5 +167,19 @@ export default {
   axios: {
     baseURL: 'https://kubam97-librus2',
     proxy: true,
+  },
+  // or provide a runtime config
+// server and clientside
+publicRuntimeConfig: {
+  axios: {
+    browserBaseURL: 'https://kubam97-librus3'
   }
+},
+
+// serverside only
+privateRuntimeConfig: {
+  axios: {
+    baseURL: 'https://kubam97-librus4'
+  }
+},
 }
