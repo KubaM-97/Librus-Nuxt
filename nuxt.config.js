@@ -163,19 +163,19 @@ export default {
       }
     }
   },
-  target: 'static',
+  target: 'server',
   axios: {
-    baseURL: 'https://kubam97-librus2',
+    baseURL: 'https://kubam97-librus23',
     proxy: true,
   },
   // or provide a runtime config
 // server and clientside
-// publicRuntimeConfig: {
-//   axios: {
-//     browserBaseURL: 'https://kubam97-librus2/api',
-//     proxy: true,
-//   }
-// },
+publicRuntimeConfig: {
+  axios: {
+    browserBaseURL: 'https://kubam97-librus2',
+    proxy: true,
+  }
+},
 
 // serverside only
 privateRuntimeConfig: {
