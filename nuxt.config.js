@@ -163,7 +163,7 @@ export default {
       }
     }
   },
-  target: 'server',
+  target: 'static',
   axios: {
     baseURL: 'https://kubam97-librus23',
     proxy: true,
