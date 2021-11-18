@@ -174,7 +174,7 @@ export default {
 // server and clientside
 publicRuntimeConfig: {
   axios: {
-    browserBaseURL: 'https://kubam97-librus233',
+    browserBaseURL: 'https://kubam97-librus.onrender.com',
     proxy: true,
   }
 },
