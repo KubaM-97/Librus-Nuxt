@@ -9,7 +9,7 @@ class LoginController {
   async login(req, res) {
     // res.sendStatus(400)
     console.log('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Origin', '*');
     try {
       const {
         login,
