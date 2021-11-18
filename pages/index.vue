@@ -1,5 +1,5 @@
 <template>
-<div>INDEX</div>
+<div>INDEX, {{$auth.loggedIn}}}}{{$auth.user}}</div>
 </template>
 
 <script>
