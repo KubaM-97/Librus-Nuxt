@@ -65,7 +65,7 @@ class LoginController {
       })
       await mongo.close()
     } catch (err) {
-      console.error(err)
+      console.log(err)
       res.json({err})
       // res.sendStatus(501).json({err})
     }
