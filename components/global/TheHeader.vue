@@ -2,7 +2,7 @@
   <header class="main-header">
     <header class="w-50 d-inline-block align-bottom">
       <div class="logo">
-        <img src="~images/logo.png" />
+        <!-- <img src="~images/logo.png" /> -->
       </div>
 
       <div class="logo">
@@ -38,12 +38,12 @@
         class="btn btn-primary btn-lg with-logout-icon"
         @click="$auth.logout()"
       >
-        <img
+        <!-- <img
           class="pl-1 pl-md-0"
           src="~images/logout.png"
           alt="logout icon"
           height="20"
-        />
+        /> -->
         <span class="align-bottom">{{ $t("sign_out") }}</span>
       </button>
     </nav>

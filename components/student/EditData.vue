@@ -117,7 +117,7 @@
     </button>
 
     <button class="closeEditPanelBtn position-absolute" @click="$emit('close')">
-      <img class="closeEditPanelImg w-100" src="~images/eXit.png" />
+      <!-- <img class="closeEditPanelImg w-100" src="~images/eXit.png" /> -->
     </button>
   </div>
 </template>

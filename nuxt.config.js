@@ -27,7 +27,7 @@ export default {
     link: [{
       rel: 'icon',
       type: 'image/x-icon',
-      href: '/favicon.ico'
+      href: '../assets/images/Logo.png'
     }]
   },
   alias: {
@@ -165,4 +165,23 @@ export default {
     }
   },
   target: 'static',
+  axios: {
+    baseURL: 'https://kubam97-librus2',
+    proxy: true,
+  },
+  // or provide a runtime config
+// server and clientside
+// publicRuntimeConfig: {
+//   axios: {
+//     browserBaseURL: 'https://kubam97-librus2',
+//     proxy: true,
+//   }
+// },
+
+// // serverside only
+// privateRuntimeConfig: {
+//   axios: {
+//     baseURL: 'https://kubam97-librus4'
+//   }
+// },
 }

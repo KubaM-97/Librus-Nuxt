@@ -1,6 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 import jwt from 'express-jwt'
 
 const login = require('./routes/login')
@@ -8,6 +9,7 @@ const students = require('./routes/students')
 
 const app = express()
 
+app.use(cors())
 app.use(cookieParser())
 app.use(bodyParser.json())
 
