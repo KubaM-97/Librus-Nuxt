@@ -164,19 +164,19 @@ export default {
       }
     }
   },
-  target: 'static',
+  target: 'server',
   axios: {
-    baseURL: 'https://kubam97-librus2',
+    baseURL: 'https://librus-nuxt.hostman.site',
     proxy: true,
   },
   // or provide a runtime config
 // server and clientside
-// publicRuntimeConfig: {
-//   axios: {
-//     browserBaseURL: 'https://kubam97-librus2',
-//     proxy: true,
-//   }
-// },
+publicRuntimeConfig: {
+  axios: {
+    browserBaseURL: 'https://kubam97-librus233',
+    proxy: true,
+  }
+},
 
 // // serverside only
 // privateRuntimeConfig: {
