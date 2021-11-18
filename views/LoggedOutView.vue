@@ -51,13 +51,38 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "@nuxtjs/composition-api";
+import { defineComponent, ref, useContext, useFetch } from "@nuxtjs/composition-api";
 
 export default defineComponent({
   name: "LoggedOutView",
   setup() {
     const login = ref("");
     const password = ref("");
+    const { $http } = useContext();
+    useFetch(async () => {
+      try{
+        const x = await $http.$post(`/api/students/`, 
+        { group: '3B' }
+      )
+      console.log(x);
+      } catch (error) {
+        const status = error.response;
+        console.log('errorek', status);
+        // switch (status) {
+        //   case 404: {
+        //     root.$toast.error(root.$t("failed_to_fetch_students_list"));
+        //     break;
+        //   }
+        //   case 500: {
+        //     root.$toast.error(root.$t("server_error"));
+        //     break;
+        //   }
+        //   default: {
+        //     root.$toast.error(root.$t("alternative_log_error"));
+        //   }
+        // }
+      }
+    })
     async function signIn() {
       try {
         this.$toast.show(this.$t("logging_in_progress"));
