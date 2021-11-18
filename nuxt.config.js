@@ -151,6 +151,7 @@ export default {
     '~/api',
   ],
   build: {
+    babel: { compact: true },
     splitChunks: {
       layouts: false,
       pages: true,
