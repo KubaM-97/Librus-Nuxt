@@ -14,6 +14,7 @@ class StudentController {
       results.length ? res.json(results) : res.sendStatus(404)
 
       mongo.close();
+      res.sendStatus(204)
 
     } catch (err) {
       console.error(err);
