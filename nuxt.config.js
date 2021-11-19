@@ -180,9 +180,9 @@ publicRuntimeConfig: {
 },
 
 // // serverside only
-// privateRuntimeConfig: {
-//   axios: {
-//     baseURL: 'https://kubam97-librus4'
-//   }
-// },
+privateRuntimeConfig: {
+  axios: {
+    baseURL: 'https://kubam97-librus4'
+  }
+},
 }
