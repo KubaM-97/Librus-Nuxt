@@ -163,9 +163,9 @@ export default {
       }
     }
   },
-  target: 'static',
+  target: 'server',
   axios: {
-    baseURL: 'https://kubam97-librus2',
+    // baseURL: 'https://kubam97-librus2',
     proxy: true,
   },
   // or provide a runtime config
