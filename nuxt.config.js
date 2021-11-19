@@ -165,7 +165,7 @@ export default {
       }
     }
   },
-  target: 'server',
+  target: 'static',
   axios: {
     baseURL: 'https://librus-nuxt.hostman.site',
     proxy: true,
