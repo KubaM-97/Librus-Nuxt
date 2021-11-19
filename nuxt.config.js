@@ -172,12 +172,12 @@ export default {
   },
   // or provide a runtime config
 // server and clientside
-// publicRuntimeConfig: {
+publicRuntimeConfig: {
   axios: {
     browserBaseURL: 'https://kubam97-librus.onrender.com',
     proxy: true,
   }
-// },
+},
 
 // // serverside only
 // privateRuntimeConfig: {
