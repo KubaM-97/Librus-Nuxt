@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { defineComponent, useRouter, useStore,useContext, useFetch } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useRouter, useStore,useContext, useFetch } from '@nuxtjs/composition-api'
 // import GroupView from "@/views/GroupView.vue";
 
 export default defineComponent({
