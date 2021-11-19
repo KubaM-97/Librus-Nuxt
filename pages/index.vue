@@ -27,6 +27,8 @@ export default defineComponent({
           Authorization: root.$auth.strategy.token.get()
         }}
       )
+      console.log('llllllllllllllll');
+      console.log(students.value);
        root.$toast.success('pobrano')
       } catch (error) {
         const status = error.response.status;
