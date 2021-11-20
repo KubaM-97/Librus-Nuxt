@@ -179,7 +179,7 @@ publicRuntimeConfig: {
   },
   
     http: {
-      browserBaseURL: 'https://kubam97-librus.onrender.com55'
+      browserBaseURL: 'https://kubam97-librus.onrender.com'
     },
 },
 
