@@ -36,8 +36,7 @@ export default defineComponent({
     const store = useStore()
     const router = useRouter()
     function studentUrlEndpoint(student) {
-      return 'xxx'
-      // return encodeURIComponent(`${student.lastName} ${student.firstName}`)
+      return encodeURIComponent(`${student.lastName} ${student.firstName}`)
     } 
     function studentUrl(student) {
       return `/group/${store.getters.loggedInUser.group}/student/${studentUrlEndpoint(student)}`

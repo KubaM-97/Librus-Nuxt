@@ -23,7 +23,7 @@ class StudentController {
 
   }
   async getStudent(req, res) {
-    // const name = decodeURIComponent(req.params.name)
+    const name = decodeURIComponent(req.params.name)
     const lastName = name.split(' ')[0]
     const firstName = name.split(' ')[1]
     const group = req.body.group;

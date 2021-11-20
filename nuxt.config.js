@@ -169,33 +169,13 @@ export default {
   },
   target: 'server',
   ssr: false,
-  axios: {
-    // baseURL: 'https://kubam97-librus.onrender.com',
-    proxy: true,
-  },
-  // or provide a runtime config
-// server and clientside
-publicRuntimeConfig: {
-  axios: {
-    browserBaseURL: 'https://kubam97-librus.onrender.com',
-    proxy: true,
-  },
-  
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: 'https://kubam97-librus.onrender.com',
+      proxy: true,
+    },
     http: {
       browserBaseURL: 'https://kubam97-librus.onrender.com'
     },
-},
-
-// // serverside only
-privateRuntimeConfig: {
-  axios: {
-    baseURL: 'https://kubam97-librus4'
-  },
-    http: {
-      baseURL: 'https://kubam97-librus45'
-    }
-},
-http: {
-    baseURL: 'http://localhost:4011', // Used as fallback if no runtime config is provided
-  },
+  }
 }
