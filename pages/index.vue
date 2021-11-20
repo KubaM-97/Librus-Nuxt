@@ -7,7 +7,7 @@ export default defineComponent({
     setup(_p, {root}) {
         const store = useStore()
         const router = useRouter()
-        if(store.getters.isAuthenticated) router.push({ path: `group/${store.getters.loggedInUser.group}` })
+        if(store.getters.isAuthenticated) router.push({ path: `group/${root.$auth.user.group}` })
     },
 })
 </script>

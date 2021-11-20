@@ -1,1 +1,0 @@
-window.__NUXT__=(function(a,b,c){return {staticAssetsBase:"\u002F_nuxt\u002Fstatic\u002F1637400560",layout:"default",error:a,state:a,serverRendered:false,routePath:b,config:{axios:{browserBaseURL:c,proxy:true},http:{browserBaseURL:c},_app:{basePath:b,assetsPath:"\u002F_nuxt\u002F",cdnURL:a}},globalRefs:{}}}(null,"\u002F","https:\u002F\u002Fkubam97-librus.onrender.com"));

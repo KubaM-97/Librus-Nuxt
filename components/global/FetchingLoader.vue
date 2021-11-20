@@ -9,7 +9,7 @@
     </button>
   </div>
   <div class="image" v-else-if="fetchState.pending">
-    <!-- <img src="~images/loader.gif" alt="loading..." /> -->
+    <img src="~images/loader.gif" alt="loading..." />
   </div>
 </template>
 <script>
