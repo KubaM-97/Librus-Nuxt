@@ -171,11 +171,11 @@ export default {
   ssr: false,
   publicRuntimeConfig: {
     axios: {
-      browserBaseURL: process.env.baseURL,
+      browserBaseURL: 'https://kubam97-librus.onrender.com',
       proxy: true,
     },
     http: {
-      browserBaseURL: process.env.baseURL
+      browserBaseURL: 'https://kubam97-librus.onrender.com'
     },
   }
 }
