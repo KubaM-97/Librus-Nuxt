@@ -27,7 +27,7 @@ export default {
     link: [{
       rel: 'icon',
       type: 'image/x-icon',
-      href: '../assets/images/Logo.png'
+      href: '../assets/images/logo.png'
     }]
   },
   alias: {
@@ -41,6 +41,9 @@ export default {
     '~/plugins/mixins.js',
     '~/plugins/vuelidate.js',
   ],
+  generate: {
+ 
+},
   components: true,
   buildModules: [
     '@nuxtjs/composition-api/module'
@@ -140,7 +143,6 @@ export default {
     rules: [{
       test: /\.s[ac]ss$/i,
       use: ['style-loader', 'css-loader', 'sass-loader'],
-      query: {compact: false}
     }],
   },
   bootstrapVue: {
@@ -166,24 +168,14 @@ export default {
     }
   },
   target: 'server',
-  axios: {
-    baseURL: 'https://librus-nuxt.hostman.site',
-    proxy: true,
-  },
-  // or provide a runtime config
-// server and clientside
-publicRuntimeConfig: {
-  axios: {
-    browserBaseURL: 'https://kubam97-librus.onrender.com',
-    proxy: true,
+  ssr: false,
+  publicRuntimeConfig: {
+    axios: {
+      browserBaseURL: 'https://kubam97-librus.onrender.com',
+      proxy: true,
+    },
+    http: {
+      browserBaseURL: 'https://kubam97-librus.onrender.com'
+    },
   }
-},
-
-// serverside only
-privateRuntimeConfig: {
-  axios: {
-    baseURL: 'https://kubam97-librus4',
-    proxy: true,
-  }
-},
 }

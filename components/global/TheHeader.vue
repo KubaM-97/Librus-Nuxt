@@ -1,8 +1,8 @@
 <template>
-  <header class="main-header">
-    <header class="w-50 d-inline-block align-bottom">
+  <header class="main-header" v-if="!loading">
+   <header class="w-50 d-inline-block align-bottom">
       <div class="logo">
-        <!-- <img src="~images/logo.png" /> -->
+        <img src="~images/logo.png" />
       </div>
 
       <div class="logo">
@@ -38,12 +38,12 @@
         class="btn btn-primary btn-lg with-logout-icon"
         @click="$auth.logout()"
       >
-        <!-- <img
+        <img
           class="pl-1 pl-md-0"
           src="~images/logout.png"
           alt="logout icon"
           height="20"
-        /> -->
+        />
         <span class="align-bottom">{{ $t("sign_out") }}</span>
       </button>
     </nav>
@@ -63,6 +63,14 @@ export default {
       el.style.fontStyle = binding.value;
     },
   },
+   data: () => ({
+       loading: true
+     }),
+  created(){
+     this.$nextTick(function () {
+           this.loading = false
+       })
+  }
 };
 </script>
 

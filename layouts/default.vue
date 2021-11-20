@@ -1,9 +1,6 @@
 <template>
   <div>
-    <!-- <TheHeader v-if="$store.getters.isAuthenticated"/> -->
-    <!-- <TheHeader v-if="$auth.loggedIn"/> -->
-    LoggedIn: {{$auth.loggedIn}}
-    Loggeduser: {{$auth.user}}
+    <TheHeader v-if="$auth.loggedIn"/>
     <Nuxt />
   </div>
 </template>
