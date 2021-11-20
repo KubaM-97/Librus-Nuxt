@@ -168,7 +168,7 @@ export default {
     }
   },
   target: 'static',
-  ssr: true,
+  ssr: false,
   axios: {
     // baseURL: 'https://kubam97-librus.onrender.com',
     proxy: true,
