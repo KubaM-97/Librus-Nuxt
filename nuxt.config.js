@@ -27,7 +27,7 @@ export default {
     link: [{
       rel: 'icon',
       type: 'image/x-icon',
-      href: '../assets/images/Logo.png'
+      href: '../assets/images/logo.png'
     }]
   },
   alias: {

@@ -106,7 +106,7 @@ export default defineComponent({
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-image: url(@/assets/images/Logo.png);
+  background-image: url(@/assets/images/logo.png);
   background-position: center;
   background-size: cover;
   width: 340px;
