@@ -41,6 +41,9 @@ export default {
     '~/plugins/mixins.js',
     '~/plugins/vuelidate.js',
   ],
+  generate: {
+ 
+},
   components: true,
   buildModules: [
     '@nuxtjs/composition-api/module'
@@ -151,7 +154,6 @@ export default {
   ],
   build: {
     babel: { compact: true },
-
     splitChunks: {
       layouts: false,
       pages: true,

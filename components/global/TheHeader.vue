@@ -1,6 +1,6 @@
 <template>
-  <header class="main-header">
-    <header class="w-50 d-inline-block align-bottom">
+  <header class="main-header" v-if="!loading">
+   <header class="w-50 d-inline-block align-bottom">
       <div class="logo">
         <img src="~images/logo.png" />
       </div>
@@ -63,6 +63,14 @@ export default {
       el.style.fontStyle = binding.value;
     },
   },
+   data: () => ({
+       loading: true
+     }),
+  created(){
+     this.$nextTick(function () {
+           this.loading = false
+       })
+  }
 };
 </script>
 
