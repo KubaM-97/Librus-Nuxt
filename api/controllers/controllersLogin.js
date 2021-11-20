@@ -7,8 +7,6 @@ const refreshTokens = {}
 class LoginController {
 
   async login(req, res) {
-    // res.sendStatus(400)
-    // res.setHeader('Access-Control-Allow-Origin', '*');
     try {
       const {
         login,
