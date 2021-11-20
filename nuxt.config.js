@@ -27,7 +27,7 @@ export default {
     link: [{
       rel: 'icon',
       type: 'image/x-icon',
-      href: '../assets/images/logo.png'
+      href: '/logo.png'
     }]
   },
   alias: {
@@ -41,9 +41,6 @@ export default {
     '~/plugins/mixins.js',
     '~/plugins/vuelidate.js',
   ],
-  generate: {
- 
-},
   components: true,
   buildModules: [
     '@nuxtjs/composition-api/module'
