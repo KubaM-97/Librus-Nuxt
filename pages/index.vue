@@ -21,15 +21,12 @@ export default defineComponent({
     const { $http } = useContext();
     useFetch(async () => {
       try{
-        students.value = await $http.$post(`https://kubam97-librus.onrender.com/api/students/`, 
+        students.value = await $http.$post(`/api/students/`, 
         { group: root.$auth.user.group },{
         headers:{
           Authorization: root.$auth.strategy.token.get()
         }}
       )
-      console.log('llllllllllllllll');
-      console.log(students.value);
-       root.$toast.success('pobrano')
       } catch (error) {
         const status = error.response.status;
         switch (status) {
@@ -47,6 +44,7 @@ export default defineComponent({
         }
       }
     })
+
     return {
         students
     }
