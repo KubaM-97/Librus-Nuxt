@@ -1,0 +1,70 @@
+.wrapper {
+  width: 90%;
+  max-width: 1400px;
+  margin: 100px auto;
+  -webkit-box-shadow: 3px 3px 30px 5px #00c3ff;
+  -moz-box-shadow: 3px 3px 30px 5px #00c3ff;
+  box-shadow: 3px 3px 30px 5px #00c3ff;
+  background-color: rgba(0, 0, 0, 0.55);
+  text-align: center;
+  font-size: 15px;
+  padding: 40px 0;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 0;
+}
+
+input {
+  outline: none;
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+  width: 90%;
+  height: 23px;
+  font-size: 14px;
+  text-align: center;
+  background-color: black;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  text-shadow: none;
+}
+
+select {
+  font-size: 13px;
+  width: 35px;
+  margin-top: 5px;
+  line-height: 1.7em;
+  text-shadow: none;
+  padding-left: 6px;
+  border-radius: 2px;
+  background-color: black;
+  appearance: none;
+  background-image: url("../images/arrow_down.png");
+  background-repeat: no-repeat, repeat;
+  background-position: right .3em top 50%, 0 0;
+  background-size: .55em auto, 130%;
+
+  option {
+    color: #00c3ff;
+    text-align: center;
+    border-bottom: 1px solid blue;
+  }
+}
+
+.refreshBtn {
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(311deg, rgba(2, 0, 36, 1) 0%, #00c3ff 35%, rgba(0, 212, 255, 1) 100%);
+}
+
+@media(max-width: 768px) {
+  input,
+  select {
+    font-size: 8px;
+  }
+}
