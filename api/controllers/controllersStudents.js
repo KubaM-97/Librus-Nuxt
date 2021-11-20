@@ -20,7 +20,6 @@ class StudentController {
       res.sendStatus(500)
     }
 
-
   }
   async getStudent(req, res) {
     const name = decodeURIComponent(req.params.name)

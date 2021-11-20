@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <div id="error404">
-      <img src="~images/error404.png" alt="error404" />
-    </div>
+  <div id="error404">
+    <img src="~images/error404.png" alt="error404" />
   </div>
 </template>
 

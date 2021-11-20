@@ -1,9 +1,9 @@
 <template>
-    <table class="mb-3">
-        <tbody>
-            <StudentRow :student="student"/>
-        </tbody>
-    </table>
+  <table class="mb-3">
+    <tbody>
+      <StudentRow :student="student"/>
+    </tbody>
+  </table>
 </template>
 
 
