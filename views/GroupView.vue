@@ -2,7 +2,8 @@
   <div class="wrapper">
     <TableHeader />
     <FetchingLoader :fetchState="$fetchState" @fetch="fetch"/>
-    <Students v-if="!$fetchState.pending && !$fetchState.error" :students="students"/>
+    {{students}}
+    <!-- <Students v-if="!$fetchState.pending && !$fetchState.error" :students="students"/> -->
   </div>
 </template>
 
