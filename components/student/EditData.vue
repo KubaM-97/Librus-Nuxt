@@ -190,7 +190,7 @@ export default defineComponent({
         const fullPath = route.value.fullPath;
         const originalUrl = fullPath.substring(0, fullPath.lastIndexOf("/"));
         router.push({
-          path: `${originalUrl}/${encodeURIComponent(`${student.value.lastName} ${student.value.firstName}`)}`,
+          // path: `${originalUrl}/${encodeURIComponent(`${student.value.lastName} ${student.value.firstName}`)}`,
         });
       }
       emit('submit', student.value)
