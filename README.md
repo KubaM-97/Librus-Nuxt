@@ -9,21 +9,16 @@ An application that allows you to manage the class and its students (actions suc
 
 +   Open your terminal
 +   Change your directory
-+   Run: git clone https://github.com/KubaM-97/Dziennik-Elektroniczny.git
++   Run: git clone https://github.com/KubaM-97/Librus-Nuxt.git
 +   Run: npm install
-+   Run: npm run serve
-+   Run: set your URL to the given address (by default it's: localhost:8080)
++   Run: npm run dev
++   Run: set your URL to the given address (by default it's: localhost:3000)
 
 ## Technologies
-+   Vue.js 2.0
-+   Typescript
-+   BootstrapVue v2.16.0
-
-## Run Unit tests
-npm run test:unit
-
-## Run End-to-end tests
-npm run test:e2e
++   Nuxt v2.15.7
++   ExpressJS v4.17.1
++   MongoDB v4.1.2
++   BootstrapVue v2.21.2
 
 ## Customize configuration
 See Configuration Reference.
