@@ -19,7 +19,7 @@ Ready app: https://kubam97-librus.onrender.com
 +   Run: set your URL to the given address (by default it's: localhost:3000)
 
 ## Technologies
-+   Nuxt v2.15.7
++   NuxtJS v2.15.7
 +   ExpressJS v4.17.1
 +   MongoDB v4.1.2
 +   BootstrapVue v2.21.2
