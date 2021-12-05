@@ -3,6 +3,10 @@
 
 An application that allows you to manage the class and its students (actions such as editing their profiles or adding new students to the class).
 
+
+Ready app: https://kubam97-librus.onrender.com
+
+
 <img src="./assets/images/logo.png" alt="Logo" title="Logo" width="200px" />
 
 ## Installation
